@@ -1,0 +1,9 @@
+D:\www\Gettyclasses\Gettyclasses\bin\Debug\Gettyclasses.dll
+D:\www\Gettyclasses\Gettyclasses\bin\Debug\Gettyclasses.pdb
+D:\www\Gettyclasses\gettywebclasses\bin\Gettyclasses.dll
+D:\www\Gettyclasses\gettywebclasses\bin\Gettyclasses.pdb
+D:\www\Gettyclasses\Gettyclasses\obj\Debug\ResolveAssemblyReference.cache
+D:\www\Gettyclasses\Gettyclasses\obj\Debug\Gettyclasses.dll
+D:\www\Gettyclasses\Gettyclasses\obj\Debug\Gettyclasses.pdb
+D:\www\Gettyclasses\Gettyclasses\bin\Debug\CommonLib.dll
+D:\www\Gettyclasses\Gettyclasses\bin\Debug\Newtonsoft.Json.Net20.dll

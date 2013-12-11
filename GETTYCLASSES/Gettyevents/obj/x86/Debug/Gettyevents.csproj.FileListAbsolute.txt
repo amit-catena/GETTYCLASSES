@@ -1,0 +1,10 @@
+D:\www\Gettyclasses\Gettyevents\bin\Debug\Gettyevents.exe.config
+D:\www\Gettyclasses\Gettyevents\bin\Debug\Gettyevents.exe
+D:\www\Gettyclasses\Gettyevents\bin\Debug\Gettyevents.pdb
+D:\www\Gettyclasses\Gettyevents\bin\Debug\CommonLib.dll
+D:\www\Gettyclasses\Gettyevents\bin\Debug\Gettyclasses.dll
+D:\www\Gettyclasses\Gettyevents\bin\Debug\Newtonsoft.Json.Net20.dll
+D:\www\Gettyclasses\Gettyevents\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\www\Gettyclasses\Gettyevents\obj\x86\Debug\Gettyevents.exe
+D:\www\Gettyclasses\Gettyevents\obj\x86\Debug\Gettyevents.pdb
+D:\www\Gettyclasses\Gettyevents\bin\Debug\Gettyclasses.pdb
