@@ -63,14 +63,7 @@ namespace gettywebclasses
             if (!Page.IsPostBack)
             {
                 _lilist = new List<String>();
-                if (_intstartval > 75)
-                {
-                    prev.Visible = true;
-                }
-                loadmore.Visible = true;
-                prev.Visible = false;
-
-                Getimagedata _objdata = new Getimagedata();
+                 Getimagedata _objdata = new Getimagedata();
                 //ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert(" + _intstartval + ");", true);
                 _objdata._intstartcnt = 1;
                 _objdata._strorientation = "horizontal";
@@ -84,15 +77,6 @@ namespace gettywebclasses
                 {
                     gettydata.DataSource = null;
                 }
-            }
-            else
-            {
-
-                if (_intstartval > 75)
-                {
-                    prev.Visible = true;
-                }
-
             }
 
         }
@@ -109,22 +93,10 @@ namespace gettywebclasses
                                 <img src='" + _baseURL + @"images/spacer.gif'    data-original='" + HttpUtility.HtmlDecode((string)DataBinder.Eval(e.Item.DataItem, "UrlThumb")).Replace("&amp;", "&") + @"'   class='lazy' id='_imgtemp' runat='server'    />
                             </a>";
 
-            if (_lilist.Count > 0)
-            {
-                foreach (DataListItem _chk in gettydata.Items)
-                {
-                    HtmlInputCheckBox _selchk = _chk.FindControl("chkimg") as HtmlInputCheckBox;
-                    if (_lilist.Contains(_selchk.Value))
-                    {
-                        _selchk.Checked = true;
-                    }
-                }
-            }
-
 
         }
 
-        protected void btnalbum_Click(object sender, EventArgs e)
+       /*  protected void btnalbum_Click(object sender, EventArgs e)
         {
             try
             {
@@ -156,15 +128,6 @@ namespace gettywebclasses
                 {
                     _strnews = Request.QueryString["news"].ToString();
                 }
-                /* List<string> _imagesselect = new List<string>();
-                 foreach (DataListItem _chk in gettydata.Items)
-                 {
-                     HtmlInputCheckBox _selchk = _chk.FindControl("chkimg") as HtmlInputCheckBox;
-                     if (_selchk.Checked)
-                     {
-                         _imagesselect.Add(_selchk.Value);
-                     }
-                 }*/
                 //get download seleted images
                 Getimagedata _objdata = new Getimagedata();
                 _objdata._strsiteID = !string.IsNullOrEmpty(_strSiteID) ? _strSiteID : "1";
@@ -191,7 +154,7 @@ namespace gettywebclasses
             }
         }
 
-        protected void btnmore_Click(object sender, EventArgs e)
+       protected void btnmore_Click(object sender, EventArgs e)
         {
             try
             {
@@ -312,6 +275,7 @@ namespace gettywebclasses
             }
 
             return result;
-        }
+        }*/
+
     }
 }

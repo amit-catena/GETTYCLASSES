@@ -53,7 +53,6 @@
    
     <asp:UpdateProgress ID="UpdateProgress1" runat="server">
         <ProgressTemplate>
-
             <img src="images/loading87.gif" />
              <div class="progdiv" id="prog"  >
             <span style="line-height:26px;">Downloading images from Getty</span>
@@ -63,17 +62,7 @@
     </asp:UpdateProgress>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
-         <div class="search-wrap">
-        <div class="searchIn">
-         <asp:Button ID="btnalbum" runat="server" Text="Download Selected Image(s)" 
-            onclick="btnalbum_Click" CssClass="selectImgs" OnClientClick="javascript:opendiv();"/> 
-            <asp:Button ID="btnclear" CssClass="searchbtn" runat="server" Text="Clear search" OnClick="btnclear_Click" />
-             <asp:Button ID="loadmore" CssClass="searchbtn" runat="server" Text="Load more" OnClick="btnmore_Click" />
-                    <asp:Button ID="prev" CssClass="searchbtn" runat="server" Text="Previous" OnClick="btnprev_Click" />
-            </div>
-           
-    </div>
-            <div class="datact">
+        <div class="datact">
             <asp:DataList ID="gettydata" DataKeyField="ImageId" RepeatColumns="5" RepeatDirection="Horizontal"
                 runat="server"  onitemdatabound="gettydata_ItemDataBound" >
                 <ItemTemplate>
@@ -82,7 +71,6 @@
                          <asp:Literal ID="lthtml" runat="server" ></asp:Literal>    
                             <div class="title-wrap">
                                <asp:Label ID="lbl" runat="server"   ></asp:Label> 
-                                <input id="chkimg"  type="checkbox" runat="server" clientidmode="Static"  value='<%# Eval("ImageId") %>' /> 
                                  <a href="javascript:void();" class='cart' title='Add to cart'></a>
                                  <strong><%# Eval("Title")%></strong>
                             </div>
@@ -94,11 +82,6 @@
             </div> 
             <asp:Literal ID="ltscript" runat="server"></asp:Literal>
         </ContentTemplate>
-        <Triggers>
-            <asp:AsyncPostBackTrigger ControlID="loadmore" EventName="Click" />
-            <asp:AsyncPostBackTrigger ControlID="prev" EventName="Click" />
-            <asp:AsyncPostBackTrigger ControlID="btnclear" EventName="Click" />
-        </Triggers>
     </asp:UpdatePanel>
     <script>
         imgPopup();
@@ -135,30 +118,5 @@
           function Singlegettyimage(imagename, imgurl, cookieName, nDays) {
               window.close();
           }
-
-          function HandleIT(_strval, chk) {
-              //alert(_strval+"---"+chk);
-              var _doc = _strval;
-              //alert(_doc);
-              PageMethods.ProcessIT(_strval, chk, onSucess, onError);
-              function onSucess(result) {
-                  //alert(result);
-              }
-              function onError(result) {
-                  alert('Something wrong.');
-              }
-          }
-
-          $('input[type="checkbox"]').live('change', function () {
-              var _val = $(this).val();
-              var chk;
-              if (this.checked) {
-                  chk = true;
-              } else {
-                  chk = false;
-              }
-              HandleIT(_val, chk);
-
-          })
 	</script>
 </asp:Content>

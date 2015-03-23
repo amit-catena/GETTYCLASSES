@@ -16,6 +16,7 @@
     </p>
 
     <p>
+    
     <asp:DataList id="cdcatalog" RepeatColumns="2"
 runat="server"
 cellpadding="2"
@@ -37,8 +38,11 @@ My CD Catalog
 </HeaderTemplate>
 
 <ItemTemplate>
-images
+<strong><%#Eval("Title") %></strong></br>
+images DateCreated<%#Eval("DateCreated") %>
 <img src="<%#Eval("UrlPreview") %>" />
+<%#Eval("ImageId") %>
+
 </ItemTemplate>
 
 <FooterTemplate>

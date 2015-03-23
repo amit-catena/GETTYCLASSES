@@ -15,6 +15,7 @@ namespace gettywebclasses
     public partial class _Default : System.Web.UI.Page
     {
         string _imagepathdownload = ConfigurationSettings.AppSettings["ImagePath"];
+        string _strsearch = string.Empty; 
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -24,7 +25,15 @@ namespace gettywebclasses
                 //ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert(" + _intstartval + ");", true);
                 _objdata._intstartcnt = 1;
                 _objdata._strorientation = "horizontal";
-                var _data = _objdata.GetimageDatalist();
+                if (null != Request.QueryString["search"])
+                {
+                    _objdata._strserachterm = Request.QueryString["search"].ToString().Trim() ;
+                }
+                else
+                {
+                    _objdata._strserachterm = "nadal";
+                }
+                var _data = _objdata.GetDefaultimageDatalist();
                 if (_data.Count > 0)
                 {
                     cdcatalog.DataSource = _data;

@@ -84,8 +84,11 @@ namespace gettywebclasses
                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert(" + _intstartval + ");", true);
                  //Response.Write("_intstartval " + _intstartval+"</br>");  
                    _objdata._intstartcnt = _intstartval;
-                   _objdata._strorientation = RDchkbox.SelectedValue;   
-                   var _data=_objdata.GetimageDatalist();
+                   _objdata._strorientation = RDchkbox.SelectedValue;
+                  //new changes
+                   //var _data = _objdata.GetimageDatalist();
+                   var _data = _objdata.GetimageDatalist_withdaterange();
+
                    if (_data.Count > 0)
                    {
                        gettydata.DataSource = _data;
@@ -122,7 +125,8 @@ namespace gettywebclasses
                  prev.Visible = true;
                 _objdata._intstartcnt = _intstartval;
                 _objdata._strorientation = RDchkbox.SelectedValue;   
-                var _data = _objdata.GetimageDatalist();
+               // var _data = _objdata.GetimageDatalist();
+                var _data = _objdata.GetimageDatalist_withdaterange();
                 if (_data.Count > 0)
                 {
                     gettydata.DataSource = _data;
@@ -161,7 +165,8 @@ namespace gettywebclasses
                 if (_intstartval == 1)
                     prev.Visible = false;
                
-                var _data = _objdata.GetimageDatalist();
+                //var _data = _objdata.GetimageDatalist();
+                var _data = _objdata.GetimageDatalist_withdaterange();
                 if (_data.Count > 0)
                 {
                     gettydata.DataSource = _data;
@@ -198,7 +203,8 @@ namespace gettywebclasses
                 _objdata._intstartcnt = _intstartval;
                 _objdata._strorientation = RDchkbox.SelectedValue;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert(" + RDchkbox.SelectedValue + ");", true);
-                var _data = _objdata.GetimageDatalist();
+                //var _data = _objdata.GetimageDatalist();
+                var _data = _objdata.GetimageDatalist_withdaterange();
                 if (_data.Count > 0)
                 {
                     gettydata.DataSource = _data;

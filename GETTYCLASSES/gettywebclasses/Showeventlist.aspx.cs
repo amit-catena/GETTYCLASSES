@@ -94,7 +94,8 @@ namespace gettywebclasses
                                 <img src='" + HttpUtility.HtmlDecode((string)DataBinder.Eval(e.Item.DataItem, "ImageURL")).Replace("&amp;", "&") + @"'   runat='server'    />
                             </a>";
             Literal _htmlcnt = (Literal)e.Item.FindControl("ltcount");
-            _htmlcnt.Text = @"</br><a href='" + _baseURL + "alleventImages.aspx?eventid=" + (int)DataBinder.Eval(e.Item.DataItem, "EventId") + @"'  > " + (int)DataBinder.Eval(e.Item.DataItem, "ImageCount") + " images</a>";
+            //_htmlcnt.Text = @"</br><a href='" + _baseURL + "alleventImages.aspx?eventid=" + (int)DataBinder.Eval(e.Item.DataItem, "EventId") + @"'  > " + (int)DataBinder.Eval(e.Item.DataItem, "ImageCount") + " images</a>";
+            _htmlcnt.Text = @"</br><a href='#'  > " + (int)DataBinder.Eval(e.Item.DataItem, "ImageCount") + " images</a>";
             Literal _ltdate = (Literal)e.Item.FindControl("ltdate");
             //string _strdate = DataBinder.Eval(e.Item.DataItem, "EventDate");
             //IFormatProvider yyyymmddFormat = new System.Globalization.CultureInfo(String.Empty, false);
