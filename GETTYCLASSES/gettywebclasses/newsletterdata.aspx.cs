@@ -314,16 +314,13 @@ namespace gettywebclasses
                         _objdata._strnewsID = _intnewsID;
                         _objdata._strnews = _strnews;
                         //getdownload images.
-
                         if (_objdata.GetdownloadNewsletterimage(_imagesselect))
                         {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "close", "javascript:self.close()", true);
-
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "selfclose", "javascript:self.close()", true);
                         }
                         break;
                     }
                 }
-
             }
             catch (Exception ex)
             {
