@@ -27,7 +27,10 @@ namespace gettywebclasses
         public string _strnews = string.Empty;
         public static string _redirecturl = string.Empty;
         public static int _intstartval;
-        public static List<String> _lilist = new List<String>();
+        public string _sessionselected = string.Empty;  
+        private static List<String> _lilist = new List<String>();
+        
+       
         protected void Page_Load(object sender, EventArgs e)
         {
             if (null != Request.QueryString["NwtID"])
@@ -43,6 +46,7 @@ namespace gettywebclasses
             if (null != Request.QueryString["randomID"])
             {
                 _strcookiename = Request.QueryString["randomID"].ToString();
+                commonfn.setSession("_strcookiename", _strcookiename);  
             }
             if (null != Request.QueryString["NewsID"])
             {
@@ -89,7 +93,8 @@ namespace gettywebclasses
                 //Response.Write("_intstartval " + _intstartval+"</br>");  
                 _objdata._intstartcnt = _intstartval;
                 _objdata._strorientation = RDchkbox.SelectedValue;
-                var _data = _objdata.GetimageDatalist();
+                //var _data = _objdata.GetimageDatalist();
+                var _data = _objdata.GetimageDatalist_withdaterange();
                 if (_data.Count > 0)
                 {
                     gettydata.DataSource = _data;
@@ -142,6 +147,9 @@ namespace gettywebclasses
 
         protected void btnalbum_Click(object sender, EventArgs e)
         {
+
+            DataTable _dt=new DataTable();
+            List<string> _sellist = new List<string>(); 
             try
             {
                 if (null != Request.QueryString["NwtID"])
@@ -188,8 +196,18 @@ namespace gettywebclasses
                 _objdata._strrandomecookie = _strcookiename;
                 _objdata._strnewsID = _intnewsID;
                 _objdata._strnews = _strnews;
+
+                if (null != HttpContext.Current.Session["_dt"])
+                {
+                    _dt=(DataTable)HttpContext.Current.Session["_dt"];
+                    foreach (DataRow  _dtval in _dt.Rows)
+                    {
+                        _sellist.Add(_dtval["ImageID"].ToString()); 
+                    }
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert('" + _sellist.Count + "!');", true);
+                }
                 //getdownload images.
-                if (_lilist.Count > 0)
+                /*if (_lilist.Count > 0)
                 {
                     if (_objdata.GetdownloadimagesFromEditors(_lilist))
                     {
@@ -200,7 +218,26 @@ namespace gettywebclasses
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert('Please select image!');", true);
                     UpdatePanel1.Update();
-                }
+                }*/
+
+                if (_sellist.Count > 0)
+               {
+                   if (_objdata.GetdownloadimagesFromEditors(_sellist))
+                   {
+                       _sellist.Clear();
+                       if (null != HttpContext.Current.Session["_dt"])
+                       {
+                           HttpContext.Current.Session["_dt"] = null;
+                       }
+                       ScriptManager.RegisterStartupScript(this, this.GetType(), "close", "javascript:self.close()", true);
+                   }
+               }
+               else
+               {
+                   ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert('Please select image!');", true);
+                   UpdatePanel1.Update();
+               }
+
                 //_imagesselect.Clear();
 
             }
@@ -224,7 +261,8 @@ namespace gettywebclasses
 
                 _objdata._intstartcnt = _intstartval;
                 _objdata._strorientation = RDchkbox.SelectedValue;
-                var _data = _objdata.GetimageDatalist();
+                //var _data = _objdata.GetimageDatalist();
+                var _data = _objdata.GetimageDatalist_withdaterange();
                 if (_data.Count > 0)
                 {
                     gettydata.DataSource = _data;
@@ -262,7 +300,8 @@ namespace gettywebclasses
                 if (_intstartval == 1)
                     prev.Visible = false;
 
-                var _data = _objdata.GetimageDatalist();
+                //var _data = _objdata.GetimageDatalist();
+                var _data = _objdata.GetimageDatalist_withdaterange();
                 if (_data.Count > 0)
                 {
                     gettydata.DataSource = _data;
@@ -299,7 +338,8 @@ namespace gettywebclasses
                 _objdata._intstartcnt = _intstartval;
                 _objdata._strorientation = RDchkbox.SelectedValue;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert(" + RDchkbox.SelectedValue + ");", true);
-                var _data = _objdata.GetimageDatalist();
+                //var _data = _objdata.GetimageDatalist();
+                var _data = _objdata.GetimageDatalist_withdaterange();
                 if (_data.Count > 0)
                 {
                     gettydata.DataSource = _data;
@@ -349,32 +389,125 @@ namespace gettywebclasses
         public static string ProcessIT(string _val, bool _chk)
         {
             string result = "false";
-            if (_lilist.Count > 0)
+            string _tbkey = string.Empty;
+            string _tbval = string.Empty;
+            //create data table
+            DataTable _dt = new DataTable();
+            //find out in session
+            if (null != HttpContext.Current.Session["_dt"])
             {
-                if (_chk)
-                {
-                    _lilist.Add(_val);
-                    result = "true";
-                }
-                else
-                {
-                    if (_lilist.Contains(_val))
-                        _lilist.Remove(_val);
-                    result = "false";
-                }
+                _dt = (DataTable)HttpContext.Current.Session["_dt"] as DataTable;
+                 if (_chk)
+                 {
+                     //maintain staic values
+                     _lilist.Add(_val);
+                     //result = "true";
+                     //get randomnumber twitterID 
+                     _tbkey = "Img" + RandomNumber(422, 40000);
+                     //data value for twitter embeded code
+                     _tbval = _val;
+                     result = "true";
+                 }
+                 else
+                 {
+                     //remove images from  staic values
+                     if (_lilist.Contains(_val))
+                         _lilist.Remove(_val);
+                     DataRow[] drr = _dt.Select("ImageID=' " + _val + " ' "); 
+                        for (int i = 0; i < drr.Length; i++)
+                            drr[i].Delete();
+                        _dt.AcceptChanges();
+                     result = "false";
+                 }
 
+                //genrate row in datatable
+                _dt = DynamicRows(_dt, _tbkey, _tbval);
+                HttpContext.Current.Session["_dt"] = _dt;//stored datatable in session
             }
             else
             {
-                if (_chk)
+                //maintain staic values
+                 _lilist.Add(_val);
+                _dt = DynamicColumns();//genrate first time colomn in datatable
+                //get randomnumber twitterID 
+                _tbkey = "Img" + RandomNumber(422, 40000);
+                //data value for twitter embeded code
+                _tbval = _val;
+                //genrate row in datatable
+                _dt = DynamicRows(_dt, _tbkey, _tbval);
+                HttpContext.Current.Session["_dt"] = _dt;//stored datatable in session
+                result = "true";
+            }
+            
+           /* if (_sessiondata != "0" && !string.IsNullOrEmpty(_sessiondata))
+            {
+                if (_sessiondata == getsessiondata)
                 {
-                    _lilist.Add(_val);
-                    result = "true";
+                    if (_lilist.Count > 0)
+                    {
+                        if (_chk)
+                        {
+                            _lilist.Add(_val);
+                            result = "true";
+                        }
+                        else
+                        {
+                            if (_lilist.Contains(_val))
+                                _lilist.Remove(_val);
+                            result = "false";
+                        }
+
+                    }
+                    else
+                    {
+                        if (_chk)
+                        {
+                            _lilist.Add(_val);
+                            result = "true";
+                        }
+
+                    }
+
                 }
 
-            }
+            }*/
+            
+           
 
             return result;
+        }
+
+        public static DataTable DynamicRows(object dynamicDataTable, string RandonTwitId, string TwitterText)
+        {
+            // Use Existing DataTable
+            DataTable dt = (DataTable)dynamicDataTable;
+            //Add Rows
+            DataRow row = dt.NewRow();
+            row["RandonimageId"] = RandonTwitId;
+            row["ImageID"] = TwitterText;
+            dt.Rows.Add(row);
+            return dt;
+        }
+
+
+        public static DataTable DynamicColumns()
+        {
+            // Define the new datatable
+            DataTable dt = new DataTable();
+            // Define 2 columns
+            DataColumn dc;
+            dc = new DataColumn("RandonimageId");
+            dt.Columns.Add(dc);
+            dc = new DataColumn("ImageID");
+            dt.Columns.Add(dc);
+            return dt;
+        }
+
+
+        public static int RandomNumber(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min, max);
         }
     }
 }

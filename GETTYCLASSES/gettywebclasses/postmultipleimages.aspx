@@ -38,7 +38,7 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
+<input type="hidden" id="selectedIds" runat="server" />   
 
 <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" >
     </asp:ScriptManager>
@@ -147,12 +147,12 @@
           function Singlegettyimage(imagename, imgurl, cookieName, nDays) {
               window.close();
           }
-
+        
           function HandleIT(_strval, chk) {
               //alert(_strval+"---"+chk);
               var _doc = _strval;
               //alert(_doc);
-              PageMethods.ProcessIT(_strval, chk, onSucess, onError);
+              PageMethods.ProcessIT(_strval, chk,onSucess, onError);
               function onSucess(result) {
                   //alert(result);
               }
