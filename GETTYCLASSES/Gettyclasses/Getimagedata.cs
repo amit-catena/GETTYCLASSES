@@ -45,7 +45,7 @@ namespace Gettyclasses
                 SearchForImagesResponse _objresponse = new SearchForImagesResponse();
                 var searchQuery = new SearchForImages2RequestBody();
                 searchQuery.Filter = new Filter();
-                searchQuery.Filter.Orientations = new List<string> {"horizontal"};     
+                searchQuery.Filter.Orientations = new List<string> {"horizontal"};
                 searchQuery.Query = new Query();
                 searchQuery.Query.SearchPhrase = !string.IsNullOrEmpty(_strserachterm) ? _strserachterm :"sports";
                 searchQuery.Filter.ImageFamilies = new List<string> { "Editorial" };   
@@ -61,6 +61,7 @@ namespace Gettyclasses
                 var searchResponse = _objs.Search(token, searchQuery.Query.SearchPhrase);
                 var valtotal = searchResponse.SearchForImagesResult.ItemTotalCount;   
                 var _getimg = from images in searchResponse.SearchForImagesResult.Images
+                              from ievent in images.EventIds
                               select new
                               {
                                   Titel = images.Title,
@@ -73,7 +74,8 @@ namespace Gettyclasses
                                   DateCreated = images.DateCreated,
                                   Artist = images.Artist,
                                   ShortCaption = images.Caption.Substring(0, 100) + "..",
-                                  Caption=images.Caption  
+                                  Caption=images.Caption,  
+                                  eventid = ievent.ToString()
                               };
 
                 //bind all data to image class
@@ -91,6 +93,7 @@ namespace Gettyclasses
                     _objimgdetails.Title = _getdata.Titel;
                     _objimgdetails.Caption = _getdata.Caption;
                     _objimgdetails.ShortCaption = _getdata.ShortCaption;
+                    _objimgdetails._gotevent =Convert.ToInt32(_getdata.eventid);
                     _listimg.Add(_objimgdetails); 
                 }
                 
@@ -1375,6 +1378,8 @@ namespace Gettyclasses
         {
             List<Imagedetails> _listimg = new List<Imagedetails>();
             List<int> _eventID = new List<int>();
+            string _vareventID = string.Empty;
+            int _cnt = 1;
             SearchForEditorialImagesSample _objs = new SearchForEditorialImagesSample();
             CreateSessionSample _objcs = new CreateSessionSample();
             SearchForImagesResponse _objresponse = new SearchForImagesResponse();
@@ -1382,14 +1387,14 @@ namespace Gettyclasses
             searchQuery.Filter = new Filter();
             searchQuery.Filter.Orientations = new List<string> { "horizontal" };
             searchQuery.Query = new Query();
-            searchQuery.Query.SearchPhrase = !string.IsNullOrEmpty(_strserachterm) ? _strserachterm : "sports";
+            searchQuery.Query.SearchPhrase = !string.IsNullOrEmpty(_strserachterm) ? _strserachterm : "";
             searchQuery.Filter.ImageFamilies = new List<string> { "Editorial" };
             var token = _objcs.GetToken();
             _strtoken = token;
             searchQuery.ResultOptions = new ResultOptions();
-            searchQuery.ResultOptions.ItemCount = 75;
+            searchQuery.ResultOptions.ItemCount = 10;
             _intstartcnt = 1;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 3; i++)
             {
                 try
                 {
@@ -1397,7 +1402,7 @@ namespace Gettyclasses
                     _objs._Orientations = _strorientation;
                     _objs._startcnt = _intstartcnt;
                     _objs._imagefamilies = "Editorial";
-                    var searchResponse = _objs.Search(token, searchQuery.Query.SearchPhrase);
+                    var searchResponse = _objs.defaultSearch(token, searchQuery.Query.SearchPhrase);
                     var valtotal = searchResponse.SearchForImagesResult.ItemTotalCount;
                     var _getimg = from images in searchResponse.SearchForImagesResult.Images
                                   from ievent in images.EventIds
@@ -1408,15 +1413,47 @@ namespace Gettyclasses
                     //bind all data to image class
                     foreach (var _getdata in _getimg)
                     {
-                        if (_eventID.Count > 0)
+                        using (addimages _objimg = new addimages())
                         {
-                            if (!_eventID.Contains(Convert.ToInt32(_getdata.eventid)))
-                                _eventID.Add(Convert.ToInt32(_getdata.eventid));
+                            _objimg.NetworkId = _strnetworkID;
+                            if (_objimg.checkGettyEvents(Convert.ToInt32(_getdata.eventid)))
+                            {
+                                if (_eventID.Count > 0)
+                                {
+                                    if (!_eventID.Contains(Convert.ToInt32(_getdata.eventid)))
+                                    {
+                                        _eventID.Add(Convert.ToInt32(_getdata.eventid));
+                                        System.Console.WriteLine("Added EventID-: " + _getdata.eventid);
+                                    }
+                                    else
+                                    {
+                                        if (_cnt == 1)
+                                        {
+                                            if (!_vareventID.Contains(Convert.ToString(_getdata.eventid)))
+                                                _vareventID = Convert.ToString(_getdata.eventid);
+                                            _cnt++;
+                                        }
+                                        else
+                                        {
+                                            if (!_vareventID.Contains(Convert.ToString(_getdata.eventid)))
+                                                _vareventID += "," + Convert.ToString(_getdata.eventid);
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+                                    _eventID.Add(Convert.ToInt32(_getdata.eventid));
+                                    System.Console.WriteLine("Added EventID-: " + _getdata.eventid);
+
+                                }
+                            }
+                            else
+                            {
+                                System.Console.WriteLine("Already added EventID-: " + _getdata.eventid);
+                            }
                         }
-                        else
-                        {
-                            _eventID.Add(Convert.ToInt32(_getdata.eventid));
-                        }
+                       
                     }
                    
                 }
@@ -1426,14 +1463,128 @@ namespace Gettyclasses
                     ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "GetimageDatalist", "GetimageDatalist", ex.Message, _strnetworkID.ToString());
 
                 }
-                _intstartcnt += 75;
+                _intstartcnt += 10;
+            }
+
+            //update Repeat Events Dates
+            if (!string.IsNullOrEmpty(_vareventID))
+            {
+                using (addimages _objimg = new addimages())
+                {
+                    System.Console.WriteLine("Updated EventID-: " + _vareventID);
+                    _objimg.NetworkId = _strnetworkID;
+                    _objimg.UpdateGettyEvents(_vareventID);
+                }
             }
 
             InsertGettyEvnets(_eventID);
         }
 
+        public void NewFN_AddGettyeventdetails()
+        {
+            List<Imagedetails> _listimg = new List<Imagedetails>();
+            List<int> _eventID = new List<int>();
+            string _vareventID = string.Empty;
+            int _cnt = 1;
+            int _totalimg = 1;
+            int _addedevent = 1;
+            SearchForEditorialImagesSample _objs = new SearchForEditorialImagesSample();
+            CreateSessionSample _objcs = new CreateSessionSample();
+            SearchForImagesResponse _objresponse = new SearchForImagesResponse();
+            var searchQuery = new SearchForImages2RequestBody();
+            searchQuery.Filter = new Filter();
+            searchQuery.Filter.Orientations = new List<string> { "horizontal" };
+            searchQuery.Query = new Query();
+            searchQuery.Query.SearchPhrase = !string.IsNullOrEmpty(_strserachterm) ? _strserachterm : "";
+            searchQuery.Filter.ImageFamilies = new List<string> { "Editorial" };
+            var token = _objcs.GetToken();
+            _strtoken = token;
+            searchQuery.ResultOptions = new ResultOptions();
+            searchQuery.ResultOptions.ItemCount = 75;
+            _intstartcnt = 1;
+            _totalimg = 75;
+            for (int i = 0; i < 60; i++)
+            {
+                try
+                {
+                    if (_totalimg >=_intstartcnt)
+                    {
+                        //declare objects.
+                        _objs._Orientations = _strorientation;
+                        _objs._startcnt = _intstartcnt;
+                        _objs._imagefamilies = "Editorial";
+                        var searchResponse = _objs.defaultSearch(token, searchQuery.Query.SearchPhrase);
+                        var valtotal = searchResponse.SearchForImagesResult.ItemTotalCount;
+                        if (_cnt == 1)
+                        {
+                            _totalimg = valtotal;
+                            if (valtotal == 0)
+                            {
+                                System.Console.WriteLine("No Event added ,No Images or Event Created Daterange in StartDate =" + System.DateTime.Now.AddHours(-10).ToString("yyyy-MM-dd HH:mm") + " EndDate =" + System.DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH:mm"));
+                                break;
+                            }
+                            _cnt++;
+                        }
+                        var _getimg = from images in searchResponse.SearchForImagesResult.Images
+                                      from ievent in images.EventIds
+                                      select new
+                                      {
+                                          eventid = ievent.ToString()
+                                      };
+                        //bind all data to image class
+                        foreach (var _getdata in _getimg)
+                        {
+                            using (addimages _objimg = new addimages())
+                            {
+                                _objimg.NetworkId = _strnetworkID;
+                                if (_objimg.checkGettyEvents(Convert.ToInt32(_getdata.eventid)))
+                                {
+                                    if (_addedevent == 1)
+                                    {
+                                        System.Console.WriteLine("Event added Created Daterange in StartDate =" + System.DateTime.Now.AddHours(-10).ToString("yyyy-MM-dd HH:mm") + " EndDate =" + System.DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH:mm"));
+                                        _addedevent++;
+                                    }
+                                    if (_eventID.Count > 0)
+                                    {
+                                        if (!_eventID.Contains(Convert.ToInt32(_getdata.eventid)))
+                                        {
+                                            _eventID.Add(Convert.ToInt32(_getdata.eventid));
+                                            //System.Console.WriteLine("Added EventID-: " + _getdata.eventid);
+                                            System.Console.WriteLine("Event added Created Daterange in StartDate =" + System.DateTime.Now.AddHours(-10).ToString("yyyy-MM-dd HH:mm") + " EndDate =" + System.DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH:mm"));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        _eventID.Add(Convert.ToInt32(_getdata.eventid));
+                                        //System.Console.WriteLine("Added EventID-: " + _getdata.eventid);
+                                        System.Console.WriteLine("Added EventID-: " + _getdata.eventid +" Created Daterange in StartDate =" + System.DateTime.Now.AddHours(-10).ToString("yyyy-MM-dd HH:mm") + " EndDate =" + System.DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH:mm"));
+                                    }
+                                }
+                                else
+                                {
+                                    System.Console.WriteLine("Already added EventID-: " + _getdata.eventid);
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("NewFN_AddGettyeventdetails Error-: " + ex.Message.ToString());
+                    CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "GetimageDatalist :", ex);
+                    ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "GetimageDatalist", "GetimageDatalist", ex.Message, _strnetworkID.ToString());
+
+                }
+                _intstartcnt += 75;
+            }
+            InsertGettyEvnets(_eventID);
+        }
+
         public void InsertGettyEvnets(List<int> _eventID)
         {
+            string _strtime = System.DateTime.Now.ToString("HH:mm:ss");   
             List<Imagedetails> _listimg = new List<Imagedetails>();
             try
             {
@@ -1471,7 +1622,7 @@ namespace Gettyclasses
                                                   ImageId = images.ImageId,
                                                   LicensingModel = images.LicensingModel,
                                                   ImageFamily = images.ImageFamily,
-                                                  DateCreated =Convert.ToDateTime(images.DateCreated).ToString("yyyy-MM-dd mm:hh"),
+                                                  DateCreated =Convert.ToDateTime(images.DateCreated).ToString("yyyy-MM-dd"),
                                                   Artist = images.Artist,
                                                   ShortCaption = images.Caption.Substring(0, 100) + "..",
                                                   Caption = images.Caption,
@@ -1485,9 +1636,11 @@ namespace Gettyclasses
                                 _objimg.NetworkId = _strnetworkID;
                                 _objimg.eventImageURL = _getallevent.UrlPreview;
                                 _objimg.EventTitle = _getallevent.Titel;
-                                _objimg.EventDate = _getallevent.DateCreated;
+                                _objimg.EventDate = _getallevent.DateCreated+" "+_strtime;
                                 _objimg.ImageCount = _getvalcount;
+                                _objimg.imagetxtbelow = _getallevent.Caption;
                                 _objimg.AddGettyEvents();
+                                System.Console.WriteLine("EventID-: " + _objimg.EventId + "\t Event Title: " + _objimg.EventTitle + " \t image count: " + _objimg.ImageCount + " \t EventDate: " + _objimg.EventDate + " \t addedDate: " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")); 
                                 _objimg.EventId = 0;
                                 _objimg.eventImageURL = "";
                                 _objimg.EventTitle = "";
@@ -1502,11 +1655,405 @@ namespace Gettyclasses
             }
             catch (Exception ex)
             {
+                System.Console.WriteLine("InsertGettyEvnets Error-: " + ex.Message.ToString());
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "GetimageDatalist :", ex);
                 ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "GetimageDatalist", "GetimageDatalist", ex.Message, _strnetworkID.ToString());
 
             }
 
+        }
+
+        public List<Imagedetails> GetDefaultimageDatalist()
+        {
+            List<Imagedetails> _listimg = new List<Imagedetails>();
+            try
+            {
+                //declare objects.
+                SearchForEditorialImagesSample _objs = new SearchForEditorialImagesSample();
+                CreateSessionSample _objcs = new CreateSessionSample();
+                SearchForImagesResponse _objresponse = new SearchForImagesResponse();
+                var searchQuery = new SearchForImages2RequestBody();
+                searchQuery.Filter = new Filter();
+                searchQuery.Filter.Orientations = new List<string> { "horizontal" };
+                searchQuery.Filter.EditorialSegments = new List<string> { "Sports" };  
+                searchQuery.Query = new Query();
+                string _dtstart =System.DateTime.Now.AddDays(-4).ToString("yyyy-MM-dd");
+                string _dtend = System.DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+                searchQuery.Query.DateCreatedRange.StartDate = _dtstart;
+                searchQuery.Query.DateCreatedRange.EndDate = _dtend;
+                searchQuery.Query.SearchPhrase = !string.IsNullOrEmpty(_strserachterm) ? _strserachterm : "Sports";
+                //searchQuery.Filter.ImageFamilies = new List<string> { "Editorial" };
+                var token = _objcs.GetToken();
+                var strsecuretoken = _objcs.GetSecureToken();
+                _strtoken = token;
+                _strsecuretoken = strsecuretoken;
+                searchQuery.ResultOptions = new ResultOptions();
+                searchQuery.ResultOptions.ItemCount = 75;
+                _objs._Orientations = _strorientation;
+                _objs._startcnt = _intstartcnt;
+                _objs._imagefamilies = "Editorial";
+                var searchResponse = _objs.defaultSearch(token, searchQuery.Query.SearchPhrase);
+                //var searchResponse = _objs.Search(token, searchQuery.Query.SearchPhrase);
+                var valtotal = searchResponse.SearchForImagesResult.ItemTotalCount;
+                var _getimg = from images in searchResponse.SearchForImagesResult.Images
+                              //orderby images.DateCreated descending
+                              //from ievent in images.EventIds
+                              select new
+                              {
+                                  Titel = images.Title,
+                                  Collectname = images.CollectionName,
+                                  UrlPreview = images.UrlPreview,
+                                  UrlThumb = images.UrlThumb,
+                                  ImageId = images.ImageId,
+                                  LicensingModel = images.LicensingModel,
+                                  ImageFamily = images.ImageFamily,
+                                  DateCreated = Convert.ToDateTime(images.DateCreated).ToString("yyyy-MM-dd HH:mm"),
+                                  Artist = images.Artist,
+                                  ShortCaption = images.Caption.Substring(0, 100) + "..",
+                                  Caption = images.Caption
+                                  //eventid = ievent.ToString()
+                              };
+
+                //bind all data to image class
+                foreach (var _getdata in _getimg)
+                {
+                    Imagedetails _objimgdetails = new Imagedetails();
+                    _objimgdetails.Artist = _getdata.Artist;
+                    _objimgdetails.CollectionName = _getdata.Collectname;
+                    _objimgdetails.DateCreated =Convert.ToDateTime(_getdata.DateCreated);
+                    _objimgdetails.ImageFamily = _getdata.ImageFamily;
+                    _objimgdetails.ImageId = _getdata.ImageId;
+                    _objimgdetails.LicensingModel = _getdata.LicensingModel;
+                    _objimgdetails.UrlPreview = _getdata.UrlPreview;
+                    _objimgdetails.UrlThumb = _getdata.UrlThumb;
+                    _objimgdetails.Title = _getdata.Titel;
+                    _objimgdetails.Caption = _getdata.Caption;
+                    _objimgdetails.ShortCaption = _getdata.ShortCaption;
+                    //_objimgdetails._gotevent = Convert.ToInt32(_getdata.eventid);
+                    _listimg.Add(_objimgdetails);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "GetimageDatalist :", ex);
+                ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "GetimageDatalist", "GetimageDatalist", ex.Message, _strnetworkID.ToString());
+
+            }
+            return _listimg;
+        }
+
+        public void Get_gettyevents_to_updatecount()
+        {
+            DataTable _dt;
+            int _intoldcnt=0;
+             try
+            {
+                SearchForEditorialImagesSample _objs = new SearchForEditorialImagesSample();
+                CreateSessionSample _objcs = new CreateSessionSample();
+                SearchForImagesResponse _objresponse = new SearchForImagesResponse();
+                var searchQuery = new SearchForImages2RequestBody();
+                searchQuery.Filter = new Filter();
+                searchQuery.Filter.Orientations = new List<string> { "horizontal" };
+                searchQuery.Query = new Query();
+                searchQuery.Query.SearchPhrase = !string.IsNullOrEmpty(_strserachterm) ? _strserachterm : "sports";
+                searchQuery.Filter.ImageFamilies = new List<string> { "Editorial" };
+                var token = _objcs.GetToken();
+                _strtoken = token;
+                searchQuery.ResultOptions = new ResultOptions();
+                searchQuery.ResultOptions.ItemCount = 75;
+                _intstartcnt = 1;
+                using (addimages _objimg = new addimages())
+                {
+                    _objimg.NetworkId = _strnetworkID;
+                    _dt = _objimg.GetGettyevents_toupdatecount();
+                    if (_dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow _dr in _dt.Rows)
+                        {
+                            if (!string.IsNullOrEmpty(_dr["eventID"].ToString()))
+                            {
+                                _objs._eventID =Convert.ToInt32(_dr["eventID"].ToString());
+                                _objs._Orientations = _strorientation;
+                                _objs._startcnt = 1;
+                                _objs._imagefamilies = "Editorial";
+                                var eventrespone = _objs.EventSearch(token, searchQuery.Query.SearchPhrase);
+                                var _getvalcount = eventrespone.SearchForImagesResult.ItemTotalCount;
+                                _intoldcnt=(int)(_dr["ImageCount"]);
+                                if (_getvalcount > _intoldcnt)
+                                {
+                                    _objimg.Update_GettyEvents_imagecount(_getvalcount, _objs._eventID);
+                                    System.Console.WriteLine("Updated Record EventID-: " + _objs._eventID + "\t Event Title: " + _dr["EventTitle"].ToString() + " \t Old image count: " + _dr["ImageCount"].ToString() + "\tNew Image count: " + _getvalcount);
+                                }
+                                else
+                                {
+                                    System.Console.WriteLine("Not Updated Record EventID-: " + _objs._eventID + "\t Event Title: " + _dr["EventTitle"].ToString() + " \t Old image count: " + _dr["ImageCount"].ToString() + "\tNew Image count: " + _getvalcount);
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+             catch (Exception ex)
+             {
+                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "GetimageDatalist :", ex);
+                 ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "Get_gettyents_to_updatecount", "Get_gettyents_to_updatecount", ex.Message, _strnetworkID.ToString());
+
+             }
+
+        }
+
+
+        public int Get_gettyevents_Responseimagecount(string  _intreseventID)
+        {
+            DataTable _dt;
+            int _intoldcnt = 1;
+            int _inttotalcnt = 0;
+            try
+            {
+                SearchForEditorialImagesSample _objs = new SearchForEditorialImagesSample();
+                CreateSessionSample _objcs = new CreateSessionSample();
+                SearchForImagesResponse _objresponse = new SearchForImagesResponse();
+                var searchQuery = new SearchForImages2RequestBody();
+                searchQuery.Filter = new Filter();
+                searchQuery.Filter.Orientations = new List<string> { "horizontal" };
+                searchQuery.Query = new Query();
+                searchQuery.Query.SearchPhrase = !string.IsNullOrEmpty(_strserachterm) ? _strserachterm : "sports";
+                searchQuery.Filter.ImageFamilies = new List<string> { "Editorial" };
+                var token = _objcs.GetToken();
+                _strtoken = token;
+                searchQuery.ResultOptions = new ResultOptions();
+                searchQuery.ResultOptions.ItemCount = 75;
+                _intstartcnt = 1;
+                if (!string.IsNullOrEmpty(_intreseventID))
+                {
+                    _objs._eventID = Convert.ToInt32(_intreseventID);
+                    _objs._Orientations = _strorientation;
+                    _objs._startcnt = 1;
+                    _objs._imagefamilies = "Editorial";
+                    var eventrespone = _objs.EventSearch(token, searchQuery.Query.SearchPhrase);
+                    var _getvalcount = eventrespone.SearchForImagesResult.ItemTotalCount;
+                    _inttotalcnt = _getvalcount;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                System.Web.HttpContext.Current.Response.Write("imagecount" + ex);
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "Get_gettyevents_Responseimagecount :", ex);
+                ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "Get_gettyents_to_updatecount", "Get_gettyents_to_updatecount", ex.Message, _strnetworkID.ToString());
+
+            }
+            return _inttotalcnt;
+
+        }
+
+
+
+
+
+
+
+        public string getlargeimage_download_DandD(List<string> IDs)
+        {
+            string _strURL = string.Empty;
+            List<Image> _liimg = new List<Image>();
+            List<ImageSize> _liimgsize = new List<ImageSize>();
+            List<DownloadItem> lidwn = new List<DownloadItem>();
+            List<Imagedetails> _liimgdetails = new List<Imagedetails>();
+            bool _flag = false;
+            try
+            {
+                //declare objects.
+                CreateSessionSample _objcs = new CreateSessionSample();
+                var token = _objcs.GetToken();
+                var strsecuretoken = _objcs.GetSecureToken();
+                _strtoken = token;
+                _strsecuretoken = strsecuretoken;
+                GetLargestImageDownloadAuthorizationsSample _objdwnl = new GetLargestImageDownloadAuthorizationsSample();
+                GetImageDownloadAuthorizationsSample _objsmall = new GetImageDownloadAuthorizationsSample();
+                //set imeges ID
+                if (!string.IsNullOrEmpty(token))
+                {
+                    if (IDs.Count > 0)
+                    {
+                        foreach (var _ids in IDs)
+                        {
+                            //ad image details to class 
+                            Image _objimg = new Image();
+                            _objimg.ImageId = _ids;
+                            _liimg.Add(_objimg);
+                        }
+                        //genrate tokens for download image
+                        var _gotimg = _objdwnl.GetLargestDownloadForImages(token, _liimg);
+                        var _objr = from res in _gotimg.GetLargestImageDownloadAuthorizationsResult.Images
+                                    from auths in res.Authorizations
+                                    select new
+                                    {
+                                        //image authorization
+                                        ImageIDs = res.ImageId,
+                                        DownloadIsFree = auths.DownloadIsFree,
+                                        DownloadToken = auths.DownloadToken,
+                                        ProductOfferingInstanceId = auths.ProductOfferingInstanceId,
+                                        ProductOfferingType = auths.ProductOfferingType,
+                                        SizeKey = auths.SizeKey
+                                    };
+                        foreach (var _imgdwn in _objr)
+                        {
+                            //create instance
+                            Authorization _objauth = new Authorization();
+                            DownloadItem _objdw = new DownloadItem();
+                            GetImageDownloadAuthorizationsSample _objimg = new GetImageDownloadAuthorizationsSample();
+                            CreateDownloadRequestSample _objcrtdwn = new CreateDownloadRequestSample();
+                            ImageSize _imgsize = new ImageSize();
+                            //get all image details from data sectect
+                            GetImageDetailsSample _objgetdetails = new GetImageDetailsSample();
+                            var getdetialsimg = _objgetdetails.GetImageDetails(token, IDs);
+                            var _getmoredetails = from images in getdetialsimg.GetImageDetailsResult.Images
+                                                  select new
+                                                  {
+                                                      Titel = images.Title,
+                                                      Collectname = images.CollectionName,
+                                                      UrlPreview = images.UrlPreview,
+                                                      UrlThumb = images.UrlThumb,
+                                                      ImageId = images.ImageId,
+                                                      LicensingModel = images.LicensingModel,
+                                                      ImageFamily = images.ImageFamily,
+                                                      DateCreated = images.DateCreated,
+                                                      Artist = images.Artist,
+                                                      ShortCaption = images.Caption.Substring(0, 100) + "..",
+                                                      Caption = images.Caption
+                                                  };
+
+                            _objauth.SizeKey = _imgdwn.SizeKey;
+                            _objauth.DownloadIsFree = _imgdwn.DownloadIsFree;
+                            _objauth.DownloadToken = _imgdwn.DownloadToken;
+                            _objauth.ProductOfferingInstanceId = _imgdwn.ProductOfferingInstanceId;
+                            _objauth.ProductOfferingType = _imgdwn.ProductOfferingType;
+                            _imgsize.SizeKey = _imgdwn.SizeKey;
+                            _imgsize.ImageId = _imgdwn.ImageIDs;
+                            _liimgsize.Add(_imgsize);
+                            _objdw.DownloadToken = _objauth.DownloadToken;
+                            lidwn.Add(_objdw);
+                            var _getdwnurl = _objcrtdwn.CreateRequest(strsecuretoken, lidwn);
+                            var _popupurl = from _popdwn in _getdwnurl.CreateDownloadRequestResult.DownloadUrls
+                                            select new
+                                            {
+                                                dwnlargeimage = _popdwn.UrlAttachment
+                                            };
+                            foreach (var getvalur in _popupurl)
+                            {
+                                //download image 
+                                string imageName = string.Empty;
+                                string filename = string.Empty;
+                                string _returnfile = string.Empty;
+                                filename ="large_"+DateTime.Now.ToString("yyyyMMMddhhmmss") +".jpg";
+                                try
+                                {
+                                    _strURL = getvalur.dwnlargeimage;
+                                }
+                                catch (Exception ex)
+                                {
+                                    CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "webClient.Dispose() :", ex);
+                                    ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "getlargeimage_download_DandD", "getlargeimage_download_DandD", ex.Message, _strnetworkID.ToString());
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "getlargeimage_download_DandD :", ex);
+                ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "getlargeimage_download_DandD", "getlargeimage_download_DandD", ex.Message, _strnetworkID.ToString());
+            }
+            return _strURL;
+
+        }
+
+        /// <summary>
+        /// search images with date range
+        /// </summary>
+        /// <returns></returns>
+        public List<Imagedetails> GetimageDatalist_withdaterange()
+        {
+            List<Imagedetails> _listimg = new List<Imagedetails>();
+            try
+            {
+                //declare objects.
+                SearchForEditorialImagesSample _objs = new SearchForEditorialImagesSample();
+                CreateSessionSample _objcs = new CreateSessionSample();
+                SearchForImagesResponse _objresponse = new SearchForImagesResponse();
+                var searchQuery = new SearchForImages2RequestBody();
+                searchQuery.Filter = new Filter();
+                searchQuery.Filter.Orientations = new List<string> { "horizontal" };
+                searchQuery.Query = new Query();
+                searchQuery.Query.SearchPhrase = !string.IsNullOrEmpty(_strserachterm) ? _strserachterm : "sports";
+                searchQuery.Filter.ImageFamilies = new List<string> { "Editorial" };
+                var token = _objcs.GetToken();
+                var strsecuretoken = _objcs.GetSecureToken();
+                _strtoken = token;
+                _strsecuretoken = strsecuretoken;
+                searchQuery.ResultOptions = new ResultOptions();
+                searchQuery.ResultOptions.ItemCount = 75;
+                _objs._Orientations = _strorientation;
+                _objs._startcnt = _intstartcnt;
+                _objs._imagefamilies = "Editorial";
+                var searchResponse = _objs.defaultSearch(token, searchQuery.Query.SearchPhrase);
+                //var searchResponse = _objs.Search(token, searchQuery.Query.SearchPhrase);
+                var valtotal = searchResponse.SearchForImagesResult.ItemTotalCount;
+                /*if (valtotal < 20)
+                {
+                    searchResponse = _objs.Search(token, searchQuery.Query.SearchPhrase);
+                    valtotal = searchResponse.SearchForImagesResult.ItemTotalCount;
+                }*/
+                var _getimg = from images in searchResponse.SearchForImagesResult.Images
+                              select new
+                              {
+                                  Titel = images.Title,
+                                  Collectname = images.CollectionName,
+                                  UrlPreview = images.UrlPreview,
+                                  UrlThumb = images.UrlThumb,
+                                  ImageId = images.ImageId,
+                                  LicensingModel = images.LicensingModel,
+                                  ImageFamily = images.ImageFamily,
+                                  DateCreated = images.DateCreated,
+                                  Artist = images.Artist,
+                                  ShortCaption = images.Caption.Substring(0, 100) + "..",
+                                  Caption = images.Caption
+                              };
+
+                //bind all data to image class
+                foreach (var _getdata in _getimg)
+                {
+                    Imagedetails _objimgdetails = new Imagedetails();
+                    _objimgdetails.Artist = _getdata.Artist;
+                    _objimgdetails.CollectionName = _getdata.Collectname;
+                    _objimgdetails.DateCreated = _getdata.DateCreated;
+                    _objimgdetails.ImageFamily = _getdata.ImageFamily;
+                    _objimgdetails.ImageId = _getdata.ImageId;
+                    _objimgdetails.LicensingModel = _getdata.LicensingModel;
+                    _objimgdetails.UrlPreview = _getdata.UrlPreview;
+                    _objimgdetails.UrlThumb = _getdata.UrlThumb;
+                    _objimgdetails.Title = _getdata.Titel;
+                    _objimgdetails.Caption = _getdata.Caption;
+                    _objimgdetails.ShortCaption = _getdata.ShortCaption;
+                    _listimg.Add(_objimgdetails);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "GetimageDatalist :", ex);
+                ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "GetimageDatalist", "GetimageDatalist", ex.Message, _strnetworkID.ToString());
+
+            }
+            return _listimg;
         }
         #endregion
 

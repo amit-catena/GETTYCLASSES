@@ -37,12 +37,25 @@ namespace ConnectExample.Samples
     {
         public string SearchPhrase { get; set; }
         public int EventId { get; set; }
+        public DateCreatedRange DateCreatedRange { get; set; }
+        public Query()
+        {
+            this.DateCreatedRange = new DateCreatedRange();
+        }
+    }
+
+    public class DateCreatedRange
+    {
+        public string EndDate { get; set; }
+        public string StartDate { get; set; }
     }
 
     public class Filter
     {
         public List<string> ImageFamilies;
         public List<string> Orientations { get; set; }
+        public List<string> EditorialSegments { get; set; }
+        
     }
 
     public class SearchForImages2RequestBody
@@ -58,6 +71,7 @@ namespace ConnectExample.Samples
         public int ItemStartNumber { get; set; }
         public int ItemTotalCount { get; set; }
         public string RefinementOptionsSet { get; set; }
+        public string EditorialSortOrder { get; set; }
     }
 
     public class Image
@@ -99,7 +113,7 @@ namespace ConnectExample.Samples
     public class SearchForEditorialImagesSample
     {
         private const string SearchForImagesRequestUrl = "http://connect.gettyimages.com/v1/search/SearchForImages";
-        private const string SearchTerm = "angelina jolie";
+        private const string SearchTerm = "";
         public string _imagefamilies { get; set; }
         public string _Orientations { get; set; }
         public int _startcnt { get; set; }
@@ -132,6 +146,23 @@ namespace ConnectExample.Samples
                     Query = new Query { SearchPhrase = !string.IsNullOrEmpty(termpharse) ? termpharse : SearchTerm, EventId = _eventID },
                     Filter = new Filter { ImageFamilies = new List<string> { _imagefamilies }, Orientations = new List<string> { _Orientations } },
                     ResultOptions = new ResultOptions { ItemCount = 75, ItemStartNumber = _startcnt }
+                }
+            };
+
+            return MakeWebRequest(SearchForImagesRequestUrl, searchForImagesRequest);
+        }
+
+
+        public SearchForImagesResponse defaultSearch(string token, string termpharse)
+        {
+            var searchForImagesRequest = new SearchForImagesRequest
+            {
+                RequestHeader = new RequestHeader { Token = token },
+                SearchForImages2RequestBody = new SearchForImages2RequestBody
+                {
+                    Query = new Query { SearchPhrase = !string.IsNullOrEmpty(termpharse) ? termpharse : SearchTerm, DateCreatedRange = new DateCreatedRange { EndDate = System.DateTime.Now.AddYears(1).ToString("yyyy-MM-dd"), StartDate = System.DateTime.Now.AddYears(-20).ToString("yyyy-MM-dd")} },
+                    Filter = new Filter { ImageFamilies = new List<string> { _imagefamilies }, Orientations = new List<string> { _Orientations }, EditorialSegments = new List<string> { "Sports" } },
+                    ResultOptions = new ResultOptions { ItemCount = 75, ItemStartNumber = _startcnt, EditorialSortOrder = "MostRecent" }
                 }
             };
 

@@ -189,7 +189,7 @@ namespace Gettyclasses
                 gr.DrawImage(thmimage, rectDestination, 0, 0, iwidth, iheight, GraphicsUnit.Pixel);
 
                 string filename = albumPath + fnameHRW;
-                SourceBitmap.Save(filename);
+                SourceBitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
                 cnt++;
                 SourceBitmap.Dispose();
                 thmimage.Dispose();
@@ -278,7 +278,7 @@ namespace Gettyclasses
 
                 string filename = albumPath + fnameTN;
 
-                SourceBitmap.Save(filename);
+                SourceBitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
                 //SourceBitmap.Dispose();
                 //thmimage.Dispose();
             }
@@ -330,8 +330,6 @@ namespace Gettyclasses
                 double xx = (iheight * twidth) / iwidth;
                 theight = int.Parse(xx.ToString());
             }
-
-
             string ImgFilePath = img;
             string uriName = Path.GetFileName(imgpath);
             Bitmap SourceBitmap = null;
@@ -351,22 +349,18 @@ namespace Gettyclasses
                 SourceBitmap = new Bitmap(twidth, theight);
                 //new code for smooth image
                 System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(SourceBitmap);
-
                 gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-
+                gr.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;  
                 gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-
-                gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-
+                gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic ;
                 System.Drawing.Rectangle rectDestination = new System.Drawing.Rectangle(0, 0, twidth, theight);
-
                 gr.DrawImage(thmimage, rectDestination, 0, 0, iwidth, iheight, GraphicsUnit.Pixel);
-
                 string filename = albumPath + fnameTN;
-
-                SourceBitmap.Save(filename);
+                SourceBitmap.Save(filename,System.Drawing.Imaging.ImageFormat.Jpeg);
                 //SourceBitmap.Dispose();
                 //thmimage.Dispose();
+
+
             }
             catch (Exception exp)
             {
@@ -418,6 +412,9 @@ namespace Gettyclasses
                         break;
                     case "network9":
                         _nwtstring = 9;
+                        break;
+                    case "network10":
+                        _nwtstring = 10;
                         break;
                 }
 
@@ -544,6 +541,9 @@ namespace Gettyclasses
                         break;
                     case "9":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network9"].ToString();
+                        break;
+                    case "10":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network10"].ToString();
                         break;
                 }
 

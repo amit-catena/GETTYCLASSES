@@ -43,6 +43,7 @@ namespace Gettyclasses
         public string EventDate { get; set; }
         public string eventImageURL { get; set; }
         public int ImageCount { get; set; }
+        public int getImageCount { get; set; }
         #endregion
 
         #region Members
@@ -86,6 +87,9 @@ namespace Gettyclasses
                         break;
                     case "9":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network9"].ToString();
+                        break;
+                    case "10":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network10"].ToString();
                         break;
                 }
 
@@ -396,6 +400,7 @@ namespace Gettyclasses
                 _spcommand.Parameters.Add("@title", SqlDbType.VarChar).Value = !string.IsNullOrEmpty(EventTitle) ? EventTitle : "";
                 _spcommand.Parameters.Add("@eventdate", SqlDbType.VarChar).Value = !string.IsNullOrEmpty(EventDate) ? EventDate : "";
                 _spcommand.Parameters.Add("@imagecount", SqlDbType.VarChar).Value = ImageCount;
+                _spcommand.Parameters.Add("@imagecaption", SqlDbType.VarChar).Value = !string.IsNullOrEmpty(imagetxtbelow) ? imagetxtbelow : "";
                 _newconn.Open();
                 _spcommand.ExecuteNonQuery();
                 _newconn.Close();
@@ -449,6 +454,143 @@ namespace Gettyclasses
 
             return objDT;
 
+        }
+        public bool UpdateGettyEvents(string _srtIDs)
+        {
+            DataTable objDT = new DataTable();
+            SqlConnection _newconn = new SqlConnection(GetnetworkID(NetworkId.ToString()));
+            int cnt = 0;
+            try
+            {
+                SqlCommand _spcommand = new SqlCommand("AK_SP_UpdategettyEvents", _newconn);
+                _spcommand.CommandType = CommandType.StoredProcedure;
+                _spcommand.Parameters.Add("@eventId", SqlDbType.VarChar).Value = _srtIDs;
+                _newconn.Open();
+                _spcommand.ExecuteNonQuery();
+                _newconn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (_newconn.State == ConnectionState.Open)
+                {
+                    _newconn.Close();
+
+                }
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "Gettyimages-addimages-Addnewsimages-", ex);
+            }
+            return true;
+        }
+
+
+        public DataTable GetGettyevents_toupdatecount()
+        {
+            DataTable objDT = new DataTable();
+            SqlConnection _newconn = new SqlConnection(GetnetworkID(NetworkId.ToString()));
+            SqlDataAdapter _sdlda;
+            DataSet _ds = new DataSet();
+            int cnt = 0;
+            try
+            {
+                SqlCommand _spcommand = new SqlCommand("AK_SP_GettyEvents_to_updateimagecount", _newconn);
+                _spcommand.CommandType = CommandType.StoredProcedure;
+                _newconn.Open();
+                _sdlda = new SqlDataAdapter(_spcommand);
+                _sdlda.Fill(objDT);
+                _newconn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                if (_newconn.State == ConnectionState.Open)
+                {
+                    _newconn.Close();
+
+                }
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "Gettyimages-addimages-Addnewsimages-", ex);
+
+            }
+
+            return objDT;
+
+        }
+
+
+        public bool Update_GettyEvents_imagecount(int imagecount,int ID)
+        {
+            DataTable objDT = new DataTable();
+            SqlConnection _newconn = new SqlConnection(GetnetworkID(NetworkId.ToString()));
+            try
+            {
+                SqlCommand _spcommand = new SqlCommand("AK_SP_UpdategettyEventsimagecount", _newconn);
+                _spcommand.CommandType = CommandType.StoredProcedure;
+                _spcommand.Parameters.Add("@eventId", SqlDbType.Int).Value = ID;
+                _spcommand.Parameters.Add("@imagecount", SqlDbType.Int).Value = imagecount;
+                _newconn.Open();
+                _spcommand.ExecuteNonQuery();
+                _newconn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (_newconn.State == ConnectionState.Open)
+                {
+                    _newconn.Close();
+
+                }
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "Gettyimages-addimages-Addnewsimages-", ex);
+            }
+            return true;
+        }
+        public bool checkGettyEvents(int _valevent)
+        {
+            DataTable objDT = new DataTable();
+            SqlConnection _newconn = new SqlConnection(GetnetworkID(NetworkId.ToString()));
+            int cnt = 0;
+            string _checkval = string.Empty;
+            try
+            {
+                /*SqlParameter[] msgpara = { new SqlParameter("@eventId", SqlDbType.Int),
+                                           new SqlParameter("@retval", SqlDbType.VarChar)
+                                         };
+                msgpara[0].Value = _valevent;
+                msgpara[1].Value = "";
+                msgpara[1].Direction = ParameterDirection.Output;*/
+                SqlCommand _spcommand = new SqlCommand("AK_SP_CheckGettyEvent", _newconn);
+                _spcommand.CommandType = CommandType.StoredProcedure;
+                _spcommand.Parameters.Add("@eventId", SqlDbType.Int).Value = _valevent;
+                SqlParameter parm3 = new SqlParameter("@retval", SqlDbType.VarChar);
+                parm3.Value = "false";  
+                parm3.Direction = ParameterDirection.Output;
+                _spcommand.Parameters.Add(parm3);
+                _newconn.Open();
+                //_spcommand.ExecuteNonQuery();
+                _checkval = (string)_spcommand.ExecuteScalar();
+                _newconn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (_newconn.State == ConnectionState.Open)
+                {
+                    _newconn.Close();
+                }
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "Gettyimages-addimages-Addnewsimages-", ex);
+            }
+            finally
+            {
+                if (_newconn.State == ConnectionState.Open)
+                {
+                    _newconn.Close();
+                }
+
+            }
+            if (_checkval == "true")
+            {
+                return true;
+
+            }
+            else
+            {
+                return false;
+            }
         }
 
 
