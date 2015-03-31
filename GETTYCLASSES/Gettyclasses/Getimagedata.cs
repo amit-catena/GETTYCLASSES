@@ -1368,6 +1368,176 @@ namespace Gettyclasses
         }
 
 
+        #region "NEWS LETTERDATA"
+
+        public bool GetdownloadNewsletterimage(List<string> IDs)
+        {
+
+            List<Image> _liimg = new List<Image>();
+            List<ImageSize> _liimgsize = new List<ImageSize>();
+            List<DownloadItem> lidwn = new List<DownloadItem>();
+            List<Imagedetails> _liimgdetails = new List<Imagedetails>();
+            List<string> _getIDs = new List<string>();
+            bool _flag = false;
+            SiteInfo _objsite = new SiteInfo();
+            string sitefolder = string.Empty;
+            string monthyearfolder = DateTime.Now.ToString("yyyyMM");
+            string dayfolder = DateTime.Now.ToString("MMMdd");
+            string imageName = string.Empty;
+            string filename = string.Empty;
+            string _returnfile = string.Empty;
+            try
+            {
+                GetLargestImageDownloadAuthorizationsSample _objdwnl = new GetLargestImageDownloadAuthorizationsSample();
+                GetImageDownloadAuthorizationsSample _objsmall = new GetImageDownloadAuthorizationsSample();
+                if (!string.IsNullOrEmpty(commonfn.getSession("token")))
+                {
+                    var token = commonfn.getSession("token");
+                    var securetoken = commonfn.getSession("securetoken");
+                    //set imeges ID
+                    if (IDs.Count > 0)
+                    {
+                        //new code to download images
+                        GetImageDetailsSample _objgetalldetails = new GetImageDetailsSample();
+                        ImageSize _objimgsize = new ImageSize();
+                        Authorization _objallauth = new Authorization();
+                        DownloadItem _objalldw = new DownloadItem();
+                        GetImageDownloadAuthorizationsSample _objallimg = new GetImageDownloadAuthorizationsSample();
+                        CreateDownloadRequestSample _objallcrtdwn = new CreateDownloadRequestSample();
+                        //get all data for selected images.
+                        var _getalldetails = _objgetalldetails.GetImageDetails(token, IDs);
+                        var _getmorealldetails = from images in _getalldetails.GetImageDetailsResult.Images
+                                                 select new
+                                                 {
+                                                     Titel = images.Title,
+                                                     Collectname = images.CollectionName,
+                                                     UrlPreview = images.UrlPreview,
+                                                     UrlThumb = images.UrlThumb,
+                                                     ImageId = images.ImageId,
+                                                     LicensingModel = images.LicensingModel,
+                                                     ImageFamily = images.ImageFamily,
+                                                     DateCreated = images.DateCreated,
+                                                     Artist = images.Artist,
+                                                     ShortCaption = images.Caption.Substring(0, 100) + "..",
+                                                     Caption = images.Caption,
+                                                     imagesize = images.SizesDownloadableImages[0].SizeKey
+                                                 };
+
+                        foreach (var _objall in _getmorealldetails)
+                        {
+                            //assing imageID and sizes
+                            _objimgsize.SizeKey = _objall.imagesize;
+                            _objimgsize.ImageId = _objall.ImageId;
+                            _liimgsize.Add(_objimgsize);
+                            //authorize iamge
+                            var _getauthtoken = _objallimg.AuthorizeDownload(token, _liimgsize);
+                            var _getdatas = from _firstauth in _getauthtoken.GetImageDownloadAuthorizationsResult.Images
+                                            from _seondauth in _firstauth.Authorizations
+                                            select new
+                                            {
+                                                //get download token
+                                                _newdwntoken = _seondauth.DownloadToken
+                                            };
+                            foreach (var _val1 in _getdatas)
+                            {
+                                //assign token
+                                _objalldw.DownloadToken = _val1._newdwntoken;
+                                lidwn.Add(_objalldw);
+                                var _getdwnurl2 = _objallcrtdwn.CreateRequest(securetoken, lidwn);
+                                lidwn.Clear();
+                                var _popupurl2 = from _popdwn2 in _getdwnurl2.CreateDownloadRequestResult.DownloadUrls
+                                                 select new
+                                                 {
+                                                     dwnlargeimage = _popdwn2.UrlAttachment
+                                                 };
+                                using (addimages _addimg = new addimages())
+                                {
+                                    //download image 
+
+                                    filename = DateTime.Now.ToString("yyyyMMMddhhmmss") + "_" + _objall.ImageId + ".jpg";
+                                    foreach (var goturl in _popupurl2)
+                                    {
+                                        _returnfile = GoWebshotForNewsletterimage(goturl.dwnlargeimage, _objall.ImageId);
+                                    }
+                                    _addimg.imagename = _returnfile;
+                                    _addimg.imagecredit = _objall.Titel;
+                                    _addimg.imagetxtbelow = _objall.Caption;
+                                    _addimg.NetworkId = _strnetworkID;
+                                    _addimg.NewsId = _strnewsID;
+                                    _addimg.imagetxt = _objall.Titel;
+                                    _addimg.imageurl = "http://www.gettyimages.co.uk";
+                                    _addimg.RandomId = _strrandomecookie;
+                                    _addimg.SiteID = _strsiteID;
+                                    _addimg.Addnewssingleimages();
+                                    _flag = true;
+                                    _addimg.imagename = "";
+                                    _addimg.imagecredit = "";
+                                    _addimg.imagetxtbelow = "";
+                                    _addimg.imagetxt = "";
+                                    imageName = string.Empty;
+                                    filename = string.Empty;
+                                    _returnfile = string.Empty;
+                                    _flag = true;
+                                }
+
+                            }
+                        }
+                        //end new code details
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "GetdownloadSelectedImage :", ex);
+                ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "Getdownloadsingleimages", "Getdownloadsingleimages", ex.Message, _strnetworkID.ToString());
+            }
+            return _flag;
+        }
+
+        private string GoWebshotForNewsletterimage(string strurl, string imgID)
+        {
+            string _imagepathdownload = "";
+            string sitefolder = "";
+            string monthyearfolder = DateTime.Now.ToString("yyyyMM");
+            string dayfolder = DateTime.Now.ToString("MMMdd");
+            string filename = "";
+            string orgfilename = "";
+            string imgSrcURL = strurl;
+            string path = null;
+            string pathclient = null;
+            string Tnname = string.Empty;
+            string orgname = string.Empty;
+            bool result = false;
+            SiteInfo objsite = new SiteInfo();
+            objsite.NetWorkID = _strnetworkID.ToString();
+              
+            _imagepathdownload = ConfigurationSettings.AppSettings["newImagePath"]+"banner/";
+            try
+            {
+                string imgExt = Path.GetExtension(imgSrcURL);
+                string imageName = string.Empty;
+                imageName = Function.ToFileName((imgSrcURL));
+                orgfilename = "getty_" + DateTime.Now.ToString("yyyyMMMddhhmmss") + "_" + imgID + ".jpg";
+                filename = DateTime.Now.ToString("yyyyMMMddhhmmss") + "_" + imgID + ".jpg";
+                System.Net.WebClient webClient = new System.Net.WebClient();
+                webClient.DownloadFile(imgSrcURL, _imagepathdownload + filename);
+                webClient.Dispose();
+               
+                    //orgname = Function.SaveoriginalImage(orgfilename, _imagepathdownload, "", 700, 700);
+                    //create thumbnail for uploadimages
+                Tnname = Function.SaveThumbnailCompress(filename, _imagepathdownload, "TN", 400, 400);
+            }
+            catch (Exception exp)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "GoWebshot :" + _strnetworkID, exp);
+                ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "GoWebshotForNewsletterimage", "GoWebshotForNewsletterimage", exp.Message, _strnetworkID.ToString());
+            }
+            return Tnname;
+        }
+        #endregion
+
+
         #region Scheduler For Gettyevents
 
         /// <summary>
