@@ -215,6 +215,14 @@ namespace Gettyclasses
 
         public static string SaveThumbnailCompress(string img, string _path, string _prefix, int _crtewidth, int _crtheight)
         {
+
+            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 90L);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
+
             //string	imgpath			=	Server.MapPath("../"  + sitename + "/category/" + parentname + "/" + catname + "/" +  ntitle.ToString() + "/" + img)  ;
             //string	albumPath			=	Server.MapPath("../"  + sitename + "/category/" + parentname + "/" + catname + "/" +  ntitle.ToString() + "/")  ;
             string imgpath = _path + img;
@@ -294,8 +302,113 @@ namespace Gettyclasses
                 imgbmt.Dispose();
 
             }
+
+            //Orginal Image
+            if (_crtewidth == 300)
+            {
+                try
+                {
+                    /*--------------------------------------------------------*/
+                    /*int jheight=105;
+                    int jwidth=148;*/
+                    int jheight = 360;
+                    int jwidth = 600;
+
+                    if (iwidth < jwidth)
+                        jwidth = iwidth;
+                    if (iheight < jheight)
+                        jheight = iheight;
+
+                    if (iheight > iwidth)
+                    {
+                        double xx = (iwidth * jheight) / iheight;
+                        jwidth = int.Parse(xx.ToString());
+                    }
+                    else
+                    {
+                        double xx = (iheight * jwidth) / iwidth;
+                        jheight = int.Parse(xx.ToString());
+                    }
+
+
+                    Bitmap SourceBitmap1 = null;
+
+
+                    // create image object 
+                    System.Drawing.Image thmcomimage = System.Drawing.Image.FromFile(imgpath);
+
+                    /*******************************************************************/
+
+                    try
+                    {
+                        //new code for smooth image
+                        SourceBitmap1 = new Bitmap(jwidth, jheight);
+
+                        System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(SourceBitmap1);
+
+                        gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+                        gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+                        gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+                        System.Drawing.Rectangle rectDestination = new System.Drawing.Rectangle(0, 0, jwidth, jheight);
+
+                        gr.DrawImage(thmcomimage, rectDestination, 0, 0, iwidth, iheight, GraphicsUnit.Pixel);
+
+                        //pass destination of file
+                        thmcomimage.Dispose();
+                        try
+                        {
+                            File.Delete(imgpath);
+                        }
+                        catch (Exception ex)
+                        {
+                            //Response.Write("Error in DeletingFile");
+                        }
+                        SourceBitmap1.Save(imgpath, jgpEncoder, myEncoderParameters);
+
+                        SourceBitmap1.Dispose();
+                        thmcomimage.Dispose();
+                        gr.Dispose();
+                        SourceBitmap1 = null;
+                        thmcomimage = null;
+                        gr = null;
+                    }
+                    catch (Exception excp)
+                    {
+
+
+                    }
+                    finally
+                    {
+
+
+                    }
+                }
+                catch (Exception exp)
+                {
+                    //Response.Write(exp);
+                }
+            }
             return _prefix + img;
 
+        }
+
+
+        public static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
 
 
