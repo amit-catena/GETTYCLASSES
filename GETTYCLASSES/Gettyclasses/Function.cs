@@ -437,7 +437,7 @@ namespace Gettyclasses
             }
 
 
-            string ImgFilePath = orgfilename;
+            
             string uriName = Path.GetFileName(mainfile);
             Bitmap SourceBitmap = null;
             //new 
