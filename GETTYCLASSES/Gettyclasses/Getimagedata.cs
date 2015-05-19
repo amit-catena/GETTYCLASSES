@@ -475,12 +475,12 @@ namespace Gettyclasses
             bool result = false;
             SiteInfo objsite = new SiteInfo();
             objsite.NetWorkID = _strnetworkID.ToString();
-            objsite.GetSiteDetails(_strsiteID,_strnetworkID.ToString());
+            objsite.GetSiteDetails(_strsiteID, _strnetworkID.ToString());
             if (objsite.ImageServer)
             {
                 sitefolder = Function.GetSiteFolderName(objsite.SiteUrl);
                 Function.CreateImagesFolderInBackend(sitefolder, monthyearfolder, dayfolder);
-                pathclient =HttpContext.Current.Server.MapPath(string.Format("{0}/{1}/{2}/", sitefolder, monthyearfolder, dayfolder));
+                pathclient = HttpContext.Current.Server.MapPath(string.Format("{0}/{1}/{2}/", sitefolder, monthyearfolder, dayfolder));
                 if (!string.IsNullOrEmpty(_strnews))
                     _imagepathdownload = pathclient;
                 else
@@ -496,12 +496,13 @@ namespace Gettyclasses
                 string imgExt = Path.GetExtension(imgSrcURL);
                 string imageName = string.Empty;
                 imageName = Function.ToFileName((imgSrcURL));
-                orgfilename ="getty_"+ DateTime.Now.ToString("yyyyMMMddhhmmss") + "_" + imgID + ".jpg";
+                orgfilename = "getty_" + DateTime.Now.ToString("yyyyMMMddhhmmss") + "_" + imgID + ".jpg";
                 filename = DateTime.Now.ToString("yyyyMMMddhhmmss") + "_" + imgID + ".jpg";
                 System.Net.WebClient webClient = new System.Net.WebClient();
                 webClient.DownloadFile(imgSrcURL, _imagepathdownload + filename);
+                webClient.DownloadFile(imgSrcURL, _imagepathdownload + orgfilename);
                 webClient.Dispose();
-                if (commonfn.ValidateIsNormalSave(objsite.ImageServer,_strnews))
+                if (commonfn.ValidateIsNormalSave(objsite.ImageServer, _strnews))
                 {
                     //ltscript.Text = " webClient.DownloadFile" + imgID;
                     //connect FTp  with writerllc
@@ -534,20 +535,21 @@ namespace Gettyclasses
                 {
                     //orgname = Function.SaveoriginalImage(orgfilename, _imagepathdownload, "", 700, 700);
                     //create thumbnail for uploadimages
-                    Tnname = Function.SaveThumbnailCompress(filename, _imagepathdownload, "TN", 300, 225);
+                    Tnname = Function.SaveThumbnailCompress(orgfilename, filename, _imagepathdownload, "TN", 300, 225);
                     //Common.Function.SaveThumbnailCompress(filename, _imagepath, "TN_TN", 300, 225);
-                    Function.SaveThumbnailCompress(filename, _imagepathdownload, "TN_TN", 128, 85);
+                    Function.SaveThumbnailCompress(orgfilename, filename, _imagepathdownload, "TN_TN", 128, 85);
                 }
 
 
             }
             catch (Exception exp)
             {
-                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "GoWebshot :"+_strnetworkID, exp);
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "GoWebshot :" + _strnetworkID, exp);
                 ErrorLog.SaveErrorLog(_strsiteID, "getdata.cs class", "GoWebshot", "GoWebshot", exp.Message, _strnetworkID.ToString());
             }
             return Tnname;
         }
+      
         /// <summary>
         /// store multiple images from getty.
         /// </summary>

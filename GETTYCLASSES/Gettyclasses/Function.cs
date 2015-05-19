@@ -395,6 +395,188 @@ namespace Gettyclasses
 
         }
 
+        public static string SaveThumbnailCompress(string orgfilename, string img, string _path, string _prefix, int _crtewidth, int _crtheight)
+        {
+
+            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 90L);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
+
+            //string	imgpath			=	Server.MapPath("../"  + sitename + "/category/" + parentname + "/" + catname + "/" +  ntitle.ToString() + "/" + img)  ;
+            //string	albumPath			=	Server.MapPath("../"  + sitename + "/category/" + parentname + "/" + catname + "/" +  ntitle.ToString() + "/")  ;
+            string imgpath = _path + orgfilename;
+            string albumPath = _path;
+            string mainfile = _path + img;
+
+            int iwidth = System.Drawing.Image.FromFile(imgpath).Width;
+            int iheight = System.Drawing.Image.FromFile(imgpath).Height;
+
+
+            //			int twidth = 300;
+            //			int theight = 255;
+            int twidth = _crtewidth;
+            int theight = _crtheight;
+
+            if (iwidth < twidth)
+                twidth = iwidth;
+            if (iheight < theight)
+                theight = iheight;
+
+            if (iheight > iwidth)
+            {
+                double xx = (iwidth * theight) / iheight;
+                twidth = int.Parse(xx.ToString());
+            }
+            else
+            {
+                double xx = (iheight * twidth) / iwidth;
+                theight = int.Parse(xx.ToString());
+            }
+
+
+            string ImgFilePath = orgfilename;
+            string uriName = Path.GetFileName(imgpath);
+            Bitmap SourceBitmap = null;
+            //new 
+            Bitmap imgbmt = (Bitmap)System.Drawing.Image.FromFile(imgpath);
+            BitmapData sourceData;
+            //create image object
+            System.Drawing.Image thmimage = System.Drawing.Image.FromFile(imgpath);
+            System.Drawing.Image thumbnail = null;
+            string fnameTN = _prefix + uriName;
+            //new code for smooth  thumbnail 
+            try
+            {
+
+                //new code for thumbnail
+
+                SourceBitmap = new Bitmap(twidth, theight);
+                //new code for smooth image
+                System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(SourceBitmap);
+
+                gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+                gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+                gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+
+                System.Drawing.Rectangle rectDestination = new System.Drawing.Rectangle(0, 0, twidth, theight);
+
+                gr.DrawImage(thmimage, rectDestination, 0, 0, iwidth, iheight, GraphicsUnit.Pixel);
+
+                string filename = albumPath + fnameTN;
+
+                SourceBitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
+                //SourceBitmap.Dispose();
+                //thmimage.Dispose();
+            }
+            catch (Exception exp)
+            {
+                //exp.ToString(); 
+            }
+            finally
+            {
+                SourceBitmap.Dispose();
+                SourceBitmap = null;
+                thmimage.Dispose();
+                imgbmt.Dispose();
+
+            }
+
+            //Orginal Image
+            if (_crtewidth == 300)
+            {
+                try
+                {
+                    /*--------------------------------------------------------*/
+                    /*int jheight=105;
+                    int jwidth=148;*/
+                    int jheight = 360;
+                    int jwidth = 600;
+
+                    if (iwidth < jwidth)
+                        jwidth = iwidth;
+                    if (iheight < jheight)
+                        jheight = iheight;
+
+                    if (iheight > iwidth)
+                    {
+                        double xx = (iwidth * jheight) / iheight;
+                        jwidth = int.Parse(xx.ToString());
+                    }
+                    else
+                    {
+                        double xx = (iheight * jwidth) / iwidth;
+                        jheight = int.Parse(xx.ToString());
+                    }
+
+
+                    Bitmap SourceBitmap1 = null;
+
+
+                    // create image object 
+                    System.Drawing.Image thmcomimage = System.Drawing.Image.FromFile(imgpath);
+
+                    /*******************************************************************/
+
+                    try
+                    {
+                        //new code for smooth image
+                        SourceBitmap1 = new Bitmap(jwidth, jheight);
+
+                        System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(SourceBitmap1);
+
+                        gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+                        gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+                        gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+                        System.Drawing.Rectangle rectDestination = new System.Drawing.Rectangle(0, 0, jwidth, jheight);
+
+                        gr.DrawImage(thmcomimage, rectDestination, 0, 0, iwidth, iheight, GraphicsUnit.Pixel);
+
+                        //pass destination of file
+                        thmcomimage.Dispose();
+                        try
+                        {
+                            File.Delete(mainfile);
+                        }
+                        catch (Exception ex)
+                        {
+                            //Response.Write("Error in DeletingFile");
+                        }
+                        SourceBitmap1.Save(mainfile, jgpEncoder, myEncoderParameters);
+
+                        SourceBitmap1.Dispose();
+                        thmcomimage.Dispose();
+                        gr.Dispose();
+                        SourceBitmap1 = null;
+                        thmcomimage = null;
+                        gr = null;
+                    }
+                    catch (Exception excp)
+                    {
+
+
+                    }
+                    finally
+                    {
+
+
+                    }
+                }
+                catch (Exception exp)
+                {
+                    //Response.Write(exp);
+                }
+            }
+            return _prefix + img;
+
+        }
 
         public static ImageCodecInfo GetEncoder(ImageFormat format)
         {
