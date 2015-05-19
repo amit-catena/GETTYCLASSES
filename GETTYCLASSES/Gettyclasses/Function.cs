@@ -438,7 +438,7 @@ namespace Gettyclasses
 
 
             string ImgFilePath = orgfilename;
-            string uriName = Path.GetFileName(imgpath);
+            string uriName = Path.GetFileName(mainfile);
             Bitmap SourceBitmap = null;
             //new 
             Bitmap imgbmt = (Bitmap)System.Drawing.Image.FromFile(imgpath);
