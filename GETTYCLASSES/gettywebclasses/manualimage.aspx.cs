@@ -60,7 +60,7 @@ namespace gettywebclasses
                 strImg = strImg.Replace("data:image/jpeg;base64,", "");
                 System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
                 EncoderParameters myEncoderParameters = new EncoderParameters(1);
-                EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 90L);
+                EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 80L);
                 myEncoderParameters.Param[0] = myEncoderParameter;
 
                 original = HttpContext.Current.Server.MapPath(string.Format("{0}/{1}/{2}/{3}", sitefolder, monthyearfolder, dayfolder, "org" + imagename));
