@@ -25,6 +25,7 @@ namespace gettywebclasses
         string imgpath = "";
         string original = "";
         string imageurl = "";
+        string orginalimagename = "";
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -62,17 +63,17 @@ namespace gettywebclasses
                 EncoderParameters myEncoderParameters = new EncoderParameters(1);
                 EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 80L);
                 myEncoderParameters.Param[0] = myEncoderParameter;
-
-                original = HttpContext.Current.Server.MapPath(string.Format("{0}/{1}/{2}/{3}", sitefolder, monthyearfolder, dayfolder, "org" + imagename));
+                orginalimagename="org" + imagename;
+                original = HttpContext.Current.Server.MapPath(string.Format("{0}/{1}/{2}/{3}", sitefolder, monthyearfolder, dayfolder, orginalimagename));
                 imgpath = HttpContext.Current.Server.MapPath(string.Format("{0}/{1}/{2}/{3}", sitefolder, monthyearfolder, dayfolder, imagename));
-                imageurl = string.Format("{4}{0}/{1}/{2}/{3}", sitefolder, monthyearfolder, dayfolder, imagename, ConfigurationManager.AppSettings["baseurl"]);
+                imageurl = string.Format(@"{0}{1}\{2}\{3}\",ConfigurationManager.AppSettings["NewImagePath"], sitefolder, monthyearfolder, dayfolder);
                 if (strImg.Trim().Length > 0)
                 {
-                    Base64ToImage(strImg).Save(original, jgpEncoder, myEncoderParameters);
-                    //Base64ToImage(strImg).Save(imgpath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    //Base64ToImage(strImg).Save(original, jgpEncoder, myEncoderParameters);
+                    Base64ToImage(strImg).Save(imgpath, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-                    //Function.SaveThumbnailCompress(imagename, string.Format("{0}/{1}/{2}/", sitefolder, monthyearfolder, dayfolder), "TN", 300, 225);
-                   // Function.SaveThumbnailCompress(imagename, string.Format("{0}/{1}/{2}/", sitefolder, monthyearfolder, dayfolder), "TN_TN", 128, 85);
+                    Function.SaveThumbnailCompress(imagename, imageurl, "TN", 300, 225);
+                    Function.SaveThumbnailCompress(imagename, imageurl, "TN_TN", 128, 85);
 
                     Page.ClientScript.RegisterStartupScript(GetType(), "testcall", string.Format("testcall('{0}');", imagename), true);
                 }
