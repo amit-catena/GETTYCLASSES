@@ -59,10 +59,7 @@ namespace gettywebclasses.superevent
                     if (Request.QueryString["supereventid"] != null)
                     {
                         jsondata = GetSuperEventImages(Request.QueryString["supereventid"]);
-                        if (jsondata == "")
-                        {
-                            jsondata = "null";
-                        }
+                        ViewState["json"] = jsondata;
                     }
                 }
             }
@@ -70,6 +67,12 @@ namespace gettywebclasses.superevent
             {
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "eventimage.aspx.cs Pageload ", ex);
             }
+            jsondata = ViewState["json"].ToString();
+            if (string.IsNullOrEmpty(jsondata))
+            {
+                jsondata = "null";
+            }
+            
         }
 
 
