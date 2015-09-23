@@ -171,7 +171,7 @@ namespace gettywebclasses.superevent
 
                 if (i > 0)
                 {
-                    Page.RegisterStartupScript("onsave", "<script>parent.closePOP();</script>");
+                    Page.RegisterStartupScript("onsave", "<script>closePOP();</script>");
                 }
                 
             }
