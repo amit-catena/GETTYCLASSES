@@ -116,6 +116,54 @@ namespace Gettyclasses
             }
             return true;
         }
+
+        public static string GetConnectionstring(string Network_ID)
+        {
+            string _nwtstring = string.Empty;
+            try
+            {
+                switch (Network_ID)
+                {
+                    case "1":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network1"].ToString();
+                        break;
+                    case "2":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network2"].ToString();
+                        break;
+                    case "3":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network3"].ToString();
+                        break;
+                    case "4":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network4"].ToString();
+                        break;
+                    case "5":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network5"].ToString();
+                        break;
+                    case "6":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network6"].ToString();
+                        break;
+                    case "7":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network7"].ToString();
+                        break;
+                    case "8":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network8"].ToString();
+                        break;
+                    case "9":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network9"].ToString();
+                        break;
+                    case "10":
+                        _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network10"].ToString();
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "Gettyimages-addimages-GetConnectionstring-" + Network_ID, ex);
+
+            }
+            return _nwtstring;
+        }
         #endregion
 
     }
