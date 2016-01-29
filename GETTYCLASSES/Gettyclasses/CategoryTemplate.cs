@@ -61,9 +61,9 @@ namespace Gettyclasses
             string data = "", constr = "";
             constr = commonfn.GetConnectionstring(networkid);
             string sql = string.Format("SELECT templatetext FROM CategoryTemplate WHERE categoryid={0} and siteid={1}", catid, siteid);
-            using (CommonLib.DAL obj = new DAL())
+            using (SQLHelper obj = new SQLHelper(constr))
             {
-                data = Convert.ToString(obj.ExecuteScalar(sql));
+                data = Convert.ToString(obj.ExecuteScaler(sql));
             }
 
             return data;
@@ -74,7 +74,7 @@ namespace Gettyclasses
             string data = "", constr = "";
             constr = commonfn.GetConnectionstring(networkid);
 
-            int dt = 0;
+            bool dt =false;
             SqlParameter[] mypara ={
                                        new SqlParameter("@categoryid",SqlDbType.Int),
                                        new SqlParameter("@siteid",SqlDbType.Int),
@@ -84,12 +84,12 @@ namespace Gettyclasses
             mypara[1].Value = siteid;
             mypara[2].Value = information;
 
-            using (CommonLib.DAL obj = new DAL())
+            using (SQLHelper obj = new SQLHelper(constr))
             {
-                dt = obj.ExecuteNonQuery("DD_SP_Cat_TemplateSave", CommandType.StoredProcedure, mypara);
+                dt = obj.ExecuteNonQuery("DD_SP_Cat_TemplateSave",mypara);
             }
 
-            if (dt > 0)
+            if (dt)
                 data = "saved";
             else
                 data = "fail";
