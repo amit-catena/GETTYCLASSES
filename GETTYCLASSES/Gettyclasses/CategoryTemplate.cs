@@ -31,9 +31,9 @@ namespace Gettyclasses
                                    };
             mypara[0].Value = siteid;
 
-            using (CommonLib.DAL obj = new DAL())
+            using (SQLHelper obj = new SQLHelper(constr))
             {
-                dt = obj.GetDataTable("Getty_GetLink", CommandType.StoredProcedure, mypara);
+                dt = obj.ExecuteDataTable("Getty_GetLink",   mypara);
             }
 
             if (dt.Rows.Count > 0)
@@ -50,7 +50,7 @@ namespace Gettyclasses
             data = sb.ToString(); sb = null;
             if (string.IsNullOrEmpty(data))
             {
-                data = "<select><option value='0'>-- Select --</option></select>";
+                data = "<select><option value=\"0\">-- Select --</option></select>";
             }
 
             return data;
