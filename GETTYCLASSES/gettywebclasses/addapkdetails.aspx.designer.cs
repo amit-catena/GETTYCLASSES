@@ -31,6 +31,15 @@ namespace gettywebclasses {
         protected global::System.Web.UI.WebControls.TextBox txtApktitle;
         
         /// <summary>
+        /// RequiredFieldValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        
+        /// <summary>
         /// txtversion control.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,15 @@ namespace gettywebclasses {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload Apkfileupload;
+        
+        /// <summary>
+        /// ltfilename control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltfilename;
         
         /// <summary>
         /// txtdesc control.

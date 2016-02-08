@@ -31,9 +31,11 @@
    </tr>
    <tr  bgColor="#ffffff" height="30px">
    <td class='headings'>
-     Apk File Name  
+     Apk Name  
    </td>
-    <td class='text'><asp:TextBox ID="txtApktitle" runat="server" Columns="50" CssClass="text"></asp:TextBox></td>
+    <td class='text'><asp:TextBox ID="txtApktitle" runat="server" Columns="50" CssClass="text"></asp:TextBox>
+     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtApktitle"  Display="Dynamic"><span style='color:Red;'>please enter Apk File Name</span></asp:RequiredFieldValidator>
+    </td>
    </tr>
    <tr bgColor="#ffffff" height="30px"><td class='headings'>Version</td>
     <td class='text'><asp:TextBox ID="txtversion" runat="server" CssClass="text" Columns="50"></asp:TextBox></td>
@@ -42,7 +44,21 @@
     <td class='text'><asp:TextBox ID="txtSize" runat="server" CssClass="text" Columns="50"></asp:TextBox></td>
    </tr>
    <tr bgColor="#ffffff" height="30px"><td class='headings'>Apk File</td>
-    <td class='text'><asp:FileUpload ID="Apkfileupload" runat="server" CssClass="text" /></td>
+    <td class='text'><asp:FileUpload ID="Apkfileupload" runat="server" CssClass="text" />
+    
+     <br />
+      
+     
+    </td>
+    <% if (Request.QueryString["apkid"].ToString() != "0")
+       { %>
+   <tr bgColor="#ffffff" height="30px">
+   <td class='headings'>File Name</td>
+   <td class='text'>
+   <asp:Literal ID="ltfilename" runat="server"></asp:Literal>
+   </td>
+   </tr>
+   <% } %>
    </tr>
    <tr bgColor="#ffffff" height="30px"><td class='headings'>Description</td>
     <td class='text'><asp:TextBox ID="txtdesc" runat="server" CssClass="text" Columns="70" Rows="10" TextMode="MultiLine"></asp:TextBox></td>
