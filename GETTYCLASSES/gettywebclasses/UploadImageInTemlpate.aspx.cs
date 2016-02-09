@@ -24,6 +24,7 @@ namespace gettywebclasses
         public string _imgserver = ConfigurationSettings.AppSettings["imgserver"];
         int siteid = 0;
         int userid = 0;
+        string networkid = string.Empty;
         bool imgserver = true;
         public string str = string.Empty;
         string imageName = string.Empty;
@@ -49,6 +50,11 @@ namespace gettywebclasses
                     siteid = Convert.ToInt32(Request.QueryString["siteid"].ToString());
                 if (null != Request.QueryString["userid"])
                     userid = Convert.ToInt32(Request.QueryString["userid"].ToString());
+                if (null != Request.QueryString["networkid"])
+                    networkid = Request.QueryString["networkid"].ToString();
+
+                ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(Request.QueryString["networkid"]);
+
                 dir = Server.MapPath(string.Format("{0}/", "signup")); //BLL.Constants.SaveImagePathSignUp;
                 CommonLib.CurrentPage.LinkCSS("http://www.developersllc.com/signup/css/style.css");
                 CommonLib.CurrentPage.IncludeScript("http://www.developersllc.com/signup/js/jquery-1.4.4.min.js");

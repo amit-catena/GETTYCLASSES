@@ -191,11 +191,10 @@ namespace Gettyclasses
                 msgPara[2].Value = this.ImageAlttext;
                 msgPara[3].Value = this.ImageName;
                 msgPara[4].Value = this.ImageDate;
-                msgPara[5].Value = this.AddedBy;
-                ConfigurationSettings.AppSettings["connString"] = System.Configuration.ConfigurationSettings.AppSettings["Network1"].ToString();
+                msgPara[5].Value = this.AddedBy;                
 
                 using (CommonLib.DAL dal = new CommonLib.DAL())
-                {
+                {                    
                     System.Web.HttpContext.Current.Response.Write("add string .. " + dal.ConnString);                    
                     res = dal.ExecuteNonQuery("SP_PW_O_SignupFormMaster_AddImageDetails", CommandType.StoredProcedure, msgPara);
                 }
@@ -247,7 +246,7 @@ namespace Gettyclasses
                                          new SqlParameter("@SiteID",SqlDbType.Int)
                                         };
                 msgPara[0].Value = this.SiteID;
-                ConfigurationSettings.AppSettings["connString"] = System.Configuration.ConfigurationSettings.AppSettings["Network1"].ToString();
+                
                 using (CommonLib.DAL dal = new CommonLib.DAL())
                 {
                     
