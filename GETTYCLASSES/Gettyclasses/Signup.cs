@@ -192,14 +192,17 @@ namespace Gettyclasses
                 msgPara[3].Value = this.ImageName;
                 msgPara[4].Value = this.ImageDate;
                 msgPara[5].Value = this.AddedBy;
-               
+
 
                 using (CommonLib.DAL dal = new CommonLib.DAL())
+                {
+                    System.Web.HttpContext.Current.Response.Write("add string .. " + dal.ConnString);
                     res = dal.ExecuteNonQuery("SP_PW_O_SignupFormMaster_AddImageDetails", CommandType.StoredProcedure, msgPara);
+                }
             }
             catch (System.Exception ex)
             {
-                System.Web.HttpContext.Current.Response.Write(ex.ToString());
+                
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "Signuptemplate :: BLL signup.cs AddImageDetails", ex);
             }
             return res;
@@ -244,9 +247,12 @@ namespace Gettyclasses
                                          new SqlParameter("@SiteID",SqlDbType.Int)
                                         };
                 msgPara[0].Value = this.SiteID;
-               
+
                 using (CommonLib.DAL dal = new CommonLib.DAL())
+                {
+                    System.Web.HttpContext.Current.Response.Write("<br>load string .. " + dal.ConnString);
                     ds = dal.GetDataSet("SP_PW_O_SignupFormMaster_GetImageList", CommandType.StoredProcedure, msgPara);
+                }
             }
             catch (Exception ex)
             {
