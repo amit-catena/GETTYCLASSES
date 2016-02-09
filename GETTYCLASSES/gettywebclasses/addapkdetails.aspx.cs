@@ -69,7 +69,7 @@ namespace gettywebclasses
 
                      }
 
-                         obj.LinkReference = "http://www/pix123.com/gamingappstore/APK/" + monthyearfolder + "/" + dayfolder + "/" + obj.filename;
+                         obj.LinkReference = "http://www.pix123.com/gamingappstore/APK/" + monthyearfolder + "/" + dayfolder + "/" + obj.filename;
                          obj.Version = txtversion.Text;
                          obj.LinkName = txtApktitle.Text + "-" + obj.Version;
                          obj.LinkId = tmpapklinkid;
