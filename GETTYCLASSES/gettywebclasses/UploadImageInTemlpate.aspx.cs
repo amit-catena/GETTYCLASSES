@@ -147,6 +147,7 @@ namespace gettywebclasses
                             objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
                             if (objsignup.ImageID == 0)
                                 imageid = objsignup.AddImageDetails();
+                            Response.End();
                             /*else
                                 objsignup.UpdateImageDetails();*/
                             ltsignupimages.Text = LoadAllImages();

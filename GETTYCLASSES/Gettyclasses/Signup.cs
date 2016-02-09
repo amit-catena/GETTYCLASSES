@@ -199,6 +199,7 @@ namespace Gettyclasses
             }
             catch (System.Exception ex)
             {
+                System.Web.HttpContext.Current.Response.Write(ex.ToString());
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "Signuptemplate :: BLL signup.cs AddImageDetails", ex);
             }
             return res;
