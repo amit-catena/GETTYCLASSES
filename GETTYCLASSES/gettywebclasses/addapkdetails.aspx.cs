@@ -8,6 +8,7 @@ using CommonLib;
 using Gettyclasses;
 using System.IO;
 using System.Data;
+using System.Configuration;
 
 namespace gettywebclasses
 {
@@ -41,7 +42,7 @@ namespace gettywebclasses
                     {
 
                         ValidateDateFolder();
-                        string dir = Server.MapPath("../");
+                        string dir = ConfigurationSettings.AppSettings["newImagePath"];
                         imagedate = GetImageFolderNameToUpload();
                         string[] strarry = imagedate.Split('/');
                          monthyearfolder = strarry[0];
@@ -151,7 +152,7 @@ namespace gettywebclasses
         {
             try
             {
-                string dir = Server.MapPath("../");
+                string dir = ConfigurationSettings.AppSettings["newImagePath"];
                 string imagedate = GetImageFolderNameToUpload();
                 string[] strarry = imagedate.Split('/');
                 string monthyearfolder = strarry[0];
@@ -164,15 +165,15 @@ namespace gettywebclasses
                         Directory.CreateDirectory(dir + "gamingappstore");
                     }
 
-                    else if (!Directory.Exists(dir + "gamingappstore/APK"))
+                    if (!Directory.Exists(dir + "gamingappstore/APK"))
                     {
                         Directory.CreateDirectory(dir + "gamingappstore/APK");
                     }
-                    else if (!Directory.Exists(dir + "gamingappstore/APK/" + monthyearfolder))
+                    if (!Directory.Exists(dir + "gamingappstore/APK/" + monthyearfolder))
                     {
                         Directory.CreateDirectory(dir + "gamingappstore/APK/" + monthyearfolder);
                     }
-                    else if (!Directory.Exists(dir + "gamingappstore/APK/" + monthyearfolder + "/" + dayfolder))
+                    if (!Directory.Exists(dir + "gamingappstore/APK/" + monthyearfolder + "/" + dayfolder))
                     {
                         Directory.CreateDirectory(dir + "gamingappstore/APK/" + monthyearfolder + "/" + dayfolder);
                     }
