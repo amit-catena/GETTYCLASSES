@@ -25,7 +25,8 @@
             
             <div class="left-side-menu">
             <div class="select-image"><asp:FileUpload runat="server" ID="FileUpload1" onchange="UploadFile()"  /></div>
-            <asp:Literal runat="server" ID="ltsignupimages"></asp:Literal></div>
+            <div class='imagediv'>
+            <asp:Literal runat="server" ID="ltsignupimages"></asp:Literal></div></div>
             <div class="right-side-menu">
             <div><span class="right-side-menu-left">Title: <asp:TextBox runat="server" ID="txttitle" class="right-side-menu-right"></asp:TextBox></span></div>                <div style="clear:both;"></div>   
             <div><span class="right-side-menu-left">Alt Text: <asp:TextBox runat="server" ID="txtalttext" class="right-side-menu-right"></asp:TextBox></span></div><div style="clear:both;"></div>
@@ -76,6 +77,7 @@
                 cache: false,
                 data: { type: "UpdateImageDetails", imageid: imageid, imagetitle: imagetitle, imagealttext: imagealttext },
                 success: function (msg) {
+                    //alert('hi');
 
                 },
                 error: function (request, err) {
@@ -84,12 +86,15 @@
             });
 
             if (window.opener != null && !window.opener.closed) {
-                var txtName = window.opener.document.getElementById("incimage");
-                $(txtName).attr("src", document.getElementById("id_imagesrc").value);
+                //var txtName = window.opener.document.getElementById("incimage");
+                //$(txtName).attr("src", document.getElementById("id_imagesrc").value);
+                var img = document.getElementById("id_imagesrc").value;
+                window.opener.postMessage('incimage,' + img, 'http://www.developersllc.com');
             }
             window.close();
         }
         function ShowLoading(boolshow) {
+            
             if (boolshow == 'Y')
                 document.getElementById('json-overlay').style.display = 'block';
             else

@@ -40,7 +40,7 @@ namespace gettywebclasses
         string dayfolder = DateTime.Now.ToString("MMMdd");
         string returnimagepath = "", returnimagename = "";
         public string baseurl = ConfigurationSettings.AppSettings["baseurl"];
-        public  int templateid = 0;
+        string templateid;
         //string ImageServerURL = ConfigurationSettings.AppSettings["ImageServerURL"];
         #endregion
         protected void Page_Load(object sender, EventArgs e)
@@ -55,10 +55,9 @@ namespace gettywebclasses
                     networkid = Request.QueryString["networkid"].ToString();
                 if (null != Request.QueryString["templateid"])
                 {
-                    templateid = Convert.ToInt32(Request.QueryString["templateid"].ToString());
-                   // hdimagetype.Value = Request.QueryString["templateid"].ToString();
+                    templateid =Request.QueryString["templateid"].ToString();
+                  
                 }
-
                 ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(Request.QueryString["networkid"]);
 
                 dir = Server.MapPath(string.Format("{0}/", "signup")); //BLL.Constants.SaveImagePathSignUp;
@@ -92,7 +91,9 @@ namespace gettywebclasses
                     using (FileStream fs = File.Create(_imagepath + imageName))
                     {
                         SaveFile(FileUpload1.PostedFile.InputStream, fs, imageName);
-                        if (templateid == 1)
+                        //returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);   
+
+                        if (templateid == "1")
                         {
                             returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);
                         }
@@ -158,7 +159,7 @@ namespace gettywebclasses
                             if (!string.IsNullOrEmpty(txttitle.Text))
                                 objsignup.ImageTitle = txttitle.Text;
                             else
-                            objsignup.ImageTitle = imageName;
+                                objsignup.ImageTitle = imageName;
                             objsignup.ImageAlttext = txtalttext.Text;
                             objsignup.ImageName = "TN" + imageName;
                             objsignup.ImageDate =  monthyearfolder + "/" + dayfolder + "/";
