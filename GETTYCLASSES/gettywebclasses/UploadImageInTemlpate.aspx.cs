@@ -48,23 +48,26 @@ namespace gettywebclasses
             try
             {
                 if (null != Request.QueryString["siteid"])
+                {
                     siteid = Convert.ToInt32(Request.QueryString["siteid"].ToString());
+                    Session["signup_siteid"] = siteid;
+                }
+
                 if (null != Request.QueryString["userid"])
                     userid = Convert.ToInt32(Request.QueryString["userid"].ToString());
                 if (null != Request.QueryString["networkid"])
                     networkid = Request.QueryString["networkid"].ToString();
-                if (null != Request.QueryString["templateid"])
-                {
-                    templateid =Request.QueryString["templateid"].ToString();
-                  
-                }
+                if (null != Request.QueryString["templateid"])                
+                    templateid =Request.QueryString["templateid"].ToString();           
+                
                 ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(Request.QueryString["networkid"]);
 
                 dir = Server.MapPath(string.Format("{0}/", "signup")); //BLL.Constants.SaveImagePathSignUp;
                 CommonLib.CurrentPage.LinkCSS("http://www.developersllc.com/signup/css/style.css");
                 CommonLib.CurrentPage.IncludeScript("http://www.developersllc.com/signup/js/jquery-1.4.4.min.js");
+               
                 if (IsPostBack && FileUpload1.PostedFile != null)
-                {
+                {                    
                     string FName = Path.GetFileName(FileUpload1.PostedFile.FileName);
                     FName = FName.Replace(' ', '_');
                     FName = CommonLib.FileHandler.GetUniqueFileName(dir, FName);
@@ -177,8 +180,8 @@ namespace gettywebclasses
 
                 }
                 else
-                {
-                    ltsignupimages.Text = LoadAllImages();
+                {                   
+                    ltsignupimages.Text = LoadAllImages();                   
                 }
             }
             catch(Exception ex)
@@ -216,7 +219,7 @@ namespace gettywebclasses
             {
                 using (Signup objsignup = new Signup())
                 {
-                    int siteid = Convert.ToInt32(Session["signup_siteid"].ToString());
+                    int siteid = Convert.ToInt32(Session["signup_siteid"].ToString());                    
                     ds = objsignup.GetsignupimageList(siteid);
                     if (ds != null && ds.Tables.Count > 0)
                     {
