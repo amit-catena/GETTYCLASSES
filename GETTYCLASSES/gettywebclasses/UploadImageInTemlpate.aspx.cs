@@ -54,7 +54,7 @@ namespace gettywebclasses
                     networkid = Request.QueryString["networkid"].ToString();
 
                 ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(Request.QueryString["networkid"]);
-
+                //Response.Write("connection is .." + ConfigurationSettings.AppSettings["connString"].ToString());
                 dir = Server.MapPath(string.Format("{0}/", "signup")); //BLL.Constants.SaveImagePathSignUp;
                 CommonLib.CurrentPage.LinkCSS("http://www.developersllc.com/signup/css/style.css");
                 CommonLib.CurrentPage.IncludeScript("http://www.developersllc.com/signup/js/jquery-1.4.4.min.js");
@@ -141,6 +141,7 @@ namespace gettywebclasses
                     {
                         using (Signup objsignup = new Signup())
                         {
+                            objsignup.NetworkID = networkid;
                             objsignup.SiteID = Convert.ToInt32(siteid);
                             if (!string.IsNullOrEmpty(txttitle.Text))
                                 objsignup.ImageTitle = txttitle.Text;
@@ -153,7 +154,7 @@ namespace gettywebclasses
                             objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
                             if (objsignup.ImageID == 0)
                                 imageid = objsignup.AddImageDetails();
-                            Response.End();
+                            //Response.End();
                             /*else
                                 objsignup.UpdateImageDetails();*/
                             ltsignupimages.Text = LoadAllImages();
@@ -169,7 +170,7 @@ namespace gettywebclasses
             }
             catch(Exception ex)
             {
-                Response.Write(ex.ToString());
+                //Response.Write(ex.ToString());
             }
         }
         #region :: methods ::
@@ -179,7 +180,7 @@ namespace gettywebclasses
             {
                 using (Signup objsignup = new Signup())
                 {
-
+                    objsignup.NetworkID = networkid;
                     objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
                     bool flag = objsignup.DeleteImage();
                     /*else
@@ -202,7 +203,7 @@ namespace gettywebclasses
             {
                 using (Signup objsignup = new Signup())
                 {
-                    int siteid = Convert.ToInt32(Session["signup_siteid"].ToString());
+                    //int siteid = Convert.ToInt32(siteid);
                     ds = objsignup.GetsignupimageList(siteid);
                     if (ds != null && ds.Tables.Count > 0)
                     {
