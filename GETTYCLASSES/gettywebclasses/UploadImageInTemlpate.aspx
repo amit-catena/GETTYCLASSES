@@ -32,16 +32,9 @@
             <div><span class="right-side-menu-left">Alt Text: <asp:TextBox runat="server" ID="txtalttext" class="right-side-menu-right"></asp:TextBox></span></div><div style="clear:both;"></div>
             <div><span  class="right-side-menu-left">Date Uploaded: <asp:TextBox runat="server" ID="txtdateuploaded" ReadOnly="true" class="right-side-menu-right"></asp:TextBox></span></div>
             <div style="clear:both;"></div>
-            <div>
-               <%-- <asp:DropDownList ID="ddlimagetype" runat="server">
-                <asp:ListItem Value="1" Text="Thumbnail image" Selected="True">
-                </asp:ListItem>
-                <asp:ListItem Value="2" Text="Full image">
-                </asp:ListItem>
-                </asp:DropDownList>--%>
-            </div>
+            
             <div><input type="button" class="right-side-menu-btn" id="btninsert" onclick="AddImageInParent(1)" value="Insert Thumbnail Image" />
-            <input type="button" class="right-side-menu-btn" id="btninsertfullimage" onclick="AddImageInParent(2)" value="Insert Image" />
+               <input type="button" class="right-side-menu-btn" id="btninsertfullimage" onclick="AddImageInParent(2)" value="Insert Image" />
             <asp:Button runat="server" ID="btndelete" class="right-side-menu-btn-red"  Text="Delete" OnClick="DeleteImage" OnClientClick=" ShowLoading('Y');"/>
             
             </div>
@@ -102,7 +95,7 @@
             window.close();
         }
         function ShowLoading(boolshow) {
-            alert(boolshow);
+           // alert(boolshow);
             if (boolshow == 'Y')
                 document.getElementById('json-overlay').style.display = 'block';
             else
