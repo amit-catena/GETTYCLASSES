@@ -38,7 +38,7 @@ namespace gettywebclasses
         string _imagepath = string.Empty;
         string monthyearfolder = DateTime.Now.ToString("yyyyMM");
         string dayfolder = DateTime.Now.ToString("MMMdd");
-        string returnimagepath = "", returnimagename = "";
+        string returnimagepath = "", returnimagename1 = "", returnimagename2="";
         public string baseurl = ConfigurationSettings.AppSettings["baseurl"];
         //string ImageServerURL = ConfigurationSettings.AppSettings["ImageServerURL"];
         #endregion
@@ -86,8 +86,16 @@ namespace gettywebclasses
                     using (FileStream fs = File.Create(_imagepath + imageName))
                     {
                         SaveFile(FileUpload1.PostedFile.InputStream, fs, imageName);
-                        returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);                       
-                        returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename);
+                        returnimagename1 = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);
+                        returnimagename2 = Function.SaveThumbnailCompress(imageName, _imagepath, "TN_TN", 600, 340);
+                        if (imagetype.Value== "1")
+                        {
+                            returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename1);
+                        }
+                        else
+                        {
+                            returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename1);
+                        }
                         /*File.Copy(dir + imageName, dir + "org_" + imageName);
                         
                         string tnname = "";
@@ -141,7 +149,7 @@ namespace gettywebclasses
                     {
                         using (Signup objsignup = new Signup())
                         {
-                            objsignup.NetworkID = networkid;
+                            //objsignup.NetworkID = networkid;
                             objsignup.SiteID = Convert.ToInt32(siteid);
                             if (!string.IsNullOrEmpty(txttitle.Text))
                                 objsignup.ImageTitle = txttitle.Text;
@@ -180,7 +188,7 @@ namespace gettywebclasses
             {
                 using (Signup objsignup = new Signup())
                 {
-                    objsignup.NetworkID = networkid;
+                    //objsignup.NetworkID = networkid;
                     objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
                     bool flag = objsignup.DeleteImage();
                     /*else

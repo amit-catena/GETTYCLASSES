@@ -19,6 +19,7 @@
     <div>
     <input type="hidden" id="id_image" />
     <input type="hidden" id="id_imagesrc" />    
+     <input type="hidden" id="imagetype" runat="server" />    
     <input type="hidden" id="idserver_image" runat="server" value="0" />
         <div class="upload-image">  
             <div class="page-header"> Select or Upload an Image</div>
@@ -31,7 +32,16 @@
             <div><span class="right-side-menu-left">Alt Text: <asp:TextBox runat="server" ID="txtalttext" class="right-side-menu-right"></asp:TextBox></span></div><div style="clear:both;"></div>
             <div><span  class="right-side-menu-left">Date Uploaded: <asp:TextBox runat="server" ID="txtdateuploaded" ReadOnly="true" class="right-side-menu-right"></asp:TextBox></span></div>
             <div style="clear:both;"></div>
-            <div><input type="button" class="right-side-menu-btn" id="btninsert" onclick="AddImageInParent()" value="Insert Image" />
+            <div>
+               <%-- <asp:DropDownList ID="ddlimagetype" runat="server">
+                <asp:ListItem Value="1" Text="Thumbnail image" Selected="True">
+                </asp:ListItem>
+                <asp:ListItem Value="2" Text="Full image">
+                </asp:ListItem>
+                </asp:DropDownList>--%>
+            </div>
+            <div><input type="button" class="right-side-menu-btn" id="btninsert" onclick="AddImageInParent(1)" value="Insert Thumbnail Image" />
+            <input type="button" class="right-side-menu-btn" id="btninsertfullimage" onclick="AddImageInParent(2)" value="Insert Image" />
             <asp:Button runat="server" ID="btndelete" class="right-side-menu-btn-red"  Text="Delete" OnClick="DeleteImage" OnClientClick=" ShowLoading('Y');"/>
             
             </div>
@@ -64,7 +74,8 @@
             document.getElementById("txtalttext").value = $(this).attr('data-alt');
         });
 
-        function AddImageInParent() {
+        function AddImageInParent(Val) {
+            document.getElementById("imagetype").value = Val.toString();
             imageid = document.getElementById("idserver_image").value;
             imagetitle = document.getElementById("txttitle").value;
             imagealttext = document.getElementById("txtalttext").value;
