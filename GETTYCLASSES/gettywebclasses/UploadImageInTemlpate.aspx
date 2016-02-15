@@ -19,7 +19,6 @@
     <div>
     <input type="hidden" id="id_image" />
     <input type="hidden" id="id_imagesrc" />    
-     <input type="hidden" id="imagetype" runat="server" />    
     <input type="hidden" id="idserver_image" runat="server" value="0" />
         <div class="upload-image">  
             <div class="page-header"> Select or Upload an Image</div>
@@ -32,9 +31,7 @@
             <div><span class="right-side-menu-left">Alt Text: <asp:TextBox runat="server" ID="txtalttext" class="right-side-menu-right"></asp:TextBox></span></div><div style="clear:both;"></div>
             <div><span  class="right-side-menu-left">Date Uploaded: <asp:TextBox runat="server" ID="txtdateuploaded" ReadOnly="true" class="right-side-menu-right"></asp:TextBox></span></div>
             <div style="clear:both;"></div>
-            
-            <div><input type="button" class="right-side-menu-btn" id="btninsert" onclick="AddImageInParent(1)" value="Insert Thumbnail Image" />
-               <input type="button" class="right-side-menu-btn" id="btninsertfullimage" onclick="AddImageInParent(2)" value="Insert Image" />
+            <div><input type="button" class="right-side-menu-btn" id="btninsert" onclick="AddImageInParent()" value="Insert Image" />
             <asp:Button runat="server" ID="btndelete" class="right-side-menu-btn-red"  Text="Delete" OnClick="DeleteImage" OnClientClick=" ShowLoading('Y');"/>
             
             </div>
@@ -67,8 +64,7 @@
             document.getElementById("txtalttext").value = $(this).attr('data-alt');
         });
 
-        function AddImageInParent(Val) {
-            document.getElementById("imagetype").value = Val.toString();
+        function AddImageInParent() {
             imageid = document.getElementById("idserver_image").value;
             imagetitle = document.getElementById("txttitle").value;
             imagealttext = document.getElementById("txtalttext").value;
@@ -80,7 +76,6 @@
                 cache: false,
                 data: { type: "UpdateImageDetails", imageid: imageid, imagetitle: imagetitle, imagealttext: imagealttext },
                 success: function (msg) {
-                    alert('hi');
 
                 },
                 error: function (request, err) {
@@ -95,7 +90,6 @@
             window.close();
         }
         function ShowLoading(boolshow) {
-           // alert(boolshow);
             if (boolshow == 'Y')
                 document.getElementById('json-overlay').style.display = 'block';
             else

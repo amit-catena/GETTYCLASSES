@@ -38,8 +38,9 @@ namespace gettywebclasses
         string _imagepath = string.Empty;
         string monthyearfolder = DateTime.Now.ToString("yyyyMM");
         string dayfolder = DateTime.Now.ToString("MMMdd");
-        string returnimagepath = "", returnimagename1 = "", returnimagename2="";
+        string returnimagepath = "", returnimagename = "";
         public string baseurl = ConfigurationSettings.AppSettings["baseurl"];
+        public  int templateid = 0;
         //string ImageServerURL = ConfigurationSettings.AppSettings["ImageServerURL"];
         #endregion
         protected void Page_Load(object sender, EventArgs e)
@@ -52,9 +53,14 @@ namespace gettywebclasses
                     userid = Convert.ToInt32(Request.QueryString["userid"].ToString());
                 if (null != Request.QueryString["networkid"])
                     networkid = Request.QueryString["networkid"].ToString();
+                if (null != Request.QueryString["templateid"])
+                {
+                    templateid = Convert.ToInt32(Request.QueryString["templateid"].ToString());
+                   // hdimagetype.Value = Request.QueryString["templateid"].ToString();
+                }
 
                 ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(Request.QueryString["networkid"]);
-                //Response.Write("connection is .." + ConfigurationSettings.AppSettings["connString"].ToString());
+
                 dir = Server.MapPath(string.Format("{0}/", "signup")); //BLL.Constants.SaveImagePathSignUp;
                 CommonLib.CurrentPage.LinkCSS("http://www.developersllc.com/signup/css/style.css");
                 CommonLib.CurrentPage.IncludeScript("http://www.developersllc.com/signup/js/jquery-1.4.4.min.js");
@@ -86,16 +92,15 @@ namespace gettywebclasses
                     using (FileStream fs = File.Create(_imagepath + imageName))
                     {
                         SaveFile(FileUpload1.PostedFile.InputStream, fs, imageName);
-                        returnimagename1 = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);
-                        returnimagename2 = Function.SaveThumbnailCompress(imageName, _imagepath, "TN_TN", 600, 340);
-                        if (imagetype.Value== "1")
+                        if (templateid == 1)
                         {
-                            returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename1);
+                            returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);
                         }
                         else
                         {
-                            returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename1);
+                            returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "", 600, 340);
                         }
+                        returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename);
                         /*File.Copy(dir + imageName, dir + "org_" + imageName);
                         
                         string tnname = "";
@@ -149,12 +154,11 @@ namespace gettywebclasses
                     {
                         using (Signup objsignup = new Signup())
                         {
-                            //objsignup.NetworkID = networkid;
                             objsignup.SiteID = Convert.ToInt32(siteid);
                             if (!string.IsNullOrEmpty(txttitle.Text))
                                 objsignup.ImageTitle = txttitle.Text;
                             else
-                                objsignup.ImageTitle = imageName;
+                            objsignup.ImageTitle = imageName;
                             objsignup.ImageAlttext = txtalttext.Text;
                             objsignup.ImageName = "TN" + imageName;
                             objsignup.ImageDate =  monthyearfolder + "/" + dayfolder + "/";
@@ -162,7 +166,7 @@ namespace gettywebclasses
                             objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
                             if (objsignup.ImageID == 0)
                                 imageid = objsignup.AddImageDetails();
-                            //Response.End();
+                            Response.End();
                             /*else
                                 objsignup.UpdateImageDetails();*/
                             ltsignupimages.Text = LoadAllImages();
@@ -178,7 +182,7 @@ namespace gettywebclasses
             }
             catch(Exception ex)
             {
-                //Response.Write(ex.ToString());
+                Response.Write(ex.ToString());
             }
         }
         #region :: methods ::
@@ -188,7 +192,7 @@ namespace gettywebclasses
             {
                 using (Signup objsignup = new Signup())
                 {
-                    //objsignup.NetworkID = networkid;
+
                     objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
                     bool flag = objsignup.DeleteImage();
                     /*else
@@ -211,7 +215,7 @@ namespace gettywebclasses
             {
                 using (Signup objsignup = new Signup())
                 {
-                    //int siteid = Convert.ToInt32(siteid);
+                    int siteid = Convert.ToInt32(Session["signup_siteid"].ToString());
                     ds = objsignup.GetsignupimageList(siteid);
                     if (ds != null && ds.Tables.Count > 0)
                     {
