@@ -64,8 +64,13 @@ namespace gettywebclasses
                 if (null != Request.QueryString["templateid"])
                 {
                     templateid = Request.QueryString["templateid"].ToString();
-                    idserver_image.Value = templateid;
+                    //idserver_templateid.Value = templateid;
+                    Session.Add("signup_templateid", templateid);
                 }
+                if (null != Session["signup_templateid"])
+                    templateid = Session["signup_templateid"].ToString();
+
+                idserver_templateid.Value = templateid;
                 
                 ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(Request.QueryString["networkid"]);
 

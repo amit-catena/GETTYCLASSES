@@ -21,7 +21,7 @@
     <input type="hidden" id="id_imagesrc" />    
     <input type="hidden" id="id_imagesrcbig" />    
     <input type="hidden" id="idserver_image" runat="server" value="0" />
-    <input type="hidden" id="idserver_templateid" runat="server" value="1" />
+    <input type="hidden" id="idserver_templateid" runat="server" />
         <div class="upload-image">  
             <div class="page-header"> Select or Upload an Image</div>
             
@@ -93,6 +93,7 @@
                 //var txtName = window.opener.document.getElementById("incimage");
                 //$(txtName).attr("src", document.getElementById("id_imagesrc").value);
                 templateid = document.getElementById("idserver_templateid").value;
+                alert("templateid.." + templateid);
                 var img = document.getElementById("id_imagesrc").value;
                 if ( templateid == "2")
                     img = document.getElementById("id_imagesrcbig").value;
