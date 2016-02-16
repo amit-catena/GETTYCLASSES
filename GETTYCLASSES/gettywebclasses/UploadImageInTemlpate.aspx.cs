@@ -105,7 +105,7 @@ namespace gettywebclasses
                         }
                         else
                         {
-                            returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "", 600, 340);
+                            returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN_TN", 600, 340);
                         }
                         returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename);
                         /*File.Copy(dir + imageName, dir + "org_" + imageName);
