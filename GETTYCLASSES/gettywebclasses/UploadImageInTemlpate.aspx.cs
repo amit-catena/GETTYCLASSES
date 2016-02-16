@@ -39,6 +39,7 @@ namespace gettywebclasses
         string monthyearfolder = DateTime.Now.ToString("yyyyMM");
         string dayfolder = DateTime.Now.ToString("MMMdd");
         string returnimagepath = "", returnimagename = "";
+        string returnimagename_big = "";
         public string baseurl = ConfigurationSettings.AppSettings["baseurl"];
         string templateid;
         //string ImageServerURL = ConfigurationSettings.AppSettings["ImageServerURL"];
@@ -98,16 +99,20 @@ namespace gettywebclasses
                     {
                         SaveFile(FileUpload1.PostedFile.InputStream, fs, imageName);
                         //returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);   
+                        returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);
+                        returnimagename_big = Function.SaveThumbnailCompress(imageName, _imagepath, "TN_TN", 600, 340);
 
                         if (templateid == "1")
                         {
-                            returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);
+                           // returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);
+                            returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename);
                         }
                         else
                         {
-                            returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN_TN", 600, 340);
+                           // returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN_TN", 600, 340);
+                            returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename_big);
                         }
-                        returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename);
+                        
                         /*File.Copy(dir + imageName, dir + "org_" + imageName);
                         
                         string tnname = "";
