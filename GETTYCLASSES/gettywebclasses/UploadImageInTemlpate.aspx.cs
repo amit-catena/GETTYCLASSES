@@ -56,7 +56,10 @@ namespace gettywebclasses
                 if (null != Request.QueryString["userid"])
                     userid = Convert.ToInt32(Request.QueryString["userid"].ToString());
                 if (null != Request.QueryString["networkid"])
+                {
                     networkid = Request.QueryString["networkid"].ToString();
+                    Session["signup_networkid"] = networkid;
+                }
                 if (null != Request.QueryString["templateid"])                
                     templateid =Request.QueryString["templateid"].ToString();           
                 
@@ -159,6 +162,7 @@ namespace gettywebclasses
                         using (Signup objsignup = new Signup())
                         {
                             objsignup.SiteID = Convert.ToInt32(siteid);
+                            objsignup.NetworkID = networkid;
                             if (!string.IsNullOrEmpty(txttitle.Text))
                                 objsignup.ImageTitle = txttitle.Text;
                             else
@@ -186,7 +190,7 @@ namespace gettywebclasses
             }
             catch(Exception ex)
             {
-                Response.Write(ex.ToString());
+                //Response.Write(ex.ToString());
             }
         }
         #region :: methods ::
@@ -219,12 +223,16 @@ namespace gettywebclasses
             {
                 using (Signup objsignup = new Signup())
                 {
-                    int siteid = Convert.ToInt32(Session["signup_siteid"].ToString());                    
+                    //Response.Write("inside load images");
+                    int siteid = Convert.ToInt32(Session["signup_siteid"].ToString());
+                    //Response.Write("siteid .." + siteid + "<br>");
+                    objsignup.NetworkID = Session["signup_networkid"].ToString();
                     ds = objsignup.GetsignupimageList(siteid);
                     if (ds != null && ds.Tables.Count > 0)
                     {
                         if (ds.Tables[0].Rows.Count > 0)
                         {
+                            //Response.Write("data.." + ds.Tables[0].Rows.Count + "<br>");
                             str.Append("<ul id='ul_image'>");
                             foreach (DataRow dr in ds.Tables[0].Rows)
                             {
@@ -237,10 +245,15 @@ namespace gettywebclasses
                             str.Append("</ul>");
                         }
                     }
+                    else
+                    {
+                        //Response.Write("data not found" + "<br>");
+                    }
                 }
             }
             catch (Exception ex)
             {
+                //Response.Write(ex.ToString());
             }
             allimages = str.ToString();
             return allimages;
