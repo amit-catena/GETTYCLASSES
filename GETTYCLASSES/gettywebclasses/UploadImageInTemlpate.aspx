@@ -19,7 +19,9 @@
     <div>
     <input type="hidden" id="id_image" />
     <input type="hidden" id="id_imagesrc" />    
+    <input type="hidden" id="id_imagesrcbig" />    
     <input type="hidden" id="idserver_image" runat="server" value="0" />
+    <input type="hidden" id="idserver_templateid" runat="server" value="1" />
         <div class="upload-image">  
             <div class="page-header"> Select or Upload an Image</div>
             
@@ -54,11 +56,13 @@
         $("#ul_image li").click(function () {
             imageid = this.id;
             imageurl = $(this).attr('data-url');
+            imageurlbig = $(this).attr('data-bigurl');
             $('#ul_image').children().removeClass('li_selected');
             $(this).addClass('li_selected');
             document.getElementById("id_image").value = imageid;
             document.getElementById("idserver_image").value = imageid;
             document.getElementById("id_imagesrc").value = imageurl;
+            document.getElementById("id_imagesrcbig").value = imageurlbig;
 
             document.getElementById("txtdateuploaded").value = $(this).attr('data-date');
             document.getElementById("txttitle").value = $(this).attr('data-name');
@@ -88,7 +92,10 @@
             if (window.opener != null && !window.opener.closed) {
                 //var txtName = window.opener.document.getElementById("incimage");
                 //$(txtName).attr("src", document.getElementById("id_imagesrc").value);
+                templateid = document.getElementById("idserver_templateid").value;
                 var img = document.getElementById("id_imagesrc").value;
+                if ( templateid == "2")
+                    img = document.getElementById("id_imagesrcbig").value;
                 window.opener.postMessage('incimage,' + img, 'http://www.developersllc.com');
             }
             window.close();

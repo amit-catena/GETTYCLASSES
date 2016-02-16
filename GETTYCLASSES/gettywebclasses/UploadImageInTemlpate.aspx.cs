@@ -61,8 +61,11 @@ namespace gettywebclasses
                     networkid = Request.QueryString["networkid"].ToString();
                     Session["signup_networkid"] = networkid;
                 }
-                if (null != Request.QueryString["templateid"])                
-                    templateid =Request.QueryString["templateid"].ToString();           
+                if (null != Request.QueryString["templateid"])
+                {
+                    templateid = Request.QueryString["templateid"].ToString();
+                    idserver_image.Value = templateid;
+                }
                 
                 ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(Request.QueryString["networkid"]);
 
@@ -224,6 +227,7 @@ namespace gettywebclasses
             DataSet ds = new DataSet();
             StringBuilder str = new StringBuilder();
             string imageurl = string.Empty;
+            string bigimageurl = string.Empty;
             try
             {
                 using (Signup objsignup = new Signup())
@@ -245,7 +249,8 @@ namespace gettywebclasses
                                 dt = Convert.ToDateTime(dr["addedon"].ToString());
                                 string date = dt.ToString("MMMM d, yyyy");
                                 imageurl = ConfigurationSettings.AppSettings["baseurl"] + sitefldname + "/" + dr["imagedate"].ToString() + dr["imagename"].ToString();
-                                str.Append("<li data-date='" + date + "' data-alt='" + dr["ImageAlttext"].ToString() + "' data-name='" + dr["imagetitle"].ToString() + "' data-url='" + imageurl + "' id='" + dr["imageid"].ToString() + "'><img src='" + imageurl + "' border='0' width='200' height='200' /></li>");
+                                bigimageurl = ConfigurationSettings.AppSettings["baseurl"] + sitefldname + "/" + dr["imagedate"].ToString() + "TN_" + dr["imagename"].ToString();
+                                str.Append("<li data-date='" + date + "' data-alt='" + dr["ImageAlttext"].ToString() + "' data-name='" + dr["imagetitle"].ToString() + "' data-url='" + imageurl + "' data-bigurl='" + bigimageurl + "' id='" + dr["imageid"].ToString() + "'><img src='" + imageurl + "' border='0' width='200' height='200' /></li>");
                             }
                             str.Append("</ul>");
                         }
