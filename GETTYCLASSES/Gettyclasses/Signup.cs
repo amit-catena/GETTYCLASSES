@@ -160,7 +160,7 @@ namespace Gettyclasses
         public string ImageAlttext { get; set; }
         public string ImageName { get; set; }
         public string ImageDate { get; set; }
-
+        public string NetworkID { get; set; }
 
         #endregion
         #region public methods::
@@ -191,11 +191,10 @@ namespace Gettyclasses
                 msgPara[2].Value = this.ImageAlttext;
                 msgPara[3].Value = this.ImageName;
                 msgPara[4].Value = this.ImageDate;
-                msgPara[5].Value = this.AddedBy;                
-
+                msgPara[5].Value = this.AddedBy;
+                System.Configuration.ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(this.NetworkID);
                 using (CommonLib.DAL dal = new CommonLib.DAL())
-                {                    
-                    System.Web.HttpContext.Current.Response.Write("add string .. " + dal.ConnString);                    
+                {                      
                     res = dal.ExecuteNonQuery("SP_PW_O_SignupFormMaster_AddImageDetails", CommandType.StoredProcedure, msgPara);
                 }
             }
@@ -224,7 +223,7 @@ namespace Gettyclasses
                 msgPara[0].Value = this.ImageTitle;
                 msgPara[1].Value = this.ImageAlttext;
                 msgPara[2].Value = this.ImageID;
-
+                System.Configuration.ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(this.NetworkID);
                 using (CommonLib.DAL dal = new CommonLib.DAL())
                     res = dal.ExecuteNonQuery("SP_PW_O_SignupFormMaster_UpdateImageDetails", CommandType.StoredProcedure, msgPara);
             }
@@ -241,20 +240,21 @@ namespace Gettyclasses
             {
               /*  CommonLib.SqlParameterArray param = new CommonLib.SqlParameterArray();
                 param.Add("@SiteID", siteid, SqlDbType.Int);*/
- 
+                //System.Web.HttpContext.Current.Response.Write("inside list" + this.NetworkID + "..<br>");
                 SqlParameter[] msgPara ={                          
                                          new SqlParameter("@SiteID",SqlDbType.Int)
                                         };
                 msgPara[0].Value = this.SiteID;
-                
+                System.Configuration.ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(this.NetworkID);
                 using (CommonLib.DAL dal = new CommonLib.DAL())
                 {
-                    
+                    //System.Web.HttpContext.Current.Response.Write(dal.ConnString);
                     ds = dal.GetDataSet("SP_PW_O_SignupFormMaster_GetImageList", CommandType.StoredProcedure, msgPara);
                 }
             }
             catch (Exception ex)
             {
+                //System.Web.HttpContext.Current.Response.Write(ex.ToString());
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "Signuptemplate :: BLL signup.cs GetsignupimageList", ex);
             }
             return ds;
@@ -277,7 +277,7 @@ namespace Gettyclasses
                                          new SqlParameter("@imageid",SqlDbType.Int)
                                         };
                     msgPara[0].Value = this.ImageID;
-
+                    System.Configuration.ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(this.NetworkID);
                     using (CommonLib.DAL dal = new CommonLib.DAL())
                         intid = Convert.ToInt32(dal.ExecuteNonQuery("SP_O_PW_SignupFormMaster_DeleteImage", CommandType.StoredProcedure, msgPara));
                     if (intid > 0)
