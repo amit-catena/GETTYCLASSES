@@ -73,13 +73,14 @@
             imageid = document.getElementById("idserver_image").value;
             imagetitle = document.getElementById("txttitle").value;
             imagealttext = document.getElementById("txtalttext").value;
+            netid = '<%=networkid %>';
 
             var url = '<%=baseurl %>ajax_post.aspx';
             $.ajax({
                 type: 'POST',
                 url: url,
                 cache: false,
-                data: { type: "UpdateImageDetails", imageid: imageid, imagetitle: imagetitle, imagealttext: imagealttext },
+                data: { type: "UpdateImageDetails", imageid: imageid, imagetitle: imagetitle, imagealttext: imagealttext , netid:netid},
                 success: function (msg) {
                     //alert('hi');
 

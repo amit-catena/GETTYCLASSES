@@ -18,7 +18,7 @@ namespace gettywebclasses
                 switch (Request.Form["type"].ToString())
                 {
                     case "UpdateImageDetails":
-                        UpdateImageDetails(Request.Form["imageid"], Request.Form["imagetitle"], Request.Form["imagealttext"]);
+                        UpdateImageDetails(Request.Form["imageid"], Request.Form["imagetitle"], Request.Form["imagealttext"], Request.Form["netid"]);
                         break;
                 }
             }
@@ -26,7 +26,7 @@ namespace gettywebclasses
             {
             }
         }
-        public void UpdateImageDetails(string imageid, string imagetitle, string imagealttext)
+        public void UpdateImageDetails(string imageid, string imagetitle, string imagealttext, string networkid)
         {
             string i = string.Empty;
 
@@ -38,6 +38,7 @@ namespace gettywebclasses
                     objsignup.ImageTitle = imagetitle;
                     objsignup.ImageAlttext = imagealttext;
                     objsignup.ImageID = Convert.ToInt32(imageid);
+                    objsignup.NetworkID = networkid;
                     i = objsignup.UpdateImageDetails().ToString();
                 }
             }

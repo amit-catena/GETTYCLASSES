@@ -24,7 +24,7 @@ namespace gettywebclasses
         public string _imgserver = ConfigurationSettings.AppSettings["imgserver"];
         int siteid = 0;
         int userid = 0;
-        string networkid = string.Empty;
+        public string networkid = string.Empty;
         bool imgserver = true;
         public string str = string.Empty;
         string imageName = string.Empty;
@@ -135,6 +135,8 @@ namespace gettywebclasses
                             objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
                             if (objsignup.ImageID == 0)
                                 imageid = objsignup.AddImageDetails();
+                           /* else
+                                objsignup.UpdateImageDetails();*/
                             
                             ltsignupimages.Text = LoadAllImages();
                             CommonLib.JavaScriptHandler.RegisterScriptForSM("ShowLoading('N');", true);
