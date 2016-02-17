@@ -105,71 +105,19 @@ namespace gettywebclasses
                     _imagepath = Server.MapPath(string.Format("{0}/{1}/{2}/", sitefldname, monthyearfolder, dayfolder));
                     using (FileStream fs = File.Create(_imagepath + imageName))
                     {
-                        SaveFile(FileUpload1.PostedFile.InputStream, fs, imageName);
-                        //returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);   
+                        SaveFile(FileUpload1.PostedFile.InputStream, fs, imageName);                        
                         returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);
                         returnimagename_big = Function.SaveThumbnailCompress(imageName, _imagepath, "TN_TN", 600, 340);
 
                         if (templateid == "1")
-                        {
-                           // returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN", 300, 170);
+                        {                           
                             returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename);
                         }
                         else
                         {
-                           // returnimagename = Function.SaveThumbnailCompress(imageName, _imagepath, "TN_TN", 600, 340);
                             returnimagepath = string.Format("{0}{1}/{2}/{3}/{4}", _imgserver, sitefldname, monthyearfolder, dayfolder, returnimagename_big);
-                        }
-                        
-                        /*File.Copy(dir + imageName, dir + "org_" + imageName);
-                        
-                        string tnname = "";
-                        string imgname = "";
-                        string folder = "";
-                        try
-                        {
-                            imgPhoto = System.Drawing.Image.FromFile(dir + "org_" + imageName);
-                            int phWidth = imgPhoto.Width;
-                            int phHeight = imgPhoto.Height;
-                            
-                            Bitmap bmPhoto = new Bitmap(phWidth, phHeight, PixelFormat.Format24bppRgb);
-                            bmPhoto.SetResolution(imgPhoto.HorizontalResolution, imgPhoto.VerticalResolution);
-                            Graphics grPhoto = Graphics.FromImage(bmPhoto);
-                            grPhoto.SmoothingMode = SmoothingMode.AntiAlias;
-                            grPhoto.DrawImage(
-                                imgPhoto,                               // Photo Image object
-                                new Rectangle(0, 0, phWidth, phHeight), // Rectangle structure
-                                0,                                      // x-coordinate of the portion of the source image to draw. 
-                                0,                                      // y-coordinate of the portion of the source image to draw. 
-                                phWidth,                                // Width of the portion of the source image to draw. 
-                                phHeight,                               // Height of the portion of the source image to draw. 
-                                GraphicsUnit.Pixel);                    // Units of measure 
-
-
-                            bmPhoto.Dispose();
-                            grPhoto.Dispose();
-
-                            tnname = this.SaveThumbnailCompress("org_" + imageName, imageName, dir, imgserver);
-                            imgPhoto.Dispose();
-                        }
-                        catch
-                        {
-                        }*/
-                        /* thumbnail */
-                       /* #region ::  upload image ::
-                        imgserver = true;
-                        if (imgserver)
-                        {
-                            retval = UploadImageToImageServer(modifieddate);
-                            //ltimagepath.Text = retval;
-                        }
-                        #endregion*/
-                    }
-
-                    /* downloaded code */
-                    /* FileUpload1.SaveAs(Server.MapPath("~/" + name));*/
-                    //Image1.ImageUrl = retval;
-                    /* Label1.Text = retval;*/
+                        }                        
+                    }                    
                     if (!string.IsNullOrEmpty(returnimagepath))
                     {
                         using (Signup objsignup = new Signup())
@@ -187,9 +135,7 @@ namespace gettywebclasses
                             objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
                             if (objsignup.ImageID == 0)
                                 imageid = objsignup.AddImageDetails();
-                            //Response.End();
-                            /*else
-                                objsignup.UpdateImageDetails();*/
+                            
                             ltsignupimages.Text = LoadAllImages();
                             CommonLib.JavaScriptHandler.RegisterScriptForSM("ShowLoading('N');", true);
                         }
@@ -203,7 +149,7 @@ namespace gettywebclasses
             }
             catch(Exception ex)
             {
-                //Response.Write(ex.ToString());
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gettyclasses signup uploadimageintemplate pageload", ex);
             }
         }
         #region :: methods ::
@@ -213,17 +159,16 @@ namespace gettywebclasses
             {
                 using (Signup objsignup = new Signup())
                 {
-
                     objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
                     bool flag = objsignup.DeleteImage();
-                    /*else
-                        objsignup.UpdateImageDetails();*/
+                    idserver_image.Value = "0";
                     ltsignupimages.Text = LoadAllImages();
                     CommonLib.JavaScriptHandler.RegisterScriptForSM("ShowLoading('N');", true);
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gettyclasses signup uploadimageintemplate deleteimage", ex);
             }
         }
         public string LoadAllImages()
@@ -236,17 +181,14 @@ namespace gettywebclasses
             try
             {
                 using (Signup objsignup = new Signup())
-                {
-                    //Response.Write("inside load images");
-                    int siteid = Convert.ToInt32(Session["signup_siteid"].ToString());
-                    //Response.Write("siteid .." + siteid + "<br>");
+                {                    
+                    int siteid = Convert.ToInt32(Session["signup_siteid"].ToString());                 
                     objsignup.NetworkID = Session["signup_networkid"].ToString();
                     ds = objsignup.GetsignupimageList(siteid);
                     if (ds != null && ds.Tables.Count > 0)
                     {
                         if (ds.Tables[0].Rows.Count > 0)
-                        {
-                            //Response.Write("data.." + ds.Tables[0].Rows.Count + "<br>");
+                        {                            
                             str.Append("<ul id='ul_image'>");
                             foreach (DataRow dr in ds.Tables[0].Rows)
                             {
@@ -261,125 +203,18 @@ namespace gettywebclasses
                         }
                     }
                     else
-                    {
-                        //Response.Write("data not found" + "<br>");
+                    {                        
                     }
                 }
             }
             catch (Exception ex)
             {
-                //Response.Write(ex.ToString());
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gettyclasses signup uploadimageintemplate loadallimages", ex);
             }
             allimages = str.ToString();
             return allimages;
         }
-        /*private string SaveThumbnailCompress(string dupimg, string img, string folder, bool isserverimage)
-        {
-
-            string imgpath = string.Empty;
-            string albumPath = string.Empty;
-            string img2 = string.Empty;
-            string img3 = string.Empty;
-            string img4 = string.Empty;
-
-            try
-            {
-                imgpath = folder + dupimg;
-                albumPath = folder;
-
-                if (isserverimage)
-                {                    
-                    imgpath = folder + dupimg;
-                    albumPath = folder;                 
-                }
-                else
-                {
-                    imgpath = BLL.Constants.dirpath + "/upload_images/" + dupimg;
-                    albumPath = BLL.Constants.dirpath + "/upload_images/";
-                }
-
-                int iwidth = System.Drawing.Image.FromFile(imgpath).Width;
-                int iheight = System.Drawing.Image.FromFile(imgpath).Height;
-                
-
-                
-
-                
-                int twidth = 300;
-                int theight = 170;
-
-                if (iwidth < twidth)
-                    twidth = iwidth;
-                if (iheight < theight)
-                    theight = iheight;
-
-                if (iheight > iwidth)
-                {
-                    double xx = (iwidth * theight) / iheight;
-                    twidth = int.Parse(xx.ToString());
-                }
-                else
-                {
-                    double xx = (iheight * twidth) / iwidth;
-                    theight = int.Parse(xx.ToString());
-                }
-
-
-                string uriName = Path.GetFileName(imgpath);
-                string fnameTN = "TN" + uriName.Substring(4);
-                img2 = fnameTN;
-
-                Bitmap SourceBitmap = null;
-                System.Drawing.Image thumbnail = null;
-
-                
-                System.Drawing.Image thmimage = System.Drawing.Image.FromFile(imgpath);
-                
-
-                try
-                {
-
-                
-
-                    SourceBitmap = new Bitmap(twidth, theight);
-                
-
-                    System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(SourceBitmap);
-
-                    gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-
-                    gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-
-                    gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-
-                    System.Drawing.Rectangle rectDestination = new System.Drawing.Rectangle(0, 0, twidth, theight);
-
-                    gr.DrawImage(thmimage, rectDestination, 0, 0, iwidth, iheight, GraphicsUnit.Pixel);
-
-                    string filename = albumPath + fnameTN;
-
-                    SourceBitmap.Save(filename);
-                    SourceBitmap.Dispose();
-                    thmimage.Dispose();
-
-
-                }
-                catch (Exception exp)
-                {
-                }
-                finally
-                {
-                    SourceBitmap.Dispose();
-                    thmimage.Dispose();
-                }
-
-               
-            }
-            catch
-            {
-            }
-            return img;
-        }*/
+        
         public static bool ValidateSiteFolder(string sitefolder)
         {
             string folderpath = ConfigurationSettings.AppSettings["NewImagePath"];// NewImagePath
@@ -395,7 +230,7 @@ namespace gettywebclasses
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gettyclasses signup uploadimageintemplate validatesitefolder", ex);
             }
             return flag;
         }
@@ -417,7 +252,7 @@ namespace gettywebclasses
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gettyclasses signup uploadimageintemplate createimagesfolderinbackend", ex);
             }
             return flag;
         }
@@ -433,57 +268,13 @@ namespace gettywebclasses
                     fs.Write(buffer, 0, bytesRead);
                 }
                 fs.Dispose();
-                /*if (File.Exists(dir + FName))
-                {
-                    CommonLib.FileHandler.SaveThumbnail(FName, dir, "", "th_", 430, 320);
-                    ltimagepath.Text = dir + "th_" + FName;
-                }*/
-
-
-                /*else
-                    retval = UploadImage();*/
-
             }
             catch (Exception ex)
             {
-                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "UploadReplyImage SaveFile()", ex);
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gettyclasses signup uploadimageintemplate savefile", ex);
             }
         }
-       /* private string UploadImageToImageServer(string modifieddate)
-        {
-
-            string siteurl = string.Empty;
-            string sitefolder = string.Empty;
-            string imagpath = string.Empty;
-            try
-            {
-                using (BLL.SiteMgt objst = new BLL.SiteMgt(str))
-                {
-                    sitefolder = BLL.Constants.ImageServerFolderName;
-                    // if (Session["storify_networkid"] != null)
-                    imagpath = string.Format(BLL.Constants.dirpath + "/upload_images/{2}/{0}/{1}/", Convert.ToDateTime(modifieddate).ToString("yyyyMM"), Convert.ToDateTime(modifieddate).ToString("MMMdd"), sitefldname);
-
-                    try
-                    {
-                        BLL.UploadSectionMgmt objUp = new BLL.UploadSectionMgmt();
-
-                        if (img1.Trim().Length > 0)
-                        {
-                            retval = objUp.Imagetransfer(modifieddate, sitefolder, img1, imagpath, BLL.ImageTypes.UserDrag);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //Util.ErrorLog.SaveErrorLog(a_siteid,"Uploadimages","ListNews.cs","UploadNewsAjax",ex.Message);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gamingnetadminv2 ajax_post UploadSavedImages", ex);
-            }
-            return retval;
-        }*/
+       
         #endregion
     }
 }

@@ -93,7 +93,7 @@
                 //var txtName = window.opener.document.getElementById("incimage");
                 //$(txtName).attr("src", document.getElementById("id_imagesrc").value);
                 templateid = document.getElementById("idserver_templateid").value;
-                alert("templateid.." + templateid);
+                //alert("templateid.." + templateid);
                 var img = document.getElementById("id_imagesrc").value;
                 if ( templateid == "2")
                     img = document.getElementById("id_imagesrcbig").value;
