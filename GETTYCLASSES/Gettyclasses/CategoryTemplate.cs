@@ -201,8 +201,10 @@ namespace Gettyclasses
 
             if (dt.Rows.Count > 0)
             {
-
-                data = dt.Rows[0]["Description"].ToString().Replace("'", "\'");
+                if (!string.IsNullOrEmpty(dt.Rows[0]["Description"].ToString()))
+                {
+                    data = HttpUtility.HtmlEncode(dt.Rows[0]["Description"].ToString());
+                }
             }
 
             return data;
