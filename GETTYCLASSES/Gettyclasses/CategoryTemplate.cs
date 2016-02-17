@@ -203,7 +203,9 @@ namespace Gettyclasses
             {
                 if (!string.IsNullOrEmpty(dt.Rows[0]["Description"].ToString()))
                 {
-                    data = HttpUtility.HtmlEncode(dt.Rows[0]["Description"].ToString());
+                   // data = HttpUtility.HtmlEncode(dt.Rows[0]["Description"].ToString());
+
+                    data = dt.Rows[0]["Description"].ToString();
                 }
             }
 
