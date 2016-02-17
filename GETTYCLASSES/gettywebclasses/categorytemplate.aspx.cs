@@ -12,7 +12,9 @@ namespace gettywebclasses
     {
         public string Strlinks = "",catalias="",siteid="",networkid="",catid="";
         string result = "";
-        public string catjson = "{}"; 
+        public string catjson = "{}";
+        public string quicklink = "{}";
+        public string catdesc = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             
@@ -25,6 +27,8 @@ namespace gettywebclasses
                 catid= Request.QueryString["catid"];
                 Strlinks = GetLink(siteid, networkid);
                 catjson = GetSubcatJson(siteid, networkid, catalias, catid);
+                quicklink = GetQuicklink(siteid, networkid, catid);
+                catdesc = CategoryDescription(siteid, networkid, catid);
                 if (!Page.IsPostBack)
                     SetTemplateData();
                 else
@@ -57,6 +61,20 @@ namespace gettywebclasses
             string data = "";
             CategoryTemplate obj = new CategoryTemplate();
             data = obj.GetSubcatJson( sid,  nwid,  catalias,  cid);
+            return data;
+        }
+        public string CategoryDescription(string sid, string nwid, string cid)
+        {
+            string data = "";
+            CategoryTemplate obj = new CategoryTemplate();
+            data = obj.CategoryDescription(sid, nwid, cid);
+            return data;
+        }
+        public string GetQuicklink(string sid, string nwid, string cid)
+        {
+            string data = "";
+            CategoryTemplate obj = new CategoryTemplate();
+            data = obj.CategoryQuickLink(sid, nwid,cid);
             return data;
         }
     }
