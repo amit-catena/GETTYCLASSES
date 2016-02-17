@@ -250,7 +250,7 @@ namespace Gettyclasses
                         }
                         else
                         {
-                            catpath = string.Format("{0}information/{1}{2}/", dr["siteurl"].ToString(), catpath, dr["Totitle"].ToString());
+                            catpath = string.Format("{0}/information/{1}{2}/", dr["siteurl"].ToString(), dr["CategoryPath"].ToString(), dr["Totitle"].ToString());
                         }
 
 
