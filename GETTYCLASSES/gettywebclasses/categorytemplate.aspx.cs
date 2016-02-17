@@ -12,6 +12,7 @@ namespace gettywebclasses
     {
         public string Strlinks = "",catalias="",siteid="",networkid="",catid="";
         string result = "";
+        public string catjson = "{}"; 
         protected void Page_Load(object sender, EventArgs e)
         {
             
@@ -23,6 +24,7 @@ namespace gettywebclasses
                 catalias = Request.QueryString["catname"];
                 catid= Request.QueryString["catid"];
                 Strlinks = GetLink(siteid, networkid);
+                catjson = GetSubcatJson(siteid, networkid, catalias, catid);
                 if (!Page.IsPostBack)
                     SetTemplateData();
                 else
@@ -49,6 +51,13 @@ namespace gettywebclasses
         {
             CategoryTemplate obj = new CategoryTemplate();
             ltData.Text = obj.GetTemplateDetails(catid, siteid, networkid);
+        }
+        public string GetSubcatJson(string sid, string nwid, string catalias, string cid)
+        {
+            string data = "";
+            CategoryTemplate obj = new CategoryTemplate();
+            data = obj.GetSubcatJson( sid,  nwid,  catalias,  cid);
+            return data;
         }
     }
 }

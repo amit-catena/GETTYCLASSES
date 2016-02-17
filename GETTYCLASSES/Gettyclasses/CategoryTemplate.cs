@@ -56,6 +56,90 @@ namespace Gettyclasses
             return data;
         }
 
+        public string GetSubcatJson(string sid, string nwid, string catalias, string cid)
+        {
+            StringBuilder sb = new StringBuilder();
+            string data = "", constr = "";
+            string catpath = "";
+            constr = commonfn.GetConnectionstring(nwid);
+
+            DataTable dt = new DataTable();
+            SqlParameter[] mypara ={
+                                       new SqlParameter("@siteid",SqlDbType.Int),
+                                        new SqlParameter("@catid",SqlDbType.Int)
+                                   };
+            mypara[0].Value = sid;
+            mypara[1].Value = cid;
+
+            using (SQLHelper obj = new SQLHelper(constr))
+            {
+                dt = obj.ExecuteDataTable("GetCategoryList", mypara);
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                int count = 0;
+                try
+                {
+                    sb.Append("{");
+                    sb.Append(string.Format("\"category\":\"{0}\",\"subcategory\":[", catalias));
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        catpath = "";
+
+                        if (r["cat_level"].ToString().Trim() == "1")
+                        {
+                            catpath = string.Format("{0}/{1}/{2}", r["SiteURL"].ToString(), "subcategory", r["CategoryPath"].ToString());
+                        }
+                        else
+                        {
+                            catpath = string.Format("{0}/{1}/{2}", r["SiteURL"].ToString(), "subcategory", r["CategoryPath"].ToString());
+                        }
+
+                        if (count != dt.Rows.Count-1)
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\"", r["CategoryAlias"].ToString().Replace("'",""), catpath));
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\"", r["CategoryAlias"].ToString().Replace("'",""), catpath));
+                            sb.Append("}");
+                        }
+                        count++;
+
+                       
+                    }
+                    sb.Append("]}");
+
+                }
+                catch
+                {
+                    sb = null;
+                    sb = new StringBuilder();
+                    sb.Append("{");
+                    sb.Append(string.Format("\"category\":\"{0}\",\"subcategory\":[]", catalias.Replace("'","")));
+                    sb.Append("}");
+                }
+            }
+            else
+            {
+                sb.Append("{");
+                sb.Append(string.Format("\"category\":\"{0}\",\"subcategory\":[]", catalias.Replace("'","")));
+                sb.Append("}");
+            }
+
+            data = sb.ToString(); sb = null;
+            
+
+            return data;
+        }
+
+
+
+
         public string GetTemplateDetails(string catid,string siteid, string networkid)
         {
             string data = "", constr = "";
