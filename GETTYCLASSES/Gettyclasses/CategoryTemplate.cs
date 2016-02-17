@@ -180,6 +180,118 @@ namespace Gettyclasses
             return data;
         }
 
+        public string CategoryDescription(string siteid, string networkid, string catid)
+        {
+            StringBuilder sb = new StringBuilder();
+            string data = "", constr = "";
+            constr = commonfn.GetConnectionstring(networkid);
+
+            DataTable dt = new DataTable();
+            SqlParameter[] mypara ={
+                                       new SqlParameter("@siteid",SqlDbType.Int),
+                                       new SqlParameter("@categoryid",SqlDbType.Int)                                       
+                                   };
+            mypara[0].Value = siteid;
+            mypara[1].Value = catid;
+
+            using (SQLHelper obj = new SQLHelper(constr))
+            {
+                dt = obj.ExecuteDataTable("Template_GetCategoryDescription", mypara);
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+
+                data = dt.Rows[0]["Description"].ToString().Replace("'", "\'");
+            }
+
+            return data;
+        }
+
+
+        public string CategoryQuickLink(string siteid, string networkid, string catid)
+        {
+            StringBuilder sb = new StringBuilder();
+            string data = "", constr = "";
+            constr = commonfn.GetConnectionstring(networkid);
+            try
+            {
+                DataTable dt = new DataTable();
+                SqlParameter[] mypara ={
+                                       new SqlParameter("@categoryid",SqlDbType.Int),
+                                       new SqlParameter("@SiteId",SqlDbType.Int)                                       
+                                   };
+                mypara[0].Value = catid;
+                mypara[1].Value = siteid;
+                string catpath = "", title = "";
+                using (SQLHelper obj = new SQLHelper(constr))
+                {
+                    dt = obj.ExecuteDataTable("DD_SP_GetCheltenhamInformationTitle", mypara);
+                }
+                int count = 0;
+                if (dt.Rows.Count > 0)
+                {
+
+                    sb.Append("{");
+                    sb.Append("\"quicklink\":[");
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        catpath = ""; title = "";
+
+                        if (!string.IsNullOrEmpty(dr["externallink"].ToString()))
+                        {
+                            catpath = dr["externallink"].ToString();
+                        }
+                        else if (!string.IsNullOrEmpty(dr["linkid"].ToString()) && dr["linkid"].ToString() != "0")
+                        {
+                            catpath = "http://www.caledonianmedia.com/sitestat.aspx?siteurl=" + dr["linkid"].ToString();
+                        }
+                        else
+                        {
+                            catpath = string.Format("{0}information/{1}{2}/", dr["siteurl"].ToString(), catpath, dr["Totitle"].ToString());
+                        }
+
+
+
+                        if (count != dt.Rows.Count - 1)
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\"", dr["Title"].ToString().Replace("'", ""), catpath));
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\"", dr["Title"].ToString().Replace("'", ""), catpath));
+                            sb.Append("}");
+                        }
+                        count++;
+
+
+                    }
+                    sb.Append("]}");
+                }
+                else
+                {
+                    sb.Append("{");
+                    sb.Append("\"quicklink\":[");
+                    sb.Append("]}");
+                }
+            }
+            catch
+            {
+
+                sb.Append("{");
+                sb.Append("\"quicklink\":[");
+                sb.Append("]}");
+            }
+
+            data = sb.ToString();
+
+            return data;
+        }
+
+
 
 
 
