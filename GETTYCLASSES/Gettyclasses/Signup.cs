@@ -162,6 +162,8 @@ namespace Gettyclasses
         public string ImageDate { get; set; }
         public string NetworkID { get; set; }
 
+        public string ImageIDS { get; set; }
+
         #endregion
         #region public methods::
         #region Sign up Details::
@@ -224,6 +226,7 @@ namespace Gettyclasses
                 msgPara[1].Value = this.ImageAlttext;
                 msgPara[2].Value = this.ImageID;
                 System.Configuration.ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(this.NetworkID);
+                
                 using (CommonLib.DAL dal = new CommonLib.DAL())
                     res = dal.ExecuteNonQuery("SP_PW_O_SignupFormMaster_UpdateImageDetails", CommandType.StoredProcedure, msgPara);
             }
@@ -268,25 +271,29 @@ namespace Gettyclasses
             int intid = 0;
             try
             {
-                if (this.ImageID > 0)
+                if (this.ImageIDS.Length > 0)
                 {
+                    System.Configuration.ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(this.NetworkID);
                     /*CommonLib.SqlParameterArray ParamArray = new CommonLib.SqlParameterArray();
                     ParamArray.Add("@imageid", this.ImageID, SqlDbType.Int);*/
-
-                    SqlParameter[] msgPara ={                          
+                    string[] arr = this.ImageIDS.Split(',');
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        SqlParameter[] msgPara ={                          
                                          new SqlParameter("@imageid",SqlDbType.Int)
                                         };
-                    msgPara[0].Value = this.ImageID;
-                    System.Configuration.ConfigurationSettings.AppSettings["connString"] = Function.GetnetworkConnectionstring(this.NetworkID);
-                    using (CommonLib.DAL dal = new CommonLib.DAL())
-                        intid = Convert.ToInt32(dal.ExecuteNonQuery("SP_O_PW_SignupFormMaster_DeleteImage", CommandType.StoredProcedure, msgPara));
-                    if (intid > 0)
-                    {
-                        boolReturn = true;
-                    }
-                    else
-                    {
-                        boolReturn = false;
+                        msgPara[0].Value = arr[i].ToString();
+                        
+                        using (CommonLib.DAL dal = new CommonLib.DAL())
+                            intid = Convert.ToInt32(dal.ExecuteNonQuery("SP_O_PW_SignupFormMaster_DeleteImage", CommandType.StoredProcedure, msgPara));
+                        if (intid > 0)
+                        {
+                            boolReturn = true;
+                        }
+                        else
+                        {
+                            boolReturn = false;
+                        }
                     }
                 }
             }
