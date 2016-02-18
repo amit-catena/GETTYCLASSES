@@ -17,9 +17,9 @@
 <body>
     <form id="ImageUploadform1" runat="server">
     <div>
-    <input type="hidden" id="id_image" />
-    <input type="hidden" id="id_imagesrc" />    
-    <input type="hidden" id="id_imagesrcbig" />    
+    <input type="hidden" id="id_image" runat="server" />
+    <input type="hidden" id="id_imagesrc" runat="server"/>    
+    <input type="hidden" id="id_imagesrcbig" runat="server"/>    
     <input type="hidden" id="idserver_image" runat="server" value="0" />
     <input type="hidden" id="idserver_templateid" runat="server" />
         <div class="upload-image">  
@@ -27,7 +27,9 @@
             
             <div class="left-side-menu">
             <div class="select-image"><asp:FileUpload runat="server" ID="FileUpload1" onchange="UploadFile()"  /></div>
-            <div class='imagediv'>
+            <div style="float:right;"><input type="checkbox" name="chkall" id="chkall" onchange="toggle(this)" />Toggle All</div>
+            <div style="height:30px;"></div>
+            <div class='imagediv'>            
             <asp:Literal runat="server" ID="ltsignupimages"></asp:Literal></div></div>
             <div class="right-side-menu">
             <div><span class="right-side-menu-left">Title: <asp:TextBox runat="server" ID="txttitle" class="right-side-menu-right"></asp:TextBox></span></div>                <div style="clear:both;"></div>   
@@ -35,7 +37,7 @@
             <div><span  class="right-side-menu-left">Date Uploaded: <asp:TextBox runat="server" ID="txtdateuploaded" ReadOnly="true" class="right-side-menu-right"></asp:TextBox></span></div>
             <div style="clear:both;"></div>
             <div><input type="button" class="right-side-menu-btn" id="btninsert" onclick="AddImageInParent()" value="Insert Image" />
-            <asp:Button runat="server" ID="btndelete" class="right-side-menu-btn-red"  Text="Delete" OnClick="DeleteImage" OnClientClick=" ShowLoading('Y');"/>
+            <asp:Button runat="server" ID="btndelete" class="right-side-menu-btn-red"  Text="Delete" OnClick="DeleteImage" OnClientClick="return ShowAlertDelete();"/>
             
             </div>
        </div>
@@ -44,7 +46,23 @@
     </div>
     </form>
     <script lang="javascript" type="text/javascript">
+        function toggle(source) {            
+            checkboxes = document.getElementsByName('fcheck[]');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {                
+                checkboxes[i].checked = source.checked;
+            }
+        }
 
+        function ShowAlertDelete() {
+            var result = confirm("Are you sure to delete selected picture(s)?");            
+            if (result == true) {
+                ShowLoading('Y')
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
         function UploadFile() {
             var value = $("#FileUpload1").val();
             if (value != '') {
@@ -53,7 +71,8 @@
             ShowLoading('Y');
         };
 
-        $("#ul_image li").click(function () {
+        $("#ul_image li").click(function (e) {
+            if (e.target.nodeName == 'INPUT') { return}
             imageid = this.id;
             imageurl = $(this).attr('data-url');
             imageurlbig = $(this).attr('data-bigurl');
@@ -68,6 +87,9 @@
             document.getElementById("txttitle").value = $(this).attr('data-name');
             document.getElementById("txtalttext").value = $(this).attr('data-alt');
         });
+        $("#ul_image li input[type='checkbox']").change(function (e) {
+            e.preventDefault();
+        })
 
         function AddImageInParent() {
             imageid = document.getElementById("idserver_image").value;

@@ -40,6 +40,33 @@ namespace gettywebclasses {
         protected global::System.Web.UI.HtmlControls.HtmlForm ImageUploadform1;
         
         /// <summary>
+        /// id_image control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden id_image;
+        
+        /// <summary>
+        /// id_imagesrc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden id_imagesrc;
+        
+        /// <summary>
+        /// id_imagesrcbig control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden id_imagesrcbig;
+        
+        /// <summary>
         /// idserver_image control.
         /// </summary>
         /// <remarks>

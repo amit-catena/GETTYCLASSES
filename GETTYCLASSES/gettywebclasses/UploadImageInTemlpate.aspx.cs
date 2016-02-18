@@ -157,15 +157,24 @@ namespace gettywebclasses
         #region :: methods ::
         protected void DeleteImage(object sender, EventArgs e)
         {
+            string path = string.Empty;
             try
             {
                 using (Signup objsignup = new Signup())
                 {
-                    objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
-                    bool flag = objsignup.DeleteImage();
-                    idserver_image.Value = "0";
-                    ltsignupimages.Text = LoadAllImages();
-                    CommonLib.JavaScriptHandler.RegisterScriptForSM("ShowLoading('N');", true);
+                   // objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
+                    if(null!=Request.Form["fcheck[]"])
+						{
+							path = Request.Form["fcheck[]"].ToString().Trim();
+						}
+                    if (path.Trim().Length > 0)
+                    {
+                        objsignup.ImageIDS = path.Trim();
+                        bool flag = objsignup.DeleteImage();
+                        idserver_image.Value = "0";
+                        ltsignupimages.Text = LoadAllImages();
+                        CommonLib.JavaScriptHandler.RegisterScriptForSM("ShowLoading('N');", true);
+                    }
                 }
             }
             catch(Exception ex)
@@ -180,8 +189,9 @@ namespace gettywebclasses
             StringBuilder str = new StringBuilder();
             string imageurl = string.Empty;
             string bigimageurl = string.Empty;
+            int r = 1;
             try
-            {
+            {                
                 using (Signup objsignup = new Signup())
                 {                    
                     int siteid = Convert.ToInt32(Session["signup_siteid"].ToString());                 
@@ -199,7 +209,22 @@ namespace gettywebclasses
                                 string date = dt.ToString("MMMM d, yyyy");
                                 imageurl = ConfigurationSettings.AppSettings["baseurl"] + sitefldname + "/" + dr["imagedate"].ToString() + dr["imagename"].ToString();
                                 bigimageurl = ConfigurationSettings.AppSettings["baseurl"] + sitefldname + "/" + dr["imagedate"].ToString() + "TN_" + dr["imagename"].ToString();
-                                str.Append("<li data-date='" + date + "' data-alt='" + dr["ImageAlttext"].ToString() + "' data-name='" + dr["imagetitle"].ToString() + "' data-url='" + imageurl + "' data-bigurl='" + bigimageurl + "' id='" + dr["imageid"].ToString() + "'><img src='" + imageurl + "' border='0' width='200' height='200' /></li>");
+                                if (r == 1)
+                                {
+                                    str.Append("<li class='li_selected' data-date='" + date + "' data-alt='" + dr["ImageAlttext"].ToString() + "' data-name='" + dr["imagetitle"].ToString() + "' data-url='" + imageurl + "' data-bigurl='" + bigimageurl + "' id='" + dr["imageid"].ToString() + "'><img src='" + imageurl + "' border='0' width='200' height='200' /><input type ='checkbox' name = 'fcheck[]' value ='" + dr["imageid"].ToString() + "'></li>");
+
+                                    id_image.Value = dr["imageid"].ToString();
+                                    idserver_image.Value = dr["imageid"].ToString();
+                                    id_imagesrc.Value = imageurl;
+                                    id_imagesrcbig.Value = bigimageurl;
+
+                                    txtdateuploaded.Text = date;
+                                    txttitle.Text = dr["imagetitle"].ToString();
+                                    txtalttext.Text = dr["ImageAlttext"].ToString();
+                                }
+                                else
+                                    str.Append("<li data-date='" + date + "' data-alt='" + dr["ImageAlttext"].ToString() + "' data-name='" + dr["imagetitle"].ToString() + "' data-url='" + imageurl + "' data-bigurl='" + bigimageurl + "' id='" + dr["imageid"].ToString() + "'><img src='" + imageurl + "' border='0' width='200' height='200' /><input type ='checkbox' name = 'fcheck[]' value ='" + dr["imageid"].ToString() + "'></li>");
+                                r++;
                             }
                             str.Append("</ul>");
                         }
