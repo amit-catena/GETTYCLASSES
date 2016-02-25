@@ -15,6 +15,7 @@ namespace gettywebclasses
         public string catjson = "{}";
         public string quicklink = "{}";
         public string catdesc = "";
+        public string centraltableurl = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             
@@ -29,6 +30,7 @@ namespace gettywebclasses
                 catjson = GetSubcatJson(siteid, networkid, catalias, catid);
                 quicklink = GetQuicklink(siteid, networkid, catid);
                 catdesc = CategoryDescription(siteid, networkid, catid);
+                centraltableurl=string.Format("http://admin.writersllc.com/posttableindesc.aspx?siteid={0}&networkid={1}&userid=1&temp=1",siteid,networkid);
                 if (!Page.IsPostBack)
                     SetTemplateData();
                 else
