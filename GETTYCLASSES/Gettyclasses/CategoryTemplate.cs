@@ -296,6 +296,143 @@ namespace Gettyclasses
         }
 
 
+        public string GetAllCategorriesSubcategoriesJson(string siteid, string networkid)
+        {
+            DataTable dtcatlist = new DataTable();
+            StringBuilder sb = new StringBuilder();
+            string data="[]";
+            int count = 0;
+            dtcatlist = GetCategoryList(siteid, networkid);
+
+            if (dtcatlist.Rows.Count > 0)
+            {
+                sb.Append("[");
+                count = 0;
+                foreach (DataRow dr in dtcatlist.Rows)
+                {
+                    
+                    sb.Append("{");
+                    sb.Append(string.Format("\"categoryid\":\"{3}\",\"category\":\"{0}\",\"caturl\":\"{1}/category/{2}\"", dr["CategoryAlias"].ToString(), dr["SiteUrl"].ToString(), dr["CategoryPath"].ToString(), dr["Categoryid"].ToString()));
+                    sb.Append(GetSubcatJsonObject(dr["Categoryid"].ToString(), siteid, networkid));
+                    if (count != dtcatlist.Rows.Count - 1)
+                    {
+                        sb.Append("},");
+                    }
+                    else
+                    {
+                        sb.Append("}");
+                    }
+                    count++;
+                }
+                sb.Append("]");
+            }
+
+
+            data = sb.ToString(); sb = null;
+
+            return data;
+
+        }
+
+        public string GetSubcatJsonObject(string catid, string siteid, string networkid)
+        {
+            StringBuilder sb = new StringBuilder();
+            string data = "", constr = "";
+            string catpath = "";
+            constr = commonfn.GetConnectionstring(networkid);
+
+            DataTable dt = new DataTable();
+            SqlParameter[] mypara ={
+                                       new SqlParameter("@siteid",SqlDbType.Int),
+                                        new SqlParameter("@catid",SqlDbType.Int)
+                                   };
+            mypara[0].Value = siteid;
+            mypara[1].Value = catid;
+
+            using (SQLHelper obj = new SQLHelper(constr))
+            {
+                dt = obj.ExecuteDataTable("GetCategoryList", mypara);
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                int count = 0;
+                try
+                {
+                    //sb.Append(",{");
+                    sb.Append(",\"subcategory\":[");
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        catpath = "";
+
+                        if (r["cat_level"].ToString().Trim() == "1")
+                        {
+                            catpath = string.Format("{0}/{1}/{2}", r["SiteURL"].ToString(), "subcategory", r["CategoryPath"].ToString());
+                        }
+                        else
+                        {
+                            catpath = string.Format("{0}/{1}/{2}", r["SiteURL"].ToString(), "subcategory", r["CategoryPath"].ToString());
+                        }
+
+                        if (count != dt.Rows.Count - 1)
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\"", r["CategoryAlias"].ToString().Replace("'", ""), catpath));
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\"", r["CategoryAlias"].ToString().Replace("'", ""), catpath));
+                            sb.Append("}");
+                        }
+                        count++;
+
+
+                    }
+                    sb.Append("]");
+
+                }
+                catch
+                {
+                    sb = null;
+                    sb = new StringBuilder();
+                    sb.Append(",\"subcategory\":[]");
+                }
+            }
+            else
+            {
+               
+                sb.Append(",\"subcategory\":[]");
+                
+            }
+
+            data = sb.ToString(); sb = null;
+
+
+            return data;
+        }
+
+        public DataTable GetCategoryList(string siteid, string networkid)
+        {
+            DataTable dt = new DataTable();
+            string constr;
+            constr = commonfn.GetConnectionstring(networkid);
+
+            
+            SqlParameter[] mypara ={
+                                       new SqlParameter("@siteid",SqlDbType.Int)                               
+                                   };
+            mypara[0].Value = siteid;
+         
+
+            using (SQLHelper obj = new SQLHelper(constr))
+            {
+                dt = obj.ExecuteDataTable("GetCategoryListForTemplate", mypara);
+            }
+            return dt;
+
+        }
 
 
 

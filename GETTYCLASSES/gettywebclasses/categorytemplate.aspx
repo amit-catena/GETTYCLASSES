@@ -70,6 +70,7 @@
 <script>
     $('#linker').html(hyperLinks + '<select id="linktarget" name="linktarget"><option value="_blank">Blank</option><option value="_self">Self</option></select><button type="button" onmousedown="forMat(\'link\')">Ok</button> ')
     var catjson = '<%=catjson %>';
+    var allcatsubcatjson=`<%=allcatsubcatjson %>`;
     $(".datasave").click(function () {
         var catid = '<%=catid%>';
         var siteid = '<%=siteid%>';

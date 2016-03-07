@@ -16,6 +16,7 @@ namespace gettywebclasses
         public string quicklink = "{}";
         public string catdesc = "";
         public string centraltableurl = "";
+        public string allcatsubcatjson = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             
@@ -30,6 +31,7 @@ namespace gettywebclasses
                 catjson = GetSubcatJson(siteid, networkid, catalias, catid);
                 quicklink = GetQuicklink(siteid, networkid, catid);
                 catdesc = CategoryDescription(siteid, networkid, catid);
+                allcatsubcatjson = GetAllcategorySubcategoryJson(siteid, networkid); 
                 centraltableurl=string.Format("http://admin.writersllc.com/posttableindesc.aspx?siteid={0}&networkid={1}&userid=1&temp=1",siteid,networkid);
                 if (!Page.IsPostBack)
                     SetTemplateData();
@@ -77,6 +79,14 @@ namespace gettywebclasses
             string data = "";
             CategoryTemplate obj = new CategoryTemplate();
             data = obj.CategoryQuickLink(sid, nwid,cid);
+            return data;
+        }
+
+        public string GetAllcategorySubcategoryJson(string sid, string nwid)
+        {
+            string data = "";
+            CategoryTemplate obj = new CategoryTemplate();
+            data = obj.GetAllCategorriesSubcategoriesJson(sid, nwid);
             return data;
         }
     }
