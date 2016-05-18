@@ -20,6 +20,7 @@ namespace gettywebclasses
         
         public string _strcookiename = string.Empty;
         public string _strSiteID = string.Empty;
+        public string _strisApp = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -44,6 +45,11 @@ namespace gettywebclasses
                     _strcookiename = Request.QueryString["randomID"].ToString();
                 }
 
+                if (null != Request.QueryString["isapp"])
+                {
+                    _strisApp = Request.QueryString["isapp"].ToString();
+                }
+
                 if (imagefileupload.PostedFile.ContentLength > 0)
                 {
 
@@ -53,12 +59,24 @@ namespace gettywebclasses
                     string[] strarry = imagedate.Split('/');
                     monthyearfolder = strarry[0];
                     dayfolder = strarry[1];
-                    dir = dir + "gamingappstore/NEWS/" + monthyearfolder + "/" + dayfolder + "/";
+                    if (!string.IsNullOrEmpty(_strisApp) && _strisApp == "y")
+                    {
+                        dir = dir + "gamingappstore/AppImages/";
+                    }
+                    else
+                    {
+                        dir = dir + "gamingappstore/NEWS/" + monthyearfolder + "/" + dayfolder + "/";
+                    }
+
                     string ext = Path.GetExtension(imagefileupload.PostedFile.FileName);
                     filename = DateTime.Now.ToString("yyyyMMddHHmmss") + ext;
                     imagefileupload.PostedFile.SaveAs(dir + filename);
+                    imagefileupload.PostedFile.SaveAs(dir + "org_" + filename);
 
-                    SaveThumbnailCompress(filename, dir, true);
+                    string Tnname = Function.SaveThumbnailCompress("org_" + filename, filename, dir, "TN_", 300, 225);
+                    Function.SaveThumbnailCompress("org_" + filename, filename, dir, "TN_TN_", 128, 85);
+
+                    //SaveThumbnailCompress(filename, dir, true);
 
                     using (apkadddetailsmgmt objMgt = new apkadddetailsmgmt())
                     {
