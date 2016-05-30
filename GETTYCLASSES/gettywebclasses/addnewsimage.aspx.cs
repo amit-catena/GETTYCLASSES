@@ -21,6 +21,7 @@ namespace gettywebclasses
         public string _strcookiename = string.Empty;
         public string _strSiteID = string.Empty;
         public string _strisApp = string.Empty;
+        public string _strisUser = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -50,6 +51,11 @@ namespace gettywebclasses
                     _strisApp = Request.QueryString["isapp"].ToString();
                 }
 
+                if (null != Request.QueryString["isuser"])
+                {
+                    _strisUser = Request.QueryString["isuser"].ToString();
+                }
+
                 if (imagefileupload.PostedFile.ContentLength > 0)
                 {
 
@@ -62,6 +68,15 @@ namespace gettywebclasses
                     if (!string.IsNullOrEmpty(_strisApp) && _strisApp == "y")
                     {
                         dir = dir + "gamingappstore/AppImages/";
+                    }
+                    else if (!string.IsNullOrEmpty(_strisUser) && _strisUser == "y")
+                    {
+                        
+                        if (!Directory.Exists(dir + "gamingappstore/Users"))
+                        {
+                            Directory.CreateDirectory(dir + "gamingappstore/Users");
+                        }
+                        dir = dir + "gamingappstore/Users/";
                     }
                     else
                     {

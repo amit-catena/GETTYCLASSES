@@ -19,13 +19,22 @@
             color: #333333;
             text-decoration: none;
         }
-        .text
-        {
+        .text {
+            margin: 6px 0px 0px 7px;
+            padding: 2px;
             padding-left: 5px;
             font-size: 11px;
+            Color: black;
+            font-family: Verdana,Arial,Helvetica,sans-serif;
+        }
+        
+        .textbold {
+            padding-left: 5px;
+            Font-size: 11px;
             color: black;
-            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-family: Verdana,Arial,Helvetica,sans-serif;
             text-align: left;
+            font-weight: bold;
         }
     </style>
 </head>
