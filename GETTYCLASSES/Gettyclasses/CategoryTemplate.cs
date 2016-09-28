@@ -595,6 +595,7 @@ namespace Gettyclasses
 
                 }
                 sb.Append("]");
+                data = sb.ToString(); sb = null;
             }
             else
             {
