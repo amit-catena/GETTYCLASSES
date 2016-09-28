@@ -535,11 +535,18 @@ namespace Gettyclasses
             using (SQLHelper obj = new SQLHelper(constr))
             {
                 dt = obj.ExecuteDataTable("GetALLsports", mypara);
+                
+           
+                
                 if(dt.Rows.Count>0)
                 {
                     int count = 0;
+
+                    DataView view = new DataView(dt);
+                    DataTable distinctValues = view.ToTable(true, "sportid", "alias");
+
                      sb.Append("[");
-                    foreach(DataRow d in dt.Rows)
+                     foreach (DataRow d in distinctValues.Rows)
                     {
                          if (count != dt.Rows.Count - 1)
                         {
