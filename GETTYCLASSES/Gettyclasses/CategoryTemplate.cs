@@ -595,7 +595,8 @@ namespace Gettyclasses
 
                 }
                 sb.Append("]");
-                data = sb.ToString(); sb = null;
+                data = string.Format(",\"leagues\":{0}",sb.ToString());
+                sb = null;
             }
             else
             {
