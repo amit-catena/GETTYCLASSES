@@ -94,7 +94,7 @@ namespace gettywebclasses
         {
             string data = "";
             CategoryTemplate obj = new CategoryTemplate();
-            //data = obj.Getallsports();
+            data = obj.Getallsports();
             if (string.IsNullOrEmpty(data))
                 data = "[]";
             return data;

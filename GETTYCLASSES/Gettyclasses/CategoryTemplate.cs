@@ -544,13 +544,15 @@ namespace Gettyclasses
                          if (count != dt.Rows.Count - 1)
                         {
                             sb.Append("{");
-                            sb.Append(string.Format("\"sportID\":\"{0}\",\"sportname\":\"{1}\"", Convert.ToString(d["Sportid"]), Convert.ToString(d["alias"])));
+                            sb.Append(string.Format("\"sportid\":\"{0}\",\"sportname\":\"{1}\"", Convert.ToString(d["Sportid"]), Convert.ToString(d["alias"])));
+                            sb.Append(getLeagues(dt, Convert.ToString(d["Sportid"])));
                             sb.Append("},");
                         }
                         else
                         {
                             sb.Append("{");
-                            sb.Append(string.Format("\"sportID\":\"{0}\",\"sportname\":\"{1}\"", Convert.ToString(d["Sportid"]), Convert.ToString(d["alias"])));
+                            sb.Append(string.Format("\"sportid\":\"{0}\",\"sportname\":\"{1}\"", Convert.ToString(d["Sportid"]), Convert.ToString(d["alias"])));
+                            sb.Append(getLeagues(dt, Convert.ToString(d["Sportid"])));
                             sb.Append("}");
                         }
                         count++;
@@ -561,6 +563,45 @@ namespace Gettyclasses
             }
             data = sb.ToString(); sb = null;
             return  data;
+        }
+
+        public string getLeagues(DataTable dtSp, string sportid)
+        {
+            DataRow[] dr;
+            StringBuilder sb = new StringBuilder(); 
+            string data = "";
+            dr = dtSp.Select("sportid=" + sportid);
+
+            if (dr.Length > 0)
+            {
+                int count = 0;
+                sb.Append("[");
+                foreach (DataRow d in dr)
+                {
+                    if (count != dr.Length - 1)
+                    {
+                        sb.Append("{");
+                        sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"])));
+                        
+                        sb.Append("},");
+                    }
+                    else
+                    {
+                        sb.Append("{");
+                        sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"])));
+                        sb.Append("}");
+                    }
+                    count++;
+
+                }
+                sb.Append("]");
+            }
+            else
+            {
+                data = ",\"leagues\":[]";
+            }
+
+            return data;
         }
 
 
