@@ -581,14 +581,14 @@ namespace Gettyclasses
                     if (count != dr.Length - 1)
                     {
                         sb.Append("{");
-                        sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"])));
+                        sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"]).Replace("'","")));
                         
                         sb.Append("},");
                     }
                     else
                     {
                         sb.Append("{");
-                        sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"])));
+                        sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"]).Replace("'", "")));
                         sb.Append("}");
                     }
                     count++;
