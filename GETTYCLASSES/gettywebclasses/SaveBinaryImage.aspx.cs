@@ -24,16 +24,17 @@ namespace gettywebclasses
             try
             {
                 baseurl = ConfigurationSettings.AppSettings["baseurl"];
-                if (!Page.IsPostBack)
+                if (Page.IsPostBack)
                 {
                     if (!string.IsNullOrEmpty(txtbinarydata.Value))
                     {
                         string imageName = "cp-"+DateTime.Now.ToString("ddMMyyyyHHmmsss") + ".jpg";
-                        string dir = MapPath("../images/");
+                        string dir = Server.MapPath("~/images/");
                         string imgpath = dir + imageName;
                         #region :: Base64 ::
                         string strImg = txtbinarydata.Value;
                         strImg = strImg.Replace("data:image/png;base64,", "");
+                        strImg = strImg.Replace("data:image/jpeg;base64,", "");
                         if (strImg.Trim().Length > 0)
                             Base64ToImage(strImg).Save(imgpath, System.Drawing.Imaging.ImageFormat.Jpeg);
 
@@ -46,6 +47,7 @@ namespace gettywebclasses
             catch (Exception ex)
             {
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "SaveBinaryImage.aspx.cs IsnotPostback", ex);
+                Page.RegisterStartupScript("onsave", "<script>GetImagePath('error'); console.log('error');</script>");
             }     
         }
 

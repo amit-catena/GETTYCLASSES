@@ -12,6 +12,8 @@ using System.Text;
 using System.Net;
 using System.IO;
 using CommonLib;
+using Newtonsoft.Json;
+using System.Collections.Generic; 
 
 namespace Gettyclasses
 {
@@ -377,15 +379,18 @@ namespace Gettyclasses
                         if (count != dt.Rows.Count - 1)
                         {
                             sb.Append("{");
-                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\"", r["CategoryAlias"].ToString().Replace("'", ""), catpath));
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\",\"subcatid\":\"{2}\"", r["CategoryAlias"].ToString().Replace("'", ""), catpath, r["CategoryId"].ToString()));
+                            sb.Append(GetSubSubcatJsonObject(r["CategoryId"].ToString(), siteid, networkid)); 
                             sb.Append("},");
                         }
                         else
                         {
                             sb.Append("{");
-                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\"", r["CategoryAlias"].ToString().Replace("'", ""), catpath));
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\",\"subcatid\":\"{2}\"", r["CategoryAlias"].ToString().Replace("'", ""), catpath, r["CategoryId"].ToString()));
+                            sb.Append(GetSubSubcatJsonObject(r["CategoryId"].ToString(), siteid, networkid));
                             sb.Append("}");
                         }
+
                         count++;
 
 
@@ -433,6 +438,132 @@ namespace Gettyclasses
             return dt;
 
         }
+
+        public string GetSubSubcatJsonObject(string catid, string siteid, string networkid)
+        {
+            StringBuilder sb = new StringBuilder();
+            string data = "", constr = "";
+            string catpath = "";
+            constr = commonfn.GetConnectionstring(networkid);
+
+            DataTable dt = new DataTable();
+            SqlParameter[] mypara ={
+                                       new SqlParameter("@siteid",SqlDbType.Int),
+                                        new SqlParameter("@catid",SqlDbType.Int)
+                                   };
+            mypara[0].Value = siteid;
+            mypara[1].Value = catid;
+
+            using (SQLHelper obj = new SQLHelper(constr))
+            {
+                dt = obj.ExecuteDataTable("GetCategoryList", mypara);
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                int count = 0;
+                try
+                {
+                    //sb.Append(",{");
+                    sb.Append(",\"subsubcategory\":[");
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        catpath = "";
+
+                        if (r["cat_level"].ToString().Trim() == "1")
+                        {
+                            catpath = string.Format("{0}/{1}/{2}", r["SiteURL"].ToString(), "subcategory", r["CategoryPath"].ToString());
+                        }
+                        else
+                        {
+                            catpath = string.Format("{0}/{1}/{2}", r["SiteURL"].ToString(), "subcategory", r["CategoryPath"].ToString());
+                        }
+
+                        if (count != dt.Rows.Count - 1)
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\",\"subcatid\":\"{2}\"", r["CategoryAlias"].ToString().Replace("'", ""), catpath, r["CategoryId"].ToString()));
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"catname\":\"{0}\",\"link\":\"{1}\",\"subcatid\":\"{2}\"", r["CategoryAlias"].ToString().Replace("'", ""), catpath, r["CategoryId"].ToString()));
+                            sb.Append("}");
+                        }
+                        count++;
+
+
+                    }
+                    sb.Append("]");
+
+                }
+                catch
+                {
+                    sb = null;
+                    sb = new StringBuilder();
+                    sb.Append(",\"subsubcategory\":[]");
+                }
+            }
+            else
+            {
+
+                sb.Append(",\"subsubcategory\":[]");
+
+            }
+
+            data = sb.ToString(); sb = null;
+
+
+            return data;
+        }
+
+
+        public string Getallsports()
+        {
+
+            StringBuilder sb = new StringBuilder();
+            List<string> Ls=new List<string>(); 
+            string data = "", constr = "";
+            string catpath = "";
+            constr = commonfn.Getstreamconnstring();
+            DataTable dt = new DataTable();
+            SqlParameter[] mypara ={
+                                       new SqlParameter("@siteid",SqlDbType.Int)
+                                   };
+            mypara[0].Value = 1;
+            using (SQLHelper obj = new SQLHelper(constr))
+            {
+                dt = obj.ExecuteDataTable("GetALLsports", mypara);
+                if(dt.Rows.Count>0)
+                {
+                    int count = 0;
+                     sb.Append("[");
+                    foreach(DataRow d in dt.Rows)
+                    {
+                         if (count != dt.Rows.Count - 1)
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"sportID\":\"{0}\",\"sportname\":\"{1}\"", Convert.ToString(d["Sportid"]), Convert.ToString(d["alias"])));
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"sportID\":\"{0}\",\"sportname\":\"{1}\"", Convert.ToString(d["Sportid"]), Convert.ToString(d["alias"])));
+                            sb.Append("}");
+                        }
+                        count++;
+
+                    }
+                    sb.Append("]");
+                }
+            }
+            data = sb.ToString(); sb = null;
+            return  data;
+        }
+
+
 
 
 

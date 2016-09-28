@@ -11,7 +11,8 @@ using ConnectExample.Samples;
 using System.Net;
 using System.Configuration;
 using CommonLib;
-using System.Web.UI.HtmlControls; 
+using System.Web.UI.HtmlControls;
+using System.Web.Services;
 
 namespace gettywebclasses
 {
@@ -26,6 +27,10 @@ namespace gettywebclasses
         public string _strnews = string.Empty;
         public static string _redirecturl = string.Empty;
         public static int _intstartval;
+        public string _sessionselected = string.Empty;
+        private static List<String> _lilist = new List<String>();
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (null != Request.QueryString["NwtID"])
@@ -41,6 +46,7 @@ namespace gettywebclasses
             if (null != Request.QueryString["randomID"])
             {
                 _strcookiename = Request.QueryString["randomID"].ToString();
+                commonfn.setSession("_strcookiename", _strcookiename);
             }
             if (null != Request.QueryString["NewsID"])
             {
@@ -54,6 +60,8 @@ namespace gettywebclasses
             }
             if (!Page.IsPostBack)
             {
+                HttpContext.Current.Session["_dt"] = null;
+                _lilist = new List<String>();
                 if (_intstartval > 75)
                 {
                     prev.Visible = true;
@@ -86,10 +94,8 @@ namespace gettywebclasses
                 //Response.Write("_intstartval " + _intstartval+"</br>");  
                 _objdata._intstartcnt = _intstartval;
                 _objdata._strorientation = RDchkbox.SelectedValue;
-                //new changes
                 //var _data = _objdata.GetimageDatalist();
                 var _data = _objdata.GetimageDatalist_withdaterange();
-
                 if (_data.Count > 0)
                 {
                     gettydata.DataSource = _data;
@@ -104,13 +110,132 @@ namespace gettywebclasses
                     gettydata.DataSource = null;
                     ltscript.Text = "Sorry no records found.";
                 }
-
+                _data = null;
                 UpdatePanel1.Update();
             }
             catch (Exception ex)
             {
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "btnsearch_Click :", ex);
-                ErrorLog.SaveErrorLog(_strSiteID, "singleimage", "btnsearch_Click", "btnsearch_Click", ex.Message, _networkid.ToString());
+            }
+        }
+        /// <summary>
+        /// item data bound on datalist
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void gettydata_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+
+            Literal _html = (Literal)e.Item.FindControl("lthtml");
+            _html.Text = @"<a href='" + (string)DataBinder.Eval(e.Item.DataItem, "UrlPreview") + @"' id='htmlA' >
+                                <img src='" + _baseURL + @"images/spacer.gif'    data-original='" + HttpUtility.HtmlDecode((string)DataBinder.Eval(e.Item.DataItem, "UrlThumb")).Replace("&amp;", "&") + @"'   class='lazy' id='_imgtemp' runat='server'    />
+                            </a>";
+
+            if (_lilist.Count > 0)
+            {
+                foreach (DataListItem _chk in gettydata.Items)
+                {
+                    HtmlInputCheckBox _selchk = _chk.FindControl("chkimg") as HtmlInputCheckBox;
+                    if (_lilist.Contains(_selchk.Value))
+                    {
+                        _selchk.Checked = true;
+                    }
+                }
+            }
+
+
+        }
+
+        protected void btnalbum_Click(object sender, EventArgs e)
+        {
+
+            DataTable _dt = new DataTable();
+            List<string> _sellist = new List<string>();
+            try
+            {
+                if (null != Request.QueryString["NwtID"])
+                {
+                    _networkid = Function.GetnetworkID(Request.QueryString["NwtID"].ToString());
+                }
+
+                if (null != Request.QueryString["SiteId"])
+                {
+                    _strSiteID = Request.QueryString["SiteId"].ToString();
+                }
+
+                if (null != Request.QueryString["randomID"])
+                {
+                    _strcookiename = Request.QueryString["randomID"].ToString();
+                }
+                if (null != Request.QueryString["NewsID"])
+                {
+                    _intnewsID = Convert.ToInt32(Request.QueryString["NewsID"].ToString());
+                }
+
+                if (null != Request.QueryString["url"])
+                {
+                    _redirecturl = HttpUtility.UrlDecode(Request.QueryString["url"].ToString());
+                    _redirecturl = _redirecturl.Replace("&amp;", "&");
+                }
+                if (null != Request.QueryString["news"])
+                {
+                    _strnews = Request.QueryString["news"].ToString();
+                }
+                /* List<string> _imagesselect = new List<string>();
+                 foreach (DataListItem _chk in gettydata.Items)
+                 {
+                     HtmlInputCheckBox _selchk = _chk.FindControl("chkimg") as HtmlInputCheckBox;
+                     if (_selchk.Checked)
+                     {
+                         _imagesselect.Add(_selchk.Value);
+                     }
+                 }*/
+                //get download seleted images
+                Getimagedata _objdata = new Getimagedata();
+                _objdata._strsiteID = !string.IsNullOrEmpty(_strSiteID) ? _strSiteID : "1";
+                _objdata._strnetworkID = _networkid;
+                _objdata._strrandomecookie = _strcookiename;
+                _objdata._strnewsID = _intnewsID;
+                _objdata._strnews = _strnews;
+
+                if (null != HttpContext.Current.Session["_dt"])
+                {
+                    _dt = (DataTable)HttpContext.Current.Session["_dt"];
+                    foreach (DataRow _dtval in _dt.Rows)
+                    {
+                        _sellist.Add(_dtval["ImageID"].ToString());
+                    }
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert('" + _sellist.Count + "!');", true);
+                }
+                if (_sellist.Count > 0)
+                {
+                    if (_objdata.GetdownloadimagesFromEditors(_sellist))
+                    {
+                        _sellist.Clear();
+                        if (null != HttpContext.Current.Session["_dt"])
+                        {
+                            HttpContext.Current.Session["_dt"] = null;
+                        }
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "close", "javascript:self.close()", true);
+                    }
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert('Please select image!');", true);
+                    UpdatePanel1.Update();
+                }
+
+                //_imagesselect.Clear();
+
+            }
+            catch (Exception ex)
+            {
+                if (_sellist.Count > 0)
+                {
+                    _sellist.Clear(); 
+                }
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "btnsearch_Click :", ex);
+                ErrorLog.SaveErrorLog(_strSiteID, "postmultipleimages", "GoWebshot", "GoWebshot", ex.Message, _networkid.ToString());
             }
         }
 
@@ -124,9 +249,10 @@ namespace gettywebclasses
                 //ScriptManager.RegisterStartupScript(this, this.GetType(), "print", "alert(" + _intstartval + ");", true);
                 _intstartval = _intstartval + 75;
                 prev.Visible = true;
+
                 _objdata._intstartcnt = _intstartval;
                 _objdata._strorientation = RDchkbox.SelectedValue;
-                // var _data = _objdata.GetimageDatalist();
+                //var _data = _objdata.GetimageDatalist();
                 var _data = _objdata.GetimageDatalist_withdaterange();
                 if (_data.Count > 0)
                 {
@@ -147,8 +273,7 @@ namespace gettywebclasses
             catch (Exception ex)
             {
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "btnsearch_Click :", ex);
-                ErrorLog.SaveErrorLog(_strSiteID, "singleimage", "btnsearch_Click", "btnmore_Click", ex.Message, _networkid.ToString());
-
+                ErrorLog.SaveErrorLog(_strSiteID, "postmultipleimages", "GoWebshot", "GoWebshot", ex.Message, _networkid.ToString());
             }
         }
         protected void btnprev_Click(object sender, EventArgs e)
@@ -187,7 +312,7 @@ namespace gettywebclasses
             catch (Exception ex)
             {
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "btnsearch_Click :", ex);
-                ErrorLog.SaveErrorLog(_strSiteID, "singleimage", "btnsearch_Click", "btnprev_Click", ex.Message, _networkid.ToString());
+                ErrorLog.SaveErrorLog(_strSiteID, "postmultipleimages", "GoWebshot", "GoWebshot", ex.Message, _networkid.ToString());
             }
         }
 
@@ -226,7 +351,7 @@ namespace gettywebclasses
             catch (Exception ex)
             {
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "btnsearch_Click :", ex);
-                ErrorLog.SaveErrorLog(_strSiteID, "singleimage", "RDchkbox_SelectedIndexChanged", "RDchkbox_SelectedIndexChanged", ex.Message, _networkid.ToString());
+                ErrorLog.SaveErrorLog(_strSiteID, "postmultipleimages", "GoWebshot", "GoWebshot", ex.Message, _networkid.ToString());
             }
 
         }
@@ -235,6 +360,7 @@ namespace gettywebclasses
         {
             try
             {
+                _lilist = new List<string>();
                 txtsearch.Text = "";
                 _intstartval = 0;
                 prev.Visible = false;
@@ -250,83 +376,129 @@ namespace gettywebclasses
             }
         }
 
-        /// <summary>
-        /// item data bound on datalist
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void gettydata_ItemDataBound(object sender, DataListItemEventArgs e)
+        [WebMethod]
+        public static string ProcessIT(string _val, bool _chk)
         {
-
-            Literal _html = (Literal)e.Item.FindControl("lthtml");
-            _html.Text = @"<a href='" + (string)DataBinder.Eval(e.Item.DataItem, "UrlPreview") + @"' id='htmlA' >
-                                <img src='" + _baseURL + @"images/spacer.gif'    data-original='" + HttpUtility.HtmlDecode((string)DataBinder.Eval(e.Item.DataItem, "UrlThumb")).Replace("&amp;", "&") + @"'   class='lazy' id='_imgtemp' runat='server'    />
-                            </a>";
-        }
-
-        protected void rd_selectedbtn(object sender, EventArgs e)
-        {
-            try
+            string result = "false";
+            string _tbkey = string.Empty;
+            string _tbval = string.Empty;
+            //create data table
+            DataTable _dt = new DataTable();
+            //find out in session
+            if (null != HttpContext.Current.Session["_dt"])
             {
-                if (null != Request.QueryString["NwtID"])
+                _dt = (DataTable)HttpContext.Current.Session["_dt"] as DataTable;
+                if (_chk)
                 {
-                    _networkid = Function.GetnetworkID(Request.QueryString["NwtID"].ToString());
-                }
-
-                if (null != Request.QueryString["SiteId"])
-                {
-                    _strSiteID = Request.QueryString["SiteId"].ToString();
-                }
-
-                if (null != Request.QueryString["randomID"])
-                {
-                    _strcookiename = Request.QueryString["randomID"].ToString();
-                }
-                if (null != Request.QueryString["NewsID"])
-                {
-                    _intnewsID = Convert.ToInt32(Request.QueryString["NewsID"].ToString());
+                    //maintain staic values
+                    _lilist.Add(_val);
+                    //result = "true";
+                    //get randomnumber twitterID 
+                    _tbkey = "Img" + RandomNumber(422, 40000);
+                    //data value for twitter embeded code
+                    _tbval = _val;
+                    result = "true";
                 }
                 else
                 {
-                    _intnewsID = 0;
+                    //remove images from  staic values
+                    if (_lilist.Contains(_val))
+                        _lilist.Remove(_val);
+                    DataRow[] drr = _dt.Select("ImageID=' " + _val + " ' ");
+                    for (int i = 0; i < drr.Length; i++)
+                        drr[i].Delete();
+                    _dt.AcceptChanges();
+                    result = "false";
                 }
-                if (null != Request.QueryString["url"])
-                {
-                    _redirecturl = HttpUtility.UrlDecode(Request.QueryString["url"].ToString());
-                    _redirecturl = _redirecturl.Replace("&amp;", "&");
-                }
-                if (null != Request.QueryString["news"])
-                {
-                    _strnews = Request.QueryString["news"].ToString();
-                }
-                List<string> _imagesselect = new List<string>();
-                foreach (DataListItem _chk in gettydata.Items)
-                {
-                    RadioButton _selchk = _chk.FindControl("Rdselect") as RadioButton;
-                    if (_selchk.Checked)
-                    {
-                        HtmlInputHidden _selectedID = _chk.FindControl("btnselectId") as HtmlInputHidden;
-                        _imagesselect.Add(_selectedID.Value);
-                        Getimagedata _objdata = new Getimagedata();
-                        _objdata._strsiteID = !string.IsNullOrEmpty(_strSiteID) ? _strSiteID : "1";
-                        _objdata._strnetworkID = _networkid;
-                        _objdata._strrandomecookie = _strcookiename;
-                        _objdata._strnewsID = _intnewsID;
-                        _objdata._strnews = _strnews;
-                        //getdownload images.
-                        if (_objdata.GetdownloadNewsletterimage(_imagesselect))
-                        {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "selfclose", "javascript:self.close()", true);
-                        }
-                        break;
-                    }
-                }
+
+                //genrate row in datatable
+                _dt = DynamicRows(_dt, _tbkey, _tbval);
+                HttpContext.Current.Session["_dt"] = _dt;//stored datatable in session
             }
-            catch (Exception ex)
+            else
             {
-                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "btnsearch_Click :", ex);
-                ErrorLog.SaveErrorLog(_strSiteID, "singleimage", "rd_selectedbtn", "rd_selectedbtn", ex.Message, _networkid.ToString());
+                //maintain staic values
+                _lilist.Add(_val);
+                _dt = DynamicColumns();//genrate first time colomn in datatable
+                //get randomnumber twitterID 
+                _tbkey = "Img" + RandomNumber(422, 40000);
+                //data value for twitter embeded code
+                _tbval = _val;
+                //genrate row in datatable
+                _dt = DynamicRows(_dt, _tbkey, _tbval);
+                HttpContext.Current.Session["_dt"] = _dt;//stored datatable in session
+                result = "true";
             }
+
+            /* if (_sessiondata != "0" && !string.IsNullOrEmpty(_sessiondata))
+             {
+                 if (_sessiondata == getsessiondata)
+                 {
+                     if (_lilist.Count > 0)
+                     {
+                         if (_chk)
+                         {
+                             _lilist.Add(_val);
+                             result = "true";
+                         }
+                         else
+                         {
+                             if (_lilist.Contains(_val))
+                                 _lilist.Remove(_val);
+                             result = "false";
+                         }
+
+                     }
+                     else
+                     {
+                         if (_chk)
+                         {
+                             _lilist.Add(_val);
+                             result = "true";
+                         }
+
+                     }
+
+                 }
+
+             }*/
+
+
+
+            return result;
+        }
+
+        public static DataTable DynamicRows(object dynamicDataTable, string RandonTwitId, string TwitterText)
+        {
+            // Use Existing DataTable
+            DataTable dt = (DataTable)dynamicDataTable;
+            //Add Rows
+            DataRow row = dt.NewRow();
+            row["RandonimageId"] = RandonTwitId;
+            row["ImageID"] = TwitterText;
+            dt.Rows.Add(row);
+            return dt;
+        }
+
+
+        public static DataTable DynamicColumns()
+        {
+            // Define the new datatable
+            DataTable dt = new DataTable();
+            // Define 2 columns
+            DataColumn dc;
+            dc = new DataColumn("RandonimageId");
+            dt.Columns.Add(dc);
+            dc = new DataColumn("ImageID");
+            dt.Columns.Add(dc);
+            return dt;
+        }
+
+
+        public static int RandomNumber(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min, max);
         }
     }
 }

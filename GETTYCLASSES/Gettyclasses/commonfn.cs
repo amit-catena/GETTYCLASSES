@@ -117,6 +117,7 @@ namespace Gettyclasses
             return true;
         }
 
+
         public static string GetConnectionstring(string Network_ID)
         {
             string _nwtstring = string.Empty;
@@ -124,34 +125,34 @@ namespace Gettyclasses
             {
                 switch (Network_ID)
                 {
-                    case "1":
+                    case "Network1":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network1"].ToString();
                         break;
-                    case "2":
+                    case "Network2":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network2"].ToString();
                         break;
-                    case "3":
+                    case "Network3":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network3"].ToString();
                         break;
-                    case "4":
+                    case "Network4":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network4"].ToString();
                         break;
-                    case "5":
+                    case "Network5":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network5"].ToString();
                         break;
-                    case "6":
+                    case "Network6":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network6"].ToString();
                         break;
-                    case "7":
+                    case "Network7":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network7"].ToString();
                         break;
-                    case "8":
+                    case "Network8":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network8"].ToString();
                         break;
-                    case "9":
+                    case "Network9":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network9"].ToString();
                         break;
-                    case "10":
+                    case "Network10":
                         _nwtstring = System.Configuration.ConfigurationSettings.AppSettings["Network10"].ToString();
                         break;
                 }
@@ -163,6 +164,13 @@ namespace Gettyclasses
 
             }
             return _nwtstring;
+        }
+
+        public static string Getstreamconnstring()
+        {
+            string strconn = string.Empty;
+            strconn = System.Configuration.ConfigurationSettings.AppSettings["streamconn"].ToString();
+            return strconn;
         }
         #endregion
 

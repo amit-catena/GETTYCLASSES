@@ -17,6 +17,7 @@ namespace gettywebclasses
         public string catdesc = "";
         public string centraltableurl = "";
         public string allcatsubcatjson = "";
+        public string Allsports = "[]";
         protected void Page_Load(object sender, EventArgs e)
         {
             
@@ -42,8 +43,7 @@ namespace gettywebclasses
                     if (result == "saved")
                         Page.RegisterStartupScript("onsave", "<script>closePOP();</script>");
                 }
-                
-
+                Allsports = GetAllSportsJson();
             }
         }
 
@@ -87,6 +87,16 @@ namespace gettywebclasses
             string data = "";
             CategoryTemplate obj = new CategoryTemplate();
             data = obj.GetAllCategorriesSubcategoriesJson(sid, nwid);
+            return data;
+        }
+
+        public string GetAllSportsJson()
+        {
+            string data = "";
+            CategoryTemplate obj = new CategoryTemplate();
+            //data = obj.Getallsports();
+            if (string.IsNullOrEmpty(data))
+                data = "[]";
             return data;
         }
     }
