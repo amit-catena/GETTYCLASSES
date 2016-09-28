@@ -548,7 +548,7 @@ namespace Gettyclasses
                      sb.Append("[");
                      foreach (DataRow d in distinctValues.Rows)
                     {
-                         if (count != dt.Rows.Count - 1)
+                        if (count != distinctValues.Rows.Count - 1)
                         {
                             sb.Append("{");
                             sb.Append(string.Format("\"sportid\":\"{0}\",\"sportname\":\"{1}\"", Convert.ToString(d["Sportid"]), Convert.ToString(d["alias"])));
