@@ -1,0 +1,42 @@
+<div class="container" flow-init flow-file-added="fileAdded($file, $event, $flow  )">
+    <div class="homewrap">
+        <div class="error" ng-if="$flow.files.length>limit">You have chosen more than {{limit}} images. Delete unwanted images below.</div>
+        <div class="drop" >
+            <div id="dropBox" flow-drop flow-drag-enter="style={border:'2px dashed #9C0'}" flow-drag-leave="style={}" ng-style="style">
+
+                <md-button type="button" class="md-raised md-primary" flow-btn>Upload File</md-button>
+                <b>OR</b>
+                Drag And Drop your file here
+            </div>
+            <ul class="imageList">
+                <li ng-repeat="file in $flow.files" ng-class="{'opac':$index>limit-1}">
+                    <img flow-img="file">
+                    <!--<a class="btn btn-small btn-info" ng-click="remove($flow, file)">Remove</a>-->
+                    <md-button type="button" class="md-fab md-mini" ng-click="remove($flow, file)" aria-label="Remove">
+                        <md-icon md-svg-src="{{baseUrl}}superevent/app/close_24px.svg"></md-icon>
+                    </md-button>
+                </li>
+            </ul>
+        </div>
+        <div class="gettyWrap" ng-hide="$flow.files.length">
+        <div class="Or"></div>
+            <md-button type="button" class="md-raised md-primary gettyBtn" ng-click="goGetty()">Search Gettyimages</md-button>
+        </div>
+    </div>
+    <div class="bean" ng-if="existsImg">
+    <h4>Existing Images</h4>
+        <ul>
+            <li ng-repeat="item in existsImg">
+                <img ng-src="{{imgPath}}{{item.title}}"  />
+                <md-button type="button" class="md-fab md-mini" ng-click="removeImg($index, item.id)" aria-label="Remove">
+                        <md-icon md-svg-src="{{baseUrl}}superevent/app/close_24px.svg"></md-icon>
+                    </md-button>
+            </li>
+        </ul>
+    </div>
+    <div class="footer" ng-if="$flow.files.length">
+        <div class="footerHold">
+            <md-button type="button" class="md-raised md-primary" ng-click="uploadSingle()">Upload Selected Image</md-button>            
+        </div>
+    </div>
+</div>
