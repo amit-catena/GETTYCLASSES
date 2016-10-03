@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="app/bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app/app.css">
   <script src="app/bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
 </head>
 <body ng-app="myApp" flow-prevent-drop>
     <form id="form1" runat="server">
@@ -20,12 +21,15 @@
     
      <asp:Button ID="btnSave" runat="server" Text="Submit" OnClick="btnsave_Click" />     
     </div>
-    </form>
-    <script>
+     <script>
         var jsondata = <%=jsondata %>;
         var baseurl = "<%=baseurl%>";
       //  var sport=window.location.search.split('sport=')[1].toLowerCase();
          var  sport='';
+       
+         function closePOP() {        
+         parent.postMessage('closewin', '*');
+         }
         
         /* 
         function DeleteImages(_supereventids) {
@@ -51,6 +55,8 @@
         */
 
     </script>
+    </form>
+   
     <script src="app/bower_components/angular/angular.min.js"></script>
   <script src="app/bower_components/angular-route/angular-route.min.js"></script>
   <script src="app/js/app-single.js"></script>
@@ -58,9 +64,9 @@
   <script src="app/bower_components/flow.js/dist/ng-flow.js"></script>
   
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-aria.min.js"></script>
-<script src="app/js/angular-material.js"></script>
-<link rel="stylesheet" href="app/js/angular-material.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-aria.min.js"></script>
+  <script src="app/js/angular-material.js"></script>
+  <link rel="stylesheet" href="app/js/angular-material.min.css">
   <link rel="stylesheet" href="app/bower_components/darkroomjs/build/darkroom.css">
 </body>
 </html>
