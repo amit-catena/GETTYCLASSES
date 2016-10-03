@@ -577,35 +577,43 @@ namespace Gettyclasses
             DataRow[] dr;
             StringBuilder sb = new StringBuilder(); 
             string data = "";
-            dr = dtSp.Select("sportid=" + sportid);
 
-            if (dr.Length > 0)
+            try
             {
-                int count = 0;
-                sb.Append("[");
-                foreach (DataRow d in dr)
-                {
-                    if (count != dr.Length - 1)
-                    {
-                        sb.Append("{");
-                        sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"]).Replace("'","")));
-                        
-                        sb.Append("},");
-                    }
-                    else
-                    {
-                        sb.Append("{");
-                        sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"]).Replace("'", "")));
-                        sb.Append("}");
-                    }
-                    count++;
+                dr = dtSp.Select(string.Format("sportid={0} and eventgroupid <> 0 ",sportid));
 
+                if (dr.Length > 0)
+                {
+                    int count = 0;
+                    sb.Append("[");
+                    foreach (DataRow d in dr)
+                    {
+                        if (count != dr.Length - 1)
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"]).Replace("'", "")));
+
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"lid\":\"{0}\",\"lname\":\"{1}\"", Convert.ToString(d["eventgroupid"]), Convert.ToString(d["eventgroupname"]).Replace("'", "")));
+                            sb.Append("}");
+                        }
+                        count++;
+
+                    }
+                    sb.Append("]");
+                    data = string.Format(",\"leagues\":{0}", sb.ToString());
+                    sb = null;
                 }
-                sb.Append("]");
-                data = string.Format(",\"leagues\":{0}",sb.ToString());
-                sb = null;
+                else
+                {
+                    data = ",\"leagues\":[]";
+                }
             }
-            else
+            catch
             {
                 data = ",\"leagues\":[]";
             }
