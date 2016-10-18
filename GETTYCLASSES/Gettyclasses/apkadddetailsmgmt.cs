@@ -217,6 +217,45 @@ namespace Gettyclasses
                 CommonLib.ExceptionHandler.WriteLog(Sections.BLL, "", ex);
             }
         }
+
+        public void SaveTwitterImage(string randomid, string siteid, string imagedate, string imagename)
+        {
+            int rowsaffected = 0;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["twitterscheduler"]);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "PR_SP_SaveTweetImage";
+                cmd.Connection = con;
+
+                SqlParameter[] param = { 
+                                            new SqlParameter("@RandomId", SqlDbType.VarChar),
+                                            new SqlParameter("@SiteId", SqlDbType.Int),
+                                            new SqlParameter("@imagedate",SqlDbType.VarChar),
+                                            new SqlParameter("@imagename",SqlDbType.VarChar)
+                                       };
+
+                param[0].Value = randomid;
+                param[1].Value = Convert.ToInt32(siteid);
+                param[2].Value = (imagedate == null) ? "" : imagedate;
+                param[3].Value = imagename == null ? "" : imagename;
+
+                for (int i = 0; i < param.Length; i++)
+                {
+                    cmd.Parameters.Add(param[i]);
+                }
+                con.Open();
+                rowsaffected = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+
+                CommonLib.ExceptionHandler.WriteLog(Sections.BLL, "", ex);
+            }
+        }
+
         #endregion
 
         #region :: gettyimages ::
