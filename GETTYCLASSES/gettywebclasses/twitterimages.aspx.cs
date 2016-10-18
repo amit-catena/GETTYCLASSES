@@ -51,9 +51,9 @@ namespace gettywebclasses
                     imagedate = GetImageFolderNameToUpload();
                     
                     if (_strtweetimg == "y")
-                        dir = dir + "TwitterScheduler/Tweets/";
-                    else 
-                        dir = dir + "TwitterScheduler/Handles/";
+                        dir = dir + ConfigurationSettings.AppSettings["TweetImageFolder"] + "/";
+                    else
+                        dir = dir + ConfigurationSettings.AppSettings["HandleImageFolder"] + "/";
 
                     string ext = Path.GetExtension(imagefileupload.PostedFile.FileName);
                     filename = DateTime.Now.ToString("yyyyMMddHHmmss") + ext;
@@ -99,16 +99,16 @@ namespace gettywebclasses
                 string folder = string.Empty;
 
                 if (_strtweetimg == "y")
-                    folder = "TwitterScheduler/Tweets";
+                    folder = ConfigurationSettings.AppSettings["TweetImageFolder"];
                 else
-                    folder = "TwitterScheduler/Handles";
+                    folder = ConfigurationSettings.AppSettings["HandleImageFolder"];
 
                 if (!Directory.Exists(dir + folder + "/" + monthyearfolder + "/" + dayfolder))
                 {
 
-                    if (!Directory.Exists(dir + "TwitterScheduler"))
+                    if (!Directory.Exists(dir + "Racingtweets"))
                     {
-                        Directory.CreateDirectory(dir + "TwitterScheduler");
+                        Directory.CreateDirectory(dir + "Racingtweets");
                     }
 
                     if (!Directory.Exists(dir + folder ))
