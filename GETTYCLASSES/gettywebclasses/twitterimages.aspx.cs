@@ -12,6 +12,7 @@ using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Net;
 
 namespace gettywebclasses
 {
@@ -23,8 +24,67 @@ namespace gettywebclasses
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Request.QueryString["copy"] != null && Request.QueryString["copy"] == "y")
+            {
+                CopyTwitterImages();
+            }
         }
+
+        private void CopyTwitterImages()
+        {
+            DataTable dt = new DataTable();
+            string dir = ConfigurationSettings.AppSettings["newImagePath"];
+            string folder = ConfigurationSettings.AppSettings["TweetImageFolder"];
+            try
+            {
+                using (apkadddetailsmgmt apk = new apkadddetailsmgmt())
+                {
+                    dt = apk.GetTwitterImagesData();
+                }
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+
+                        if (!Directory.Exists(dir + folder + "/" + Convert.ToString(dr["ImagePath"])))
+                        {
+                            Directory.CreateDirectory(dir + folder + "/" + Convert.ToString(dr["ImagePath"]));
+                        }
+                        
+                        try
+                        {
+                            string imagepath = dir + folder + "/" + Convert.ToString(dr["ImagePath"]) + Convert.ToString(dr["ImageName"]);
+                            Uri uri = new Uri("http://handle.racingtweets.com/Images/tweetimages/" + Convert.ToString(dr["ImageName"]));
+                            //Uri uri = new Uri("http://192.168.10.54/twitterscheduler/Images/tweetimages/" + Convert.ToString(dr["ImageName"]));
+                            using (WebClient client = new WebClient())
+                                client.DownloadFile(uri, imagepath);
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+
+
+                        try
+                        {
+                            string imagepath = dir + folder + "/" + Convert.ToString(dr["ImagePath"]) + "TN_" + Convert.ToString(dr["ImageName"]);
+                            Uri uri = new Uri("http://handle.racingtweets.com/Images/tweetimages/TN_" + Convert.ToString(dr["ImageName"]));
+                            //Uri uri = new Uri("http://192.168.10.54/twitterscheduler/Images/tweetimages/TN_" + Convert.ToString(dr["ImageName"]));
+                            using (WebClient client = new WebClient())
+                                client.DownloadFile(uri, imagepath);
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+
+                    }
+                    
+                }
+            }
+            catch (Exception ex)
+            { 
+            }
+        }
+
         protected void btnsubmit_click(object sender, EventArgs e)
         {
             string imagedate = "";

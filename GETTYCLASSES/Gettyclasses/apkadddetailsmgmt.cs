@@ -256,6 +256,26 @@ namespace Gettyclasses
             }
         }
 
+        public DataTable GetTwitterImagesData()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["twitterscheduler"]);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "Select TweetId, ImageName, ImagePath From Tweets Where Len(ImageName) > 0  And Len(ImagePath) > 0  Order By TweetId";
+                cmd.Connection = con;
+                SqlDataAdapter adpt = new SqlDataAdapter(cmd);
+                adpt.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+
+                CommonLib.ExceptionHandler.WriteLog(Sections.BLL, "", ex);
+            }
+            return dt;
+        }
         #endregion
 
         #region :: gettyimages ::
