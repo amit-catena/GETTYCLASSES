@@ -165,11 +165,17 @@ namespace Gettyclasses
             }
             return _nwtstring;
         }
-
+        
         public static string Getstreamconnstring()
         {
             string strconn = string.Empty;
             strconn = System.Configuration.ConfigurationSettings.AppSettings["streamconn"].ToString();
+            return strconn;
+        }
+        public static string GetAdsenseconnstring()
+        {
+            string strconn = string.Empty;
+            strconn = System.Configuration.ConfigurationSettings.AppSettings["Adsensestring"].ToString();
             return strconn;
         }
         #endregion

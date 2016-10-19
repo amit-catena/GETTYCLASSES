@@ -621,6 +621,59 @@ namespace Gettyclasses
             return data;
         }
 
+        public string GetallTicketsports()
+        {
+
+            StringBuilder sb = new StringBuilder();
+            List<string> Ls = new List<string>();
+            string data = "", constr = "";
+            string catpath = "";
+            constr = commonfn.GetAdsenseconnstring();
+            DataTable dt = new DataTable();
+            DataTable distinctValues= new DataTable(); 
+            SqlParameter[] mypara ={
+                                       new SqlParameter("@siteid",SqlDbType.Int)
+                                   };
+            mypara[0].Value = 1;
+            using (SQLHelper obj = new SQLHelper(constr))
+            {
+                distinctValues = obj.ExecuteDataTable("GetallTicketsports", mypara);
+                if (distinctValues.Rows.Count > 0)
+                {
+                    int count = 0;
+
+                    sb.Append("[");
+                    foreach (DataRow d in distinctValues.Rows)
+                    {
+                        if (count != distinctValues.Rows.Count)
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"sportid\":\"{0}\",\"sportname\":\"{1}\"", Convert.ToString(d["Sportid"]), Convert.ToString(d["classification"])));
+                            
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"sportid\":\"{0}\",\"sportname\":\"{1}\"", Convert.ToString(d["Sportid"]), Convert.ToString(d["classification"])));
+                           
+                            sb.Append("}");
+                        }
+                        count++;
+                    }
+                    sb.Append("]");
+                }
+                else
+                {
+                    sb.Append("[]");
+                }
+            }
+            
+            data = sb.ToString(); sb = null;
+            return data;
+        }
+
+
 
 
 
