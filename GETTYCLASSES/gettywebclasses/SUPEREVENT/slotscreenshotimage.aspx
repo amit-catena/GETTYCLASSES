@@ -66,7 +66,7 @@
   <script src="app/bower_components/angular-route/angular-route.min.js"></script>
   <script src="app/js/app-slot.js"></script>
   <script src="app/bower_components/fabric/dist/all.min.js"></script>
-  <script src="app/bower_components/darkroomjs/build/darkroom.js"></script>
+  <script src="app/bower_components/darkroomjs/build/slotdarkroom.js"></script>
   <script src="app/bower_components/flow.js/dist/ng-flow.js"></script>
   <script src="app/bower_components/angular-darkroom/dist/js/slotangular-darkroom.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-animate.min.js"></script>
