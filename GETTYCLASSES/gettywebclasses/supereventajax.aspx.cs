@@ -17,6 +17,12 @@ namespace gettywebclasses
                 case "supereventimages":
                     DeleteSuperEventimages(Request.Form["supereventids"]);
                     break;
+                case "appimages":
+                    DeleteAppImagesimages(Request.Form["appids"], Request.Form["siteid"]);
+                    break;
+                case "screenshotimages":
+                    DeleteScreenShotimages(Request.Form["slotids"]);
+                    break;
 
             }
         }
@@ -26,6 +32,22 @@ namespace gettywebclasses
             using (supereventimagesmgmt objsuper = new supereventimagesmgmt())
             {
                 objsuper.DeleteSuperEventImages(ids);
+            }
+        }
+
+        public void DeleteAppImagesimages(string ids,string siteid)
+        {
+            using (appimagemgmt obj = new appimagemgmt())
+            {
+                obj.DeleteAppImages(ids,siteid);
+            }
+        }
+
+        public void DeleteScreenShotimages(string ids)
+        {
+            using (slotmgmt obj = new slotmgmt())
+            {
+                obj.DeleteScreenshotImages(ids);
             }
         }
        
