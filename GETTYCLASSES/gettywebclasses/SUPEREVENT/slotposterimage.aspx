@@ -1,6 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="slotscreenshotimage.aspx.cs" Inherits="gettywebclasses.superevent.slotscreenshotimage" %>
-
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="slotposterimage.aspx.cs" Inherits="gettywebclasses.superevent.slotposterimage" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
@@ -12,9 +10,9 @@
   <link rel="stylesheet" href="app/app.css">
   <script src="app/bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
     <script type="text/javascript">
-   function closePOP() {        
-         parent.postMessage('closewin', '*');
-         }
+        function closePOP() {
+            parent.postMessage('closewin', '*');
+        }
 </script>
 </head>
 <body ng-app="myApp" flow-prevent-drop>
@@ -31,26 +29,24 @@
     </div>
     </form>
     <script>
-       
+
         var jsondata = null;
         var baseurl = "<%=baseurl%>";
-       // var sport=window.location.search.split('sport=')[1].toLowerCase();
-         var sport='';
-        
-        function DeleteImages(_supereventids) {
-         
-            
-            $.ajax({
+        // var sport=window.location.search.split('sport=')[1].toLowerCase();
+        var sport = '';
+
+        function DeleteImages(_supereventids) {        
+                $.ajax({
                 type: 'POST',
                 url: baseurl,
                 cache: false,
-                data: { type: 'supereventimages', supereventids: _supereventids},
+                data: { type: 'supereventimages', supereventids: _supereventids },
                 success: function (msg) {
                     if (msg != 0) {
-                      
+
                     }
                     else {
-                       
+
                     }
                 },
                 error: function (request, err) {
@@ -61,18 +57,20 @@
 
        
 
-    </script>
-   <script src="app/bower_components/angular/slotangular.min.js"></script>
+   </script>
+    
+  <script src="app/bower_components/angular/posterslotangular.min.js"></script>
   <script src="app/bower_components/angular-route/angular-route.min.js"></script>
-  <script src="app/js/app-slot.js"></script>
+  <script src="app/js/posterapp-slot.js"></script>
   <script src="app/bower_components/fabric/dist/all.min.js"></script>
-  <script src="app/bower_components/darkroomjs/build/slotdarkroom.js"></script>
+  <script src="app/bower_components/darkroomjs/build/posterslotdarkroom.js"></script>
   <script src="app/bower_components/flow.js/dist/ng-flow.js"></script>
-  <script src="app/bower_components/angular-darkroom/dist/js/slotangular-darkroom.min.js"></script>
+  <script src="app/bower_components/angular-darkroom/dist/js/posterslotangular-darkroom.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-animate.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-aria.min.js"></script>
   <script src="app/js/angular-material.js"></script>
-   <link rel="stylesheet" href="app/js/angular-material.min.css">
+  <link rel="stylesheet" href="app/js/angular-material.min.css">
   <link rel="stylesheet" href="app/bower_components/darkroomjs/build/darkroom.css">
+   
 </body>
 </html>

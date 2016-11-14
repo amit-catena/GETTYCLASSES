@@ -38,7 +38,7 @@ namespace Gettyclasses
 
             try
             {
-                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["gamingnetAdsenseconn"]);
+                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["Adsensestring"]);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "AN_SP_SlotHomePageImage_Save";
@@ -63,7 +63,7 @@ namespace Gettyclasses
 
             try
             {
-                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["gamingnetAdsenseconn"]);
+                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["Adsensestring"]);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "AN_SP_SlotScrrenShotImage_Save";
@@ -89,7 +89,7 @@ namespace Gettyclasses
             try
             {
                 SqlDataAdapter ada = new SqlDataAdapter();
-                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["gamingnetAdsenseconn"]);
+                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["Adsensestring"]);
                 SqlCommand cmd = new SqlCommand();
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -113,7 +113,7 @@ namespace Gettyclasses
 
             try
             {
-                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["gamingnetAdsenseconn"]);
+                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["Adsensestring"]);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "AN_SP_DeleteScreenshotImages";
@@ -153,6 +153,57 @@ namespace Gettyclasses
             }
             return dt;
         }
+
+        public int SavePosterImage(string slotid,string imagename)
+        {
+            int rowsaffected = 0;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["Adsensestring"]);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "AN_SP_SlotPosterImage_Save";
+                cmd.Connection = con;
+                cmd.Parameters.Add("@SlotId", SqlDbType.Int).Value = slotid;
+                cmd.Parameters.Add("@ImageName", SqlDbType.VarChar).Value = imagename;
+                con.Open();
+                rowsaffected = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "slotmgmt.cs SavePosterImage ", ex);
+            }
+            return rowsaffected;
+        }
+
+        public string GetSlotPosterImage(string slotid)
+        {
+            string imagename = "";
+            object objimage = null;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationSettings.AppSettings["Adsensestring"]);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "AN_SP_GetSlotPosterImage";
+                cmd.Connection = con;
+                cmd.Parameters.Add("@SlotId", SqlDbType.Int).Value = slotid;
+                con.Open();
+                objimage = cmd.ExecuteScalar();
+                if (objimage != null)
+                {
+                    imagename = objimage.ToString();
+                }
+                con.Close(); 
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "slotmgmt.cs GetSlotPosterImage ", ex);
+            }
+            return imagename;
+        }
+         
 
     }
 }
