@@ -22,7 +22,7 @@
      <asp:Button ID="btnSave" runat="server" Text="Submit" OnClick="btnsave_Click" />     
     </div>
      <script>
-        var jsondata = <%=jsondata %>;
+        var jsondata = null;
         var baseurl = "<%=baseurl%>";
       //  var sport=window.location.search.split('sport=')[1].toLowerCase();
          var  sport='';
