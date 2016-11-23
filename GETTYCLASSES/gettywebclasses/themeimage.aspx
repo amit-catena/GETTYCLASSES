@@ -15,11 +15,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div style="padding-left:20px">
+    <div style="padding-left:50px;padding-top:100px">
     <table cellpadding="3" cellspacing="0">
      <tr>
      <td>Theme Title</td>
-     <td><asp:TextBox  ID="txtthemeName" runat="server"></asp:TextBox></td>
+     <td>&nbsp;<asp:TextBox  ID="txtthemeName" runat="server"></asp:TextBox></td>
      </tr>       
      <tr>
      <td>Image</td>

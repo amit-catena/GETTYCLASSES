@@ -22,12 +22,12 @@ namespace gettywebclasses
             {
                 if (Request.QueryString["themeid"] != null && Request.QueryString["themeid"]!="0")
                 {
-                    SetDetails();
+                    //SetDetails();
                 }
             }
         }
 
-        public void SetDetails()
+       /* public void SetDetails()
         {
             DataTable dt = new DataTable(); 
             ThemeMgmt obj = new ThemeMgmt();
@@ -51,7 +51,7 @@ namespace gettywebclasses
             }
  
 
-        }
+        }*/
 
         protected void btnsave_Click(object sender, EventArgs e)
         {
@@ -82,10 +82,10 @@ namespace gettywebclasses
                 }
                 else
                 {
-                    if (ViewState["IMG"] != null)
+                    /*if (ViewState["IMG"] != null)
                     {
                         imageName = ViewState["IMG"].ToString();
-                    }
+                    }*/
                 }
 
                 ThemeMgmt obj = new ThemeMgmt();
