@@ -22,26 +22,26 @@ namespace gettywebclasses
             {
                 if (Request.QueryString["themeid"] != null && Request.QueryString["themeid"]!="0")
                 {
-                    //SetDetails();
+
+                    SetDetails();
                 }
             }
         }
 
-       /* public void SetDetails()
+       public void SetDetails()
         {
             DataTable dt = new DataTable(); 
             ThemeMgmt obj = new ThemeMgmt();
             try
             {
-                dt = obj.GetThemeDetails(Request.QueryString["themeid"]);
-                
+                dt = obj.GetThemeDetails(Request.QueryString["themeid"]);                
                 if (dt.Rows.Count > 0)
                 {
                     txtthemeName.Text = dt.Rows[0]["ThemeName"].ToString();
-
                     if (!string.IsNullOrEmpty(dt.Rows[0]["ImageName"].ToString()))
                     {
                         ViewState["IMG"] = dt.Rows[0]["ImageName"].ToString();
+                        ltimage.Text = "<img src='./commonreview/TN_" + dt.Rows[0]["ImageName"].ToString() + "' />";
                     }
                 }
             }
@@ -51,7 +51,7 @@ namespace gettywebclasses
             }
  
 
-        }*/
+        }
 
         protected void btnsave_Click(object sender, EventArgs e)
         {
@@ -73,7 +73,7 @@ namespace gettywebclasses
                     imageName = GetimageName();
                     try
                     {
-                        SaveThumbnail(imageName, "commonreview");
+                        SaveThumbnail(imageName);
                     }
                     catch
                     {
@@ -82,10 +82,7 @@ namespace gettywebclasses
                 }
                 else
                 {
-                    /*if (ViewState["IMG"] != null)
-                    {
-                        imageName = ViewState["IMG"].ToString();
-                    }*/
+                    imageName = ViewState["IMG"].ToString();
                 }
 
                 ThemeMgmt obj = new ThemeMgmt();
@@ -128,37 +125,19 @@ namespace gettywebclasses
         }
 
 
-        private string SaveThumbnail(string img, string sitename)
+        private string SaveThumbnail(string img)
         {
 
             string imgpath = "";
             string albumPath = "";
+            imgpath = MapPath("~/commonreview/" + img);
+            albumPath = MapPath("~/commonreview/");
 
-
-
-            imgpath = MapPath("./" + sitename + "/" + img);
-            albumPath = MapPath("./" + sitename + "/");
-
-          
-            int iwidth = System.Drawing.Image.FromFile(imgpath).Width;
-            int iheight = System.Drawing.Image.FromFile(imgpath).Height;
-            int jheight = 105;
-            int jwidth = 148;
-            if (iwidth < jwidth)
-                jwidth = iwidth;
-            if (iheight < jheight)
-                jheight = iheight;
-
-            if (iheight > iwidth)
-            {
-                double xx = (iwidth * jheight) / iheight;
-                jwidth = int.Parse(xx.ToString());
-            }
-            else
-            {
-                double xx = (iheight * jwidth) / iwidth;
-                jheight = int.Parse(xx.ToString());
-            }
+            int jheight = System.Drawing.Image.FromFile(imgpath).Height;
+            int jwidthAct = System.Drawing.Image.FromFile(imgpath).Width;
+            double ratio = (double)jheight / (double)jwidthAct;
+            int jwidth = 200;
+            double calHeight = jwidth * ratio;
 
             string ImgFilePath = img;
             string uriName = Path.GetFileName(imgpath);
@@ -170,7 +149,7 @@ namespace gettywebclasses
             try
             {
                 SourceBitmap = new Bitmap(albumPath + uriName);
-                thumbnail = SourceBitmap.GetThumbnailImage(jwidth, jheight, null, IntPtr.Zero);
+                thumbnail = SourceBitmap.GetThumbnailImage(jwidth, Convert.ToInt32(Math.Round(calHeight)), null, IntPtr.Zero);
                 FileStream fs = File.Create(albumPath + fnameHRW);
                 thumbnail.Save(fs, SourceBitmap.RawFormat);
                 fs.Flush();
@@ -181,66 +160,11 @@ namespace gettywebclasses
             }
             finally
             {
-                SourceBitmap.GetThumbnailImage(jwidth, jheight, null, IntPtr.Zero).Dispose();
+                SourceBitmap.GetThumbnailImage(jwidth, Convert.ToInt32(Math.Round(calHeight)), null, IntPtr.Zero).Dispose();
                 thumbnail.Dispose();
                 SourceBitmap.Dispose();
             }
 
-            try
-            {
-                int kheight = 166;
-                int kwidth = 240;
-                //string fnameTN  = Path.GetFileName(imgpath);
-                //create image object
-                System.Drawing.Image newthumb = System.Drawing.Image.FromFile(imgpath);
-                if (iwidth < kwidth)
-                    kwidth = iwidth;
-                if (iheight < kheight)
-                    kheight = iheight;
-
-                if (iheight > iwidth)
-                {
-                    double xx = (iwidth * kheight) / iheight;
-                    kwidth = int.Parse(xx.ToString());
-                }
-                else
-                {
-                    double xx = (iheight * kwidth) / iwidth;
-                    kheight = int.Parse(xx.ToString());
-                }
-                Bitmap objbitmap = null;
-                try
-                {
-                    //new code for smooth image
-                    objbitmap = new Bitmap(kwidth, kheight);
-
-                    System.Drawing.Graphics objgr = System.Drawing.Graphics.FromImage(objbitmap);                    
-
-                    objgr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-
-                    System.Drawing.Rectangle rectDestination = new System.Drawing.Rectangle(0, 0, kwidth, kheight);
-
-                    objgr.DrawImage(newthumb, rectDestination);
-
-                    //pass destination of file
-                    string newimage = albumPath + "TNCat_" + fnameHRW;
-                    objbitmap.Save(newimage);
-                    //dispose objects                    
-                }
-                catch (Exception excp)
-                {
-                    Response.Write(excp.ToString());
-                }
-                finally
-                {
-                    objbitmap.Dispose();
-                    newthumb.Dispose();
-                }
-            }
-            catch (Exception excp)
-            {
-
-            }
             return "TN_" + img;
         }
 

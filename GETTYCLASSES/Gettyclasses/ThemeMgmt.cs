@@ -19,7 +19,7 @@ namespace Gettyclasses
 
            using (SQLHelper obj = new SQLHelper(ConfigurationSettings.AppSettings["Adsensestring"]))
            {
-               dt = obj.ExecuteDataTable("SELECT ThemeId,ThemeName,ImageName FROM SlotTheme WHERE status<>'Y' and ThemeId =" + id);
+               dt = obj.ExecuteDataTable("SELECT ThemeId,ThemeName,ImageName FROM SlotTheme WHERE status = 'Y' and ThemeId =" + id);
            }
            return dt;
 
