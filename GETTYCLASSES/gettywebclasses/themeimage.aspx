@@ -36,24 +36,40 @@
     <table cellpadding="3" cellspacing="0">
      <tr>
      <td>Theme Title</td>
-     <td>&nbsp;<asp:TextBox  ID="txtthemeName" runat="server" Columns="50"></asp:TextBox></td>
+     <td><asp:TextBox  ID="txtthemeName" runat="server" Columns="50" style='border: 1px solid #ccc;
+    padding-left: 5px;'></asp:TextBox></td>
      </tr>       
      <tr>
      <td>Image</td>
      <td><asp:FileUpload ID="file1" runat="server" /> </td>
      </tr>
-     <tr>
-     <td></td>
-        <td> <asp:Button ID="Button1" runat="server" Text="Submit" OnClick="btnsave_Click" />     </td>
-     </tr>
-    <tr>
+      <tr>
     <td>Exist Image</td>
     <td><asp:Literal ID="ltimage" runat="server"></asp:Literal></td>
     </tr>
+    <tr><td>Hyperlink</td>
+    <td><asp:DropDownList ID="ddllink" runat="server" style='width:250px;'></asp:DropDownList></td>
+    </tr>
+    <tr>   
+  <td>Select your favorite color:</td>  
+  <td> <input type="color" name="favcolor" value="#ff0000" id="myColor">
+    
+    </tr>
+    <tr height='30px'></tr>
+     <tr>
+     
+     <td></td>
+        <td> <asp:Button ID="Button1" runat="server" Text="Submit" OnClick="btnsave_Click" />     </td>
+     </tr>
+   
     </table>
     </div>
     </div>
    <!-- </div> -->
     </form>
+    <script>
+        var color = '<%=_favcolor %>'
+        document.getElementById("myColor").value = color;
+    </script>
 </body>
 </html>

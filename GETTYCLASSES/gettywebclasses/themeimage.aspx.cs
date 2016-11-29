@@ -16,10 +16,12 @@ namespace gettywebclasses
 {
     public partial class themeimage : System.Web.UI.Page
     {
+        public string _favcolor = "#ff0000";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
+                FillLink();
                 if (Request.QueryString["themeid"] != null && Request.QueryString["themeid"]!="0")
                 {
 
@@ -42,6 +44,12 @@ namespace gettywebclasses
                     {
                         ViewState["IMG"] = dt.Rows[0]["ImageName"].ToString();
                         ltimage.Text = "<img src='./commonreview/TN_" + dt.Rows[0]["ImageName"].ToString() + "' />";
+                        _favcolor = dt.Rows[0]["color"].ToString();
+                        try
+                        {
+                            ddllink.SelectedValue = dt.Rows[0]["linkid"].ToString();
+                        }
+                        catch { }
                     }
                 }
             }
@@ -58,6 +66,7 @@ namespace gettywebclasses
             string themeid = "0";
             string name = "";
             string imageName = "";
+            string favcolor = "";
             try
             {
 
@@ -86,8 +95,8 @@ namespace gettywebclasses
                 }
 
                 ThemeMgmt obj = new ThemeMgmt();
-
-                if (obj.SaveThemeDetail(themeid, txtthemeName.Text, imageName))
+                favcolor = Request.Form["favcolor"].ToString();
+                if (obj.SaveThemeDetail(themeid, txtthemeName.Text, imageName,favcolor,ddllink.SelectedValue))
                         i = 2;
 
                 if (i > 0)
@@ -167,6 +176,28 @@ namespace gettywebclasses
 
             return "TN_" + img;
         }
+        public void FillLink()
+        {
+            try
+            {
+                ThemeMgmt obj = new ThemeMgmt();
+                DataTable dt = new DataTable();
+                dt=obj.GetWeloveHyperlink();
+                if (dt.Rows.Count > 0)
+                {
+                    ddllink.DataSource = dt;
+                    ddllink.DataTextField = "LinkName";
+                    ddllink.DataValueField = "LinkID";
+                    ddllink.DataBind();
+                }
+                ddllink.Items.Insert(0, new ListItem("-select link-", "0"));
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
 
     }
 }
