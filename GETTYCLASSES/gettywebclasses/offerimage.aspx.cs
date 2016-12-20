@@ -11,13 +11,20 @@ using System.Windows.Forms;
 using System.Net;
 using Gettyclasses;
 using System.Configuration;
-using System.Web.Services;
+ 
  
 
 namespace gettywebclasses
 {
     public partial class offerimage : System.Web.UI.Page
     {
+
+        public string baseurl = ConfigurationSettings.AppSettings["baseurl"];
+        public string topImagepath = string.Empty;
+        public static string MainFolder = "";
+        string base64String = "";
+        string strImageName = "";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
@@ -25,7 +32,7 @@ namespace gettywebclasses
                 try
                 {
 
-                    Capture();
+                    //Capture();
                 }
                 catch
                 {
@@ -33,6 +40,43 @@ namespace gettywebclasses
                 }
                
             }
+            else
+            {
+                strImageName = string.Format("TN_{0}.jpg", DateTime.Now.ToString("yyyyMMddhhmmss"));
+                // Convert Base64 String to byte[]
+                try
+                {
+                    string year,day;
+                    year=DateTime.Now.ToString("yyyyMM");
+                    day=DateTime.Now.ToString("MMMdd");
+                    base64String = Request.Form["img64"];
+
+                    base64String = base64String.Replace("data:image/png;base64,", "");
+                    byte[] imageBytes = Convert.FromBase64String(base64String);
+                    MemoryStream ms = new MemoryStream(imageBytes, 0,
+                        imageBytes.Length);
+
+                    // Convert byte[] to Image
+                    ms.Write(imageBytes, 0, imageBytes.Length);
+                    System.Drawing.Image image = System.Drawing.Image.FromStream(ms, true);
+                    ValidateDateTimeFolder(year,day);
+                    image.Save(Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}/{1}/",year,day)) + strImageName);
+
+                    strImageName = string.Format("http://www.pix123.com/Racingtweets/Tweets/{0}/{1}/{2}",year,day,strImageName);
+                }
+                catch
+                {
+                    strImageName = "";
+                }
+
+                if (!string.IsNullOrEmpty(strImageName))
+                {
+                    Page.RegisterStartupScript("onsave", "<script>closePOP('" + strImageName + "');</script>");
+                }
+
+            }
+
+            
         }
 
         protected void Capture()
@@ -83,9 +127,9 @@ namespace gettywebclasses
                 {
                     bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
                     byte[] bytes = stream.ToArray();
-                    imgscreenshot.Visible = true;
-                    imgscreenshot.Src = "data:image/png;base64," + Convert.ToBase64String(bytes);
-                }
+                    
+                   ltimg.Text  = string.Format("<img  id='img1' src='{0}'/>","data:image/png;base64," + Convert.ToBase64String(bytes));
+                }                
             }
         }
 
@@ -99,8 +143,9 @@ namespace gettywebclasses
                 {
                     bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
                     byte[] bytes = stream.ToArray();
-                    imgscreenshot.Visible = true;
-                    imgscreenshot.Src = "data:image/png;base64," + Convert.ToBase64String(bytes);
+                    ltimg.Text = string.Format("<img  id='img1' src='{0}'/>", "data:image/png;base64," + Convert.ToBase64String(bytes));
+
+                    Page.RegisterStartupScript("imageload", "<script>updateImage('" + "test" + "');</script>");
                 }
             }
         }
@@ -163,11 +208,28 @@ namespace gettywebclasses
             return url;
         }
 
-         [WebMethod]
-        public static string ProcessIT(string strbase64)
+        public void ValidateDateTimeFolder(string year ,string day)
         {
-            string result = "";
-            return result;
+            string directoryPath = Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}", year));
+            try
+            {
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                directoryPath = Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}/{1}", year, day));
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+            }
+            catch
+            {
+
+            }
         }
+        
     }
 }

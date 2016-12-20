@@ -31,12 +31,21 @@ namespace gettywebclasses {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
-        /// imgscreenshot control.
+        /// ltimg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlImage imgscreenshot;
+        protected global::System.Web.UI.WebControls.Literal ltimg;
+        
+        /// <summary>
+        /// img64 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField img64;
     }
 }
