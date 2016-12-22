@@ -11,7 +11,8 @@ using System.Windows.Forms;
 using System.Net;
 using Gettyclasses;
 using System.Configuration;
- 
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
  
 
 namespace gettywebclasses
@@ -42,7 +43,7 @@ namespace gettywebclasses
             }
             else
             {
-                strImageName = string.Format("TN_{0}.jpg", DateTime.Now.ToString("yyyyMMddhhmmss"));
+                strImageName = string.Format("{0}.jpg", DateTime.Now.ToString("yyyyMMddhhmmss"));
                 // Convert Base64 String to byte[]
                 try
                 {
@@ -61,6 +62,13 @@ namespace gettywebclasses
                     System.Drawing.Image image = System.Drawing.Image.FromStream(ms, true);
                     ValidateDateTimeFolder(year,day);
                     image.Save(Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}/{1}/",year,day)) + strImageName);
+                    image = null;
+
+                    try
+                    {
+                        SaveThumbNail(year, day, strImageName);
+                    }
+                    catch { }
 
                     strImageName = string.Format("http://www.pix123.com/Racingtweets/Tweets/{0}/{1}/{2}",year,day,strImageName);
                 }
@@ -79,6 +87,91 @@ namespace gettywebclasses
             
         }
 
+        public void ValidateDateTimeFolder(string year, string day)
+        {
+            string directoryPath = Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}", year));
+            try
+            {
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                directoryPath = Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}/{1}", year, day));
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void SaveThumbNail(string year, string day, string orginalname)
+        {
+           
+
+
+            string imgpath = Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}/{1}/",year,day))+ orginalname;
+            string albumPath = Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}/{1}/",year,day));
+
+           
+           
+
+            int jheight = System.Drawing.Image.FromFile(imgpath).Height;
+            int jwidthAct = System.Drawing.Image.FromFile(imgpath).Width;
+            double ratio = (double)jheight / (double)jwidthAct;
+            int jwidth = 200;
+            double calHeight = jwidth * ratio;
+
+            string ImgFilePath = imgpath;
+            string uriName = Path.GetFileName(imgpath);
+            Bitmap SourceBitmap = null;
+            System.Drawing.Image thumbnail = null;
+            string fnameHRW = "TN_" + uriName;
+            Bitmap SourceBitmap1 = null;
+            System.Drawing.Image thumbnail1 = null;
+            try
+            {
+                SourceBitmap = new Bitmap(albumPath + uriName);
+                thumbnail = SourceBitmap.GetThumbnailImage(jwidth, Convert.ToInt32(Math.Round(calHeight)), null, IntPtr.Zero);
+                FileStream fs = File.Create(albumPath + fnameHRW);
+                thumbnail.Save(fs, SourceBitmap.RawFormat);
+                fs.Flush();
+                fs.Close();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                SourceBitmap.GetThumbnailImage(jwidth, Convert.ToInt32(Math.Round(calHeight)), null, IntPtr.Zero).Dispose();
+                thumbnail.Dispose();
+                SourceBitmap.Dispose();
+            }
+        }
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
+
+        #region "Comment"
+
+        /*
         protected void Capture()
         {
             string endurl = "";
@@ -208,28 +301,9 @@ namespace gettywebclasses
             return url;
         }
 
-        public void ValidateDateTimeFolder(string year ,string day)
-        {
-            string directoryPath = Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}", year));
-            try
-            {
-                if (!Directory.Exists(directoryPath))
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
-
-                directoryPath = Server.MapPath(string.Format("~/Racingtweets/Tweets/{0}/{1}", year, day));
-
-                if (!Directory.Exists(directoryPath))
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
-            }
-            catch
-            {
-
-            }
-        }
         
+        */
+
+        #endregion
     }
 }
