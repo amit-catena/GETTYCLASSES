@@ -22,7 +22,7 @@ transform: translateX(-50%) translateY(-35%); z-index:9999;}
 
 @keyframes rotation {0%{ transform: rotate(0deg); }50%{ transform: rotate(180deg); }100%{ transform: rotate(360deg); }}
 
-.darkroom-container .darkroom-toolbar{position:fixed; top:0; left:48.5%;}
+.darkroom-container .darkroom-toolbar{position:fixed; top:0; left:48.5%;border: 12px solid rgba(255,255,255,1);border-radius: 0;border-width: 1px 25px 12px 25px;}
 #btcrop{display:inline-block; padding:10px 20px; margin-top:15px; font-family:Arial; font-size:16px; text-transform:uppercase; background:#d94c20; color:#fff; border:0; cursor:pointer;}
 #btcrop:disabled{opacity:0.5;}
     </style>
@@ -33,26 +33,28 @@ transform: translateX(-50%) translateY(-35%); z-index:9999;}
      <script src="js/darkroomjs/build/darkroom.js"></script>    
      
      <script>
-         var _hash = location.search;         
+         var _hash = location.search; 
+         var fresh=true;        
         function closePOP(image) {
-           // alert(image);
+           fresh=false;
             parent.postMessage(['close',image], '*');
         }
         function updateImage(s) {
-            document.querySelector('#loader').className = '';
+            
             document.body.classList.remove('wait');
-        setTimeout(function(){
+        
         var dkrm = new Darkroom('#img1', {
-          minWidth: 100,
+          minWidth: 200,
           minHeight: 100,
           maxWidth: 1000,
           maxHeight: 750,
-          ratio: 4/3,
+          //ratio: 4/3,
           backgroundColor: '#000',
           plugins: { crop: { quickCropKey: 67} },
-          initialize: function() {var cropPlugin = this.plugins['crop'];cropPlugin.requireFocus();}
+          initialize: function() {var cropPlugin = this.plugins['crop'];cropPlugin.requireFocus();},
+          init:function(){document.querySelector('#loader').className = '';}
         });
-    },20)
+    
         }
         function imageCropped() {
             setTimeout(function () {                
@@ -77,9 +79,9 @@ transform: translateX(-50%) translateY(-35%); z-index:9999;}
             <!--<asp:Literal ID ="ltimg" runat="server"></asp:Literal>-->
         </div>
         <script>
-            var _img = document.querySelector('#img1');
+            var _img = document.querySelector('#img1');            
             _img.onload = function () {
-                parent.postMessage(['close', 'test'], '*');
+                //parent.postMessage(['close', 'test'], '*');
                 updateImage();
             }
             _img.onerror = function () {
@@ -87,12 +89,18 @@ transform: translateX(-50%) translateY(-35%); z-index:9999;}
                 document.body.classList.remove('wait');
                 closePOP();
             }
-            _img.src = "newimage.ashx" + _hash;
+            _img.crossOrigin = "Anonymous";
+            if(fresh)
+                _img.src = "images/newsimages/2013Nov12053730_187744267.jpg" // _img.src = "newimage.ashx" + _hash;
+
             
         </script>
         <input disabled type="submit"  id="btcrop" value="Upload"/>
+        
     </div>
      <asp:HiddenField ID="img64" runat="server" Value="" />
     </form>
-</body>
-</html>
+    <script>
+            document.forms[0].addEventListener('submit',function(){
+                console.log('submit')
+                document.quer
