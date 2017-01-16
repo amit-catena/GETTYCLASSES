@@ -203,6 +203,27 @@ namespace Gettyclasses
             }
             return imagename;
         }
+
+        public DataTable GetHyperlinkForReview()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (SQLHelper obj = new SQLHelper(ConfigurationSettings.AppSettings["Network1"]))
+                {
+                   
+                    string strsql = "select LinkID,LinkName from HyperLinkManager where SiteID=1  and IsActive ='Y' order by LinkName";
+
+                    dt = obj.ExecuteDataTable(strsql);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "slotmgmt.cs GetHyperlinkForReview ", ex);
+            }
+            return dt;
+        }
          
 
     }
