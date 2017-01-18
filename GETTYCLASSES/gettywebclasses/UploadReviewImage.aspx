@@ -39,7 +39,7 @@
          
      <tr>
      <td>Image</td>
-     <td><asp:FileUpload ID="file1" runat="server" />  <span style='color:Red;font-family:Verdana;font-size:11px;'>Please Upload Image(90* 90 )</span></td> 
+     <td><asp:FileUpload ID="file1" runat="server" />  <span style='color:Red;font-family:Verdana;font-size:11px;'>Please Upload Image(90 * 90 )</span></td> 
      </tr>
      
     <tr><td>Hyperlink</td>
@@ -53,7 +53,7 @@
     </table>
     </div>
     </div>
-   <!-- </div> -->
+        
     </form>
    
 </body>
