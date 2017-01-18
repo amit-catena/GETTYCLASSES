@@ -26,7 +26,7 @@ namespace gettywebclasses
             if (file1.HasFile)
             {
                string  Name = string.Format("{0}{1}", DateTime.Now.ToString("ddMMyyhhmmss"), Path.GetExtension(file1.FileName));
-               string imgpath = "http://anil-pc/gettyclasses/gettywebclasses/banner/" + Name;
+               string imgpath = "http://www.pix123.com/banner/" + Name;
                file1.SaveAs(Server.MapPath("~/banner/") + Name);
                Page.RegisterStartupScript("onsave", "<script>closePOP('"+imgpath+"','"+ddllink.SelectedValue+"');</script>");
             }
