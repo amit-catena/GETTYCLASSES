@@ -674,6 +674,78 @@ namespace Gettyclasses
         }
 
 
+        public string GetStreamJson(string siteid, string networkid)
+        {
+            DataTable dt = new DataTable(); 
+            StringBuilder sb = new StringBuilder();
+            string data = "";
+            string constr = "";
+            try
+            {
+
+                constr = commonfn.GetConnectionstring(networkid);
+ 
+                SqlParameter[] mypara ={
+                                       new SqlParameter("@siteid",SqlDbType.Int)
+                                   };
+                mypara[0].Value = siteid;
+               
+                using (SQLHelper obj = new SQLHelper(constr))
+                {
+                    dt = obj.ExecuteDataTable("DD_SP_GetStorystreamList", mypara);
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    int count = 0;
+                    sb.Append("[");
+                    foreach(DataRow dr in dt.Rows)
+                    {
+                        if (count != dt.Rows.Count-1)
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString(dr["streamid"]), Convert.ToString(dr["streamtitle"]).Replace("'", "")));
+
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString(dr["streamid"]), Convert.ToString(dr["streamtitle"]).Replace("'", "")));
+                            sb.Append("}");
+                        }
+                        count++;
+
+                    }
+                    sb.Append("]");
+                    data = sb.ToString();
+                    sb = null;
+                }
+                else
+                {
+                    sb.Append("[");
+                    sb.Append("{");
+                    sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString("0"), "-- Select --"));
+                    sb.Append("}");
+                    sb.Append("]");
+
+                }
+            }
+            catch
+            {
+                sb = new StringBuilder();
+                sb.Append("[");
+                sb.Append("{");
+                sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString("0"), "-- Select --"));
+                sb.Append("}");
+                sb.Append("]");
+            }
+            data = sb.ToString();
+            sb = null;
+
+            return data;
+        }
+
 
 
 
