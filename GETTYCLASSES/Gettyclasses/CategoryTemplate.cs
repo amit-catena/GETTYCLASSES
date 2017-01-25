@@ -704,14 +704,14 @@ namespace Gettyclasses
                         if (count != dt.Rows.Count-1)
                         {
                             sb.Append("{");
-                            sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString(dr["streamid"]), Convert.ToString(dr["streamtitle"]).Replace("'", "")));
+                            sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString(dr["streamid"]), Convert.ToString(dr["streamtitle"]).Replace("\"", "")));
 
                             sb.Append("},");
                         }
                         else
                         {
                             sb.Append("{");
-                            sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString(dr["streamid"]), Convert.ToString(dr["streamtitle"]).Replace("'", "")));
+                            sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString(dr["streamid"]), Convert.ToString(dr["streamtitle"]).Replace("\"", "")));
                             sb.Append("}");
                         }
                         count++;
