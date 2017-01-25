@@ -762,6 +762,7 @@ namespace Gettyclasses
             using (SQLHelper obj = new SQLHelper(constr))
             {
                 DS = obj.ExecuteDataSet("CP_DD_SP_allsportcasinobysite", mypara);
+            }
                 if (DS.Tables.Count > 0)
                 {
                     if (DS.Tables[0].Rows.Count > 0)
