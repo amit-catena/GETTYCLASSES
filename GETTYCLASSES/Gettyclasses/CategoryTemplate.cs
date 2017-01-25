@@ -742,7 +742,7 @@ namespace Gettyclasses
             return data;
         }
 
-        public string Getsitesportandcasino(string siteid)
+        public string Getsitesportandcasino(string siteid, string networkid)
         {
 
             StringBuilder sb = new StringBuilder();
@@ -751,7 +751,7 @@ namespace Gettyclasses
             int cnttblsport = 0;
             int cnttblcasino = 0;
             string catpath = "";
-            constr = commonfn.GetAdsenseconnstring();
+            constr = commonfn.GetConnectionstring(networkid);
             DataTable dt = new DataTable();
             DataSet DS = new DataSet(); 
             DataTable distinctValues = new DataTable();

@@ -20,6 +20,7 @@ namespace gettywebclasses
         public string Allsports = "[]";
         public string AllTicketSport = "";
         public string StreamData = "[]";
+        public string SportAndCasino = "[]";
         protected void Page_Load(object sender, EventArgs e)
         {
             
@@ -36,6 +37,7 @@ namespace gettywebclasses
                 catdesc = CategoryDescription(siteid, networkid, catid);
                 allcatsubcatjson = GetAllcategorySubcategoryJson(siteid, networkid);
                 StreamData = GetStreamdata(siteid, networkid);
+                SportAndCasino = Getsitesportandcasino(siteid, networkid);
                 centraltableurl=string.Format("http://admin.writersllc.com/posttableindesc.aspx?siteid={0}&networkid={1}&userid=1&temp=1",siteid,networkid);
                 if (!Page.IsPostBack)
                     SetTemplateData();
@@ -117,6 +119,18 @@ namespace gettywebclasses
             string data = "";
             CategoryTemplate obj = new CategoryTemplate();
             data = obj.GetallTicketsports();
+            if (string.IsNullOrEmpty(data))
+                data = "[]";
+            return data;
+        }
+
+
+
+        public string Getsitesportandcasino(string site_id, string nwid)
+        {
+            string data = "";
+            CategoryTemplate obj = new CategoryTemplate();
+            data = obj.GetallTicketsports(site_id,nwid);
             if (string.IsNullOrEmpty(data))
                 data = "[]";
             return data;
