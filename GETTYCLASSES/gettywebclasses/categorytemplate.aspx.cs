@@ -130,7 +130,7 @@ namespace gettywebclasses
         {
             string data = "";
             CategoryTemplate obj = new CategoryTemplate();
-            data = obj.GetallTicketsports(site_id,nwid);
+            data = obj.Getsitesportandcasino(site_id, nwid);
             if (string.IsNullOrEmpty(data))
                 data = "[]";
             return data;

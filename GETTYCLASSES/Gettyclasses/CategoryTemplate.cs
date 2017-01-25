@@ -762,60 +762,70 @@ namespace Gettyclasses
             using (SQLHelper obj = new SQLHelper(constr))
             {
                 DS = obj.ExecuteDataSet("CP_DD_SP_allsportcasinobysite", mypara);
-                if (DS.Tables[0].Rows.Count > 0)
+                if (DS.Tables.Count > 0)
                 {
-                    int count = 0;
-                    sb.Append("sport:[");
-                    cnttblsport = DS.Tables[0].Rows.Count;
-                    foreach (DataRow d in DS.Tables[0].Rows)
+                    if (DS.Tables[0].Rows.Count > 0)
                     {
+                        int count = 0;
+                        sb.Append("{\"sport\":[");
+                        cnttblsport = DS.Tables[0].Rows.Count;
+                        foreach (DataRow d in DS.Tables[0].Rows)
+                        {
 
-                        if (count != (cnttblsport - 1))
-                        {
-                            sb.Append("{");
-                            sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["SportId"]), Convert.ToString(d["PageTitle"])));
-                            sb.Append("},");
+                            if (count != (cnttblsport - 1))
+                            {
+                                sb.Append("{");
+                                sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["SportId"]), Convert.ToString(d["PageTitle"])));
+                                sb.Append("},");
+                            }
+                            else
+                            {
+                                sb.Append("{");
+                                sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["SportId"]), Convert.ToString(d["PageTitle"])));
+                                sb.Append("}");
+                            }
+                            count++;
                         }
-                        else
-                        {
-                            sb.Append("{");
-                            sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["SportId"]), Convert.ToString(d["PageTitle"])));
-                            sb.Append("}");
-                        }
-                        count++;
+                        sb.Append("]");
                     }
-                    sb.Append("]");
-                }
-
-                if (DS.Tables[1].Rows.Count > 0)
-                {
-                    int casinocount = 0;
-                    sb.Append(",casino[");
-                    cnttblcasino = DS.Tables[1].Rows.Count;
-                    foreach (DataRow d in DS.Tables[1].Rows)
+                    else
                     {
-                        if (casinocount != (cnttblcasino - 1))
-                        {
-                            sb.Append("{");
-                            sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["CasinoId"]), Convert.ToString(d["PageTitle"])));
-                            sb.Append("},");
-                        }
-                        else
-                        {
-                            sb.Append("{");
-                            sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["CasinoId"]), Convert.ToString(d["PageTitle"])));
-                            sb.Append("}");
-                        }
-                        casinocount++;
+                        sb.Append("{\"sport\":[]");
                     }
-                    sb.Append("]");
 
-                }
+                    if (DS.Tables[1].Rows.Count > 0)
+                    {
+                        int casinocount = 0;
+                        sb.Append(",\"casino\":[");
+                        cnttblcasino = DS.Tables[1].Rows.Count;
+                        foreach (DataRow d in DS.Tables[1].Rows)
+                        {
+                            if (casinocount != (cnttblcasino - 1))
+                            {
+                                sb.Append("{");
+                                sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["CasinoId"]), Convert.ToString(d["PageTitle"])));
+                                sb.Append("},");
+                            }
+                            else
+                            {
+                                sb.Append("{");
+                                sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["CasinoId"]), Convert.ToString(d["PageTitle"])));
+                                sb.Append("}");
+                            }
+                            casinocount++;
+                        }
+                        sb.Append("]}");
+
+                    }
+                    else
+                    {
+                        sb.Append(",\"casino\":[]}");
+                    }
+                }            
                 else
                 {
-                    sb.Append("[]");
+                    sb.Append("{\"sport\":[],\"casino\":[]}");
                 }
-            }
 
             data = sb.ToString(); sb = null;
             return data;
