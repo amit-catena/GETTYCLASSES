@@ -718,15 +718,12 @@ namespace Gettyclasses
 
                     }
                     sb.Append("]");
-                    data = sb.ToString();
-                    sb = null;
+                   
                 }
                 else
                 {
                     sb.Append("[");
-                    sb.Append("{");
-                    sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString("0"), "-- Select --"));
-                    sb.Append("}");
+                    
                     sb.Append("]");
 
                 }
@@ -735,18 +732,94 @@ namespace Gettyclasses
             {
                 sb = new StringBuilder();
                 sb.Append("[");
-                sb.Append("{");
-                sb.Append(string.Format("\"streamid\":\"{0}\",\"streamname\":\"{1}\"", Convert.ToString("0"), "-- Select --"));
-                sb.Append("}");
+                
                 sb.Append("]");
             }
+
             data = sb.ToString();
             sb = null;
 
             return data;
         }
 
+        public string Getsitesportandcasino(string siteid)
+        {
 
+            StringBuilder sb = new StringBuilder();
+            List<string> Ls = new List<string>();
+            string data = "", constr = "";
+            int cnttblsport = 0;
+            int cnttblcasino = 0;
+            string catpath = "";
+            constr = commonfn.GetAdsenseconnstring();
+            DataTable dt = new DataTable();
+            DataSet DS = new DataSet(); 
+            DataTable distinctValues = new DataTable();
+            SqlParameter[] mypara ={
+                                       new SqlParameter("@siteid",SqlDbType.Int)
+                                   };
+            mypara[0].Value = 1;
+            using (SQLHelper obj = new SQLHelper(constr))
+            {
+                DS = obj.ExecuteDataSet("CP_DD_SP_allsportcasinobysite", mypara);
+                if (DS.Tables[0].Rows.Count > 0)
+                {
+                    int count = 0;
+                    sb.Append("sport:[");
+                    cnttblsport = DS.Tables[0].Rows.Count;
+                    foreach (DataRow d in DS.Tables[0].Rows)
+                    {
+
+                        if (count != (cnttblsport - 1))
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["SportId"]), Convert.ToString(d["PageTitle"])));
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["SportId"]), Convert.ToString(d["PageTitle"])));
+                            sb.Append("}");
+                        }
+                        count++;
+                    }
+                    sb.Append("]");
+                }
+
+                if (DS.Tables[1].Rows.Count > 0)
+                {
+                    int casinocount = 0;
+                    sb.Append(",casino[");
+                    cnttblcasino = DS.Tables[1].Rows.Count;
+                    foreach (DataRow d in DS.Tables[1].Rows)
+                    {
+                        if (casinocount != (cnttblcasino - 1))
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["CasinoId"]), Convert.ToString(d["PageTitle"])));
+                            sb.Append("},");
+                        }
+                        else
+                        {
+                            sb.Append("{");
+                            sb.Append(string.Format("\"id\":\"{0}\",\"title\":\"{1}\"", Convert.ToString(d["CasinoId"]), Convert.ToString(d["PageTitle"])));
+                            sb.Append("}");
+                        }
+                        casinocount++;
+                    }
+                    sb.Append("]");
+
+                }
+                else
+                {
+                    sb.Append("[]");
+                }
+            }
+
+            data = sb.ToString(); sb = null;
+            return data;
+        }
 
 
 
