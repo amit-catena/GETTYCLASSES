@@ -62,7 +62,7 @@ namespace gettywebclasses
             }
             catch (Exception ex)
             {
-                data = data +"siteid"+ex.Message;
+               
             }
             try
             {
@@ -70,7 +70,7 @@ namespace gettywebclasses
             }
             catch (Exception ex)
             {
-                data = data + "order" + ex.Message;
+                
             }
             try
             {
@@ -78,29 +78,29 @@ namespace gettywebclasses
             }
             catch (Exception ex)
             {
-                data = data + "bonusfor" + ex.Message;
+               
             }
 
             try
             {
                 constr = Request.Form["networkid"];
-                data = data + "ajax load-constr" + constr;
+                
             }
             catch (Exception ex)
             {
-                data = data + "constr" + ex.Message;
+                 
             }
 
             try
             {
 
                 CategoryTemplate obj = new CategoryTemplate();
-                data = data +obj.GetBonusJson(siteid,order,bonusfor,constr);
+                data = obj.GetBonusJson(siteid,order,bonusfor,constr);
                 obj = null;
             }
             catch(Exception ex)
             {
-                data = data + "ajax load" + ex.Message;
+                data = "[]";
             }
             ltresult.Text = data;
         }
