@@ -84,6 +84,7 @@ namespace gettywebclasses
             try
             {
                 constr = Session["SITE_NW"].ToString();
+                data = data + "ajax load-constr" + constr;
             }
             catch (Exception ex)
             {
@@ -94,7 +95,7 @@ namespace gettywebclasses
             {
 
                 CategoryTemplate obj = new CategoryTemplate();
-                data = obj.GetBonusJson(siteid,order,bonusfor,constr);
+                data = data +obj.GetBonusJson(siteid,order,bonusfor,constr);
                 obj = null;
             }
             catch(Exception ex)
