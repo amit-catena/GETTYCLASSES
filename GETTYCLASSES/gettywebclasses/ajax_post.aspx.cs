@@ -62,9 +62,9 @@ namespace gettywebclasses
                 ltresult.Text = obj.GetBonusJson(Request.Form["siteid"],Request.Form["order"],Request.Form["bonusfor"],Session["SITE_NW"].ToString());
                 obj = null;
             }
-            catch
+            catch(Exception ex)
             {
-                ltresult.Text = "[]";
+                ltresult.Text = ex.Message;
             }
         }
     }
