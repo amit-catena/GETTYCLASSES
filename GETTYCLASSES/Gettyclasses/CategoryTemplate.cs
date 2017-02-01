@@ -862,7 +862,7 @@ namespace Gettyclasses
 
                     foreach (DataRow r in dt.Rows)
                     {
-                        sb.Append(string.Format("node", r["ReviewName"].ToString(), r["BonusId"].ToString(), r["BonusTitle"].ToString(), r["FilterValueTitle"].ToString(), "{", "},"));
+                        sb.Append(string.Format(node, r["ReviewName"].ToString(), r["BonusId"].ToString(), r["BonusTitle"].ToString(), r["FilterValueTitle"].ToString(), "{", "},"));
                     }
                     data = sb.ToString();
 
