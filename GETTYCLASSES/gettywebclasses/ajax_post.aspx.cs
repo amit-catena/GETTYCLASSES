@@ -20,6 +20,10 @@ namespace gettywebclasses
                     case "UpdateImageDetails":
                         UpdateImageDetails(Request.Form["imageid"], Request.Form["imagetitle"], Request.Form["imagealttext"], Request.Form["netid"]);
                         break;
+
+                    case "BONUS":
+                        GetBonusdata();
+                        break;
                 }
             }
             catch
@@ -45,6 +49,23 @@ namespace gettywebclasses
             catch
             { }
             ltresult.Text = "1";
+        }
+
+        public void GetBonusdata()
+        {
+            string bonusparent = "", bonusorder = "";
+
+            try
+            {
+
+                CategoryTemplate obj = new CategoryTemplate();
+                ltresult.Text = obj.GetBonusJson(Request.Form["siteid"],Request.Form["order"],Request.Form["bonusfor"],Session["SITE_NW"].ToString());
+                obj = null;
+            }
+            catch
+            {
+                ltresult.Text = "[]";
+            }
         }
     }
 
