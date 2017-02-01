@@ -83,7 +83,7 @@ namespace gettywebclasses
 
             try
             {
-                constr = Session["SITE_NW"].ToString();
+                constr = Request.Form["networkid"];
                 data = data + "ajax load-constr" + constr;
             }
             catch (Exception ex)
