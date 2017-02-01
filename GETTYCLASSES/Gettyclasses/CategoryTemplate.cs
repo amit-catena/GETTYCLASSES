@@ -838,10 +838,12 @@ namespace Gettyclasses
             StringBuilder sb = new StringBuilder();
             string data = "", constr = "";
             string node = "{4}\"b\":\"{0}\",\"id\":\"{1}\",\"bn\":\"{2}\",\"bv\":\"{3}\"{5}";
-            constr = commonfn.GetConnectionstring(networkid);
+           
 
             try
             {
+
+                constr = commonfn.GetConnectionstring(networkid);
                 DataTable dt = new DataTable();
                 SqlParameter[] mypara ={
                                        new SqlParameter("@siteid",SqlDbType.Int),
@@ -870,9 +872,9 @@ namespace Gettyclasses
                     {
                         data = data.Substring(0, data.Length - 1);
                     }
-                    catch
+                    catch(Exception ex)
                     {
-
+                        data = "Errorsubstring" + ex.Message;
                     }
 
 
@@ -881,7 +883,7 @@ namespace Gettyclasses
             }
             catch (Exception ex)
             {
-                
+                data = "final" + ex.Message;
                 ErrorLog.SaveErrorLog(siteid, "bonusjsion", "", "", ex.Message, "1");
             }
 
