@@ -840,47 +840,55 @@ namespace Gettyclasses
             string node = "{4}\"b\":\"{0}\",\"id\":\"{1}\",\"bn\":\"{2}\",\"bv\":\"{3}\"{5}";
             constr = commonfn.GetConnectionstring(networkid);
 
-            DataTable dt = new DataTable();
-            SqlParameter[] mypara ={
+            try
+            {
+                DataTable dt = new DataTable();
+                SqlParameter[] mypara ={
                                        new SqlParameter("@siteid",SqlDbType.Int),
                                        new SqlParameter("@BonusParent",SqlDbType.Int),
                                        new SqlParameter("@orderby",SqlDbType.VarChar)
                                    };
-            mypara[0].Value = siteid;
-            mypara[1].Value =bonusfor;
-            mypara[2].Value = order;
-            using (SQLHelper obj = new SQLHelper(constr))
-            {
-                dt = obj.ExecuteDataTable("CP_DD_SP_GetBonusesforcattemplate", mypara);
-            }
+                mypara[0].Value = siteid;
+                mypara[1].Value = bonusfor;
+                mypara[2].Value = order;
+                using (SQLHelper obj = new SQLHelper(constr))
+                {
+                    dt = obj.ExecuteDataTable("CP_DD_SP_GetBonusesforcattemplate", mypara);
+                }
 
-            if (dt.Rows.Count > 0)
+                if (dt.Rows.Count > 0)
+                {
+
+
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        sb.Append(string.Format("node", r["ReviewName"].ToString(), r["BonusId"].ToString(), r["BonusTitle"].ToString(), r["FilterValueTitle"].ToString(), "{", "},"));
+                    }
+                    data = sb.ToString();
+
+                    try
+                    {
+                        data = data.Substring(0, data.Length - 1);
+                    }
+                    catch
+                    {
+
+                    }
+
+
+
+                }
+            }
+            catch (Exception ex)
             {
                 
-
-                foreach (DataRow r in dt.Rows)
-                {
-                    sb.Append(string.Format("node", r["ReviewName"].ToString(), r["BonusId"].ToString(), r["BonusTitle"].ToString(), r["FilterValueTitle"].ToString(), "{", "},"));
-                }
-                data = sb.ToString();
-
-                try
-                {
-                    data = data.Substring(0, data.Length - 1);
-                }
-                catch
-                {
-
-                }
-
-                if (string.IsNullOrEmpty(data))
-                    data = "[]";
-                else
-                    data = string.Format("[{0}]", data);
-                 
+                ErrorLog.SaveErrorLog(siteid, "bonusjsion", "", "", ex.Message, "1");
             }
 
-             
+            if (string.IsNullOrEmpty(data))
+                data = "[]";
+            else
+                data = string.Format("[{0}]", data);
 
             return data;
         }
