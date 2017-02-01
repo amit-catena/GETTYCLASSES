@@ -54,18 +54,54 @@ namespace gettywebclasses
         public void GetBonusdata()
         {
             string bonusparent = "", bonusorder = "";
+            string siteid = "", order = "", bonusfor = "", constr = "";
+            string data = "";
+            try
+            {
+                siteid=Request.Form["siteid"];
+            }
+            catch (Exception ex)
+            {
+                data = data +"siteid"+ex.Message;
+            }
+            try
+            {
+                order = Request.Form["order"];
+            }
+            catch (Exception ex)
+            {
+                data = data + "order" + ex.Message;
+            }
+            try
+            {
+                bonusfor = Request.Form["bonusfor"];
+            }
+            catch (Exception ex)
+            {
+                data = data + "bonusfor" + ex.Message;
+            }
+
+            try
+            {
+                constr = Session["SITE_NW"].ToString();
+            }
+            catch (Exception ex)
+            {
+                data = data + "constr" + ex.Message;
+            }
 
             try
             {
 
                 CategoryTemplate obj = new CategoryTemplate();
-                ltresult.Text = obj.GetBonusJson(Request.Form["siteid"],Request.Form["order"],Request.Form["bonusfor"],Session["SITE_NW"].ToString());
+                data = obj.GetBonusJson(siteid,order,bonusfor,constr);
                 obj = null;
             }
             catch(Exception ex)
             {
-                ltresult.Text = ex.Message;
+                data = data + "ajax load" + ex.Message;
             }
+            ltresult.Text = data;
         }
     }
 
