@@ -32,16 +32,14 @@
     <form id="form1" runat="server">
    
    <!-- <div style="padding-left:50px;padding-top:100px"> -->
-   <div class="container">
+   <div class="container"> 
   <div class="divtheme">
-    <table cellpadding="3" cellspacing="0">
-      
+    <table cellpadding="3" cellspacing="0">      
      <tr>
      <td>Image</td>
-     <td><asp:FileUpload ID="file1" runat="server" />  <span style='color:Red;font-family:Verdana;font-size:11px;'>Please Upload Image(90 * 90 )</span></td> 
-     </tr>    
-   
-      <tr>  
+     <td><asp:FileUpload ID="file1" runat="server" />  <span style='font-family:Verdana;font-size:11px;'>Please Upload Software Image (100 * 70)</span></td> 
+     </tr>  
+     <tr>  
      <td></td>
         <td> <asp:Button ID="Button1" runat="server" Text="Submit" OnClick="btnsave_Click" />     </td>
      </tr>
