@@ -29,6 +29,7 @@ namespace gettywebclasses
             {
                 try
                 {
+                    txtstartdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                     siteurl = Request.QueryString["siteurl"];
                     baseurl = commonfn._baseURL;
                     networkid = Request.QueryString["networkid"];
@@ -50,7 +51,7 @@ namespace gettywebclasses
                         divadd.Visible = true;
                         btnadd.Visible = false;
                         btndelete.Visible = false;
-                        txtstartdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                        
                         if (Request.QueryString["id"] != null)
                         {
                             GetDetails(Request.QueryString["id"]);
