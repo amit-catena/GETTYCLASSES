@@ -8,6 +8,7 @@ using Gettyclasses;
 using System.Data;
 using System.Text;
 using System.IO;
+using System.Net;
 
 namespace gettywebclasses
 {
@@ -20,12 +21,15 @@ namespace gettywebclasses
         public string userid = "";
         string networkconn = "";
         public string newstitle = "";
+        public string strgeneratexml = "/recacheXML.aspx?commentcacheid=N";
+        public string siteurl = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
                 try
                 {
+                    siteurl = Request.QueryString["siteurl"];
                     baseurl = commonfn._baseURL;
                     networkid = Request.QueryString["networkid"];
                     siteid = Request.QueryString["siteid"];
@@ -41,8 +45,16 @@ namespace gettywebclasses
                     }
                     else
                     {
+
                         divlist.Visible = false;
                         divadd.Visible = true;
+                        btnadd.Visible = false;
+                        btndelete.Visible = false;
+                        txtstartdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                        if (Request.QueryString["id"] != null)
+                        {
+                            GetDetails(Request.QueryString["id"]);
+                        }
                     }
                    
                 }
@@ -59,6 +71,10 @@ namespace gettywebclasses
 
         public void GetNewsLiveUpdateList()
         {
+             networkid = Request.QueryString["networkid"];
+             siteid = Request.QueryString["siteid"];
+             userid = Request.QueryString["userid"];
+            
             DataTable dt = new DataTable();
             try
             {
@@ -71,8 +87,11 @@ namespace gettywebclasses
                         foreach (DataRow dr in dt.Rows)
                         {
                             sb.Append("<tr >");
-                            sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'><input type='checkbox' id='{0}' class='source' value='{0}' name='{0}'></td>", dr["Id"].ToString()));
+                            sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'><input type='checkbox' id='{0}' class='source' value='{0}' name = 'fcheck[]'></div></td>", dr["Id"].ToString()));
                             sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", dr["title"].ToString()));
+                            sb.Append("<td class='text' align='center' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'><a title='click to manage' class='editlink' href='addnewsliveupdate.aspx?id=" + dr["Id"].ToString() + "&networkid=" + networkid + "&siteid=" + siteid + "&userid=" + dr["UID"].ToString() + "&newsid=" + dr["newsid"].ToString() + "'>Edit</a></td>");
+                            sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", Convert.ToDateTime(dr["startdate"]).ToString("dd-MM-yyyy HH:mm tt")));
+                            
                             sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", Convert.ToDateTime(dr["addedon"]).ToString("dd-MM-yyyy HH:mm tt")));
                             sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", dr["Name"].ToString()));
                             sb.Append("</tr>");
@@ -81,7 +100,7 @@ namespace gettywebclasses
                     }
                     else
                     {
-                        sb.Append("<tr><td style='color:red' colspan='4'>record not found </td></tr>");
+                        sb.Append("<tr><td style='color:red' colspan='6'>record not found </td></tr>");
                     }
                     ltlist.Text = sb.ToString();
                 }
@@ -107,7 +126,14 @@ namespace gettywebclasses
                     {
                         imagename = string.Format("{0}{1}", DateTime.Now.ToString("ddMMyyhhmmss"), Path.GetExtension(file1.FileName));
 
-                        file1.SaveAs(Server.MapPath("~/newsliveupdate/") + imagename);                       
+                        file1.SaveAs(Server.MapPath("~/newsliveupdate/") + imagename);
+                    }
+                    else
+                    {
+                        if (ViewState["img"] != null)
+                        {
+                            imagename = ViewState["img"].ToString(); 
+                        }
                     }
                     obj.NewsId = Request.QueryString["newsid"];
                     obj.Title = textTitle.Text;
@@ -115,8 +141,22 @@ namespace gettywebclasses
                     obj.Addedby = Request.QueryString["userid"];
                     obj.SiteId = Request.QueryString["siteid"];
                     obj.Image = imagename;
+                    obj.startdate = GetDate(txtstartdate.Text);
+                    if (Request.QueryString["Id"] != null)
+                    {
+                        obj.Id = Request.QueryString["Id"];
+                    }
+                    else
+                    {
+                        obj.Id = "0";
+                    }
                     count= obj.SaveLiveNewsUpdate();
+                    if (Request.QueryString["siteurl"] != null)
+                    {
+                       RefreshCache(Request.QueryString["siteurl"]+strgeneratexml);
+                    }
                     Page.RegisterStartupScript("onsave", "<script>closePOP('" + count + "','" + obj.NewsId + "');</script>");
+                   
                 }               
             }
             catch (Exception ex)
@@ -125,11 +165,99 @@ namespace gettywebclasses
             }
         }
 
+        public static void RefreshCache(string siteurl)
+        {
+
+            System.Uri objURI;
+            System.Net.WebRequest objWebRequest;
+            System.Net.WebResponse objWebResponse;
+            System.IO.Stream objStream;
+            System.IO.StreamReader objStreamReader;
+
+            string strHTML = "";
+            try
+            {
+                objURI = new Uri(siteurl);
+                objWebRequest = HttpWebRequest.Create(objURI);
+                objWebResponse = objWebRequest.GetResponse();
+                objStream = objWebResponse.GetResponseStream();
+                objStreamReader = new StreamReader(objStream);
+                strHTML = objStreamReader.ReadToEnd();
+
+                objURI = null;
+
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "addnewliveupdate.aspx.cs RefreshCache", ex);
+            }
+
+        }
+
+        public string GetDate(string strdate)
+        {
+            string date = "";
+            if (strdate.Trim().Length > 0)
+            {
+                string[] strarray;
+                string[] arr;
+
+                arr = strdate.Split(' ');
+                string time = arr[1];
+                strarray = arr[0].Split('/');
+
+                if (strarray.Length > 2)
+                {
+                    date = string.Format("{0}-{1}-{2} {3}", strarray[2], strarray[1], strarray[0], time);
+                }
+            }
+            else
+            {
+                date = string.Format("{0} ", DateTime.Now.ToString("yyyy-MM-dd"));
+            }
+            return date;
+
+        }
+
         protected void btnadd_click(object sender, EventArgs e)
         {
             divlist.Visible = false;
             divadd.Visible = true;
             btndelete.Visible = false;
+            btnadd.Visible = false;
         }
+
+
+        public void GetDetails(string id)
+        {
+            try
+            {
+                networkid = Request.QueryString["networkid"];
+                networkconn = System.Configuration.ConfigurationManager.AppSettings[networkid];
+                using (newsliveupdatemgmt obj = new newsliveupdatemgmt(networkconn))
+                {
+                    DataTable dt = new DataTable();
+                    dt = obj.GetNewsLiveUpdateDetails(id);
+                    if (dt.Rows.Count > 0)
+                    {
+                        textTitle.Text = dt.Rows[0]["title"].ToString();
+                        textdesc.Text = dt.Rows[0]["description"].ToString();
+                        txtstartdate.Text = Convert.ToDateTime(dt.Rows[0]["startdate"]).ToString("dd/MM/yyyy HH:mm");
+                        if (dt.Rows[0]["image"].ToString() != "")
+                        {
+                            string imgpath = "http://anil-pc/gettyclasses/gettywebclasses/newsliveupdate/" + dt.Rows[0]["image"].ToString();
+                            ltimg.Text = "<img src='" + imgpath + "' height='50px' width='50px'/>";
+                            ViewState["img"] = dt.Rows[0]["image"].ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "addnewliveupdate.aspx.cs GetDetails", ex);
+            }
+
+        }
+         
     }
 }

@@ -45,6 +45,8 @@ namespace Gettyclasses
         public string Image { get; set; }
         public string Addedby { get; set; }
         public string NewsId { get; set; }
+        public string Id { get; set; }
+        public string startdate { get; set; }
 
 
         #endregion
@@ -62,7 +64,9 @@ namespace Gettyclasses
                                          new SqlParameter("@addedby",SqlDbType.Int),
                                          new SqlParameter("@image",SqlDbType.VarChar),
                                          new SqlParameter("@newsid",SqlDbType.Int),
-                                         new SqlParameter("@retCount",SqlDbType.Int)
+                                         new SqlParameter("@retCount",SqlDbType.Int),
+                                         new SqlParameter("@Id",SqlDbType.Int),
+                                         new SqlParameter("@startdate",SqlDbType.SmallDateTime)
                                        };
                 param[0].Value = Title;
                 param[1].Value = Description;
@@ -72,6 +76,8 @@ namespace Gettyclasses
                 param[5].Value = NewsId;
                 param[6].Value = 0;
                 param[6].Direction = ParameterDirection.InputOutput;
+                param[7].Value = Id;
+                param[8].Value = startdate;
 
                 objsql.ExecuteNonQuery("AN_SP_NewsLiveUpdate_Save", param);
                 count = Convert.ToInt32(param[6].Value);
@@ -122,6 +128,26 @@ namespace Gettyclasses
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs DeleteNewsUpdateLive", ex);
             }
             return count;
+        }
+
+
+        public DataTable GetNewsLiveUpdateDetails(string id)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlParameter[] param = { new SqlParameter("@Id",SqlDbType.Int),
+                                       };
+                param[0].Value = id;
+
+
+                dt = objsql.ExecuteDataTable("AN_SP_NewsLiveUpdate_GetDetails", param);
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs GetNewsLiveUpdateDetails", ex);
+            }
+            return dt;
         }
         
 
