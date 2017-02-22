@@ -114,7 +114,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Start Date
+                        Time
                     </td>
                     <td>
                         <asp:TextBox ID="txtstartdate" runat="server"></asp:TextBox>
@@ -159,7 +159,7 @@
                     Edit
                 </td>
                  <td class='headings'>
-                   Start Date
+                   Time
                 </td>
                 <td class='headings'>
                     Addedon
@@ -255,7 +255,7 @@
               
 
         $('#<%=txtstartdate.ClientID %>').datetimepicker()
-	   .datetimepicker({ value: '', step: 30 });
+	   .datetimepicker({ value: '', step: 1 });
      
         
       
