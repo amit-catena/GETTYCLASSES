@@ -245,7 +245,7 @@ namespace gettywebclasses
                         txtstartdate.Text = Convert.ToDateTime(dt.Rows[0]["startdate"]).ToString("dd/MM/yyyy HH:mm");
                         if (dt.Rows[0]["image"].ToString() != "")
                         {
-                            string imgpath = "http://anil-pc/gettyclasses/gettywebclasses/newsliveupdate/" + dt.Rows[0]["image"].ToString();
+                            string imgpath = Gettyclasses.commonfn._baseURL+"newsliveupdate/" + dt.Rows[0]["image"].ToString();
                             ltimg.Text = "<img src='" + imgpath + "' height='50px' width='50px'/>";
                             ViewState["img"] = dt.Rows[0]["image"].ToString();
                         }
