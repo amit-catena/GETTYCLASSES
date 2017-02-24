@@ -47,6 +47,7 @@ namespace Gettyclasses
         public string NewsId { get; set; }
         public string Id { get; set; }
         public string startdate { get; set; }
+        public string region { get; set; }
 
 
         #endregion
@@ -66,7 +67,8 @@ namespace Gettyclasses
                                          new SqlParameter("@newsid",SqlDbType.Int),
                                          new SqlParameter("@retCount",SqlDbType.Int),
                                          new SqlParameter("@Id",SqlDbType.Int),
-                                         new SqlParameter("@startdate",SqlDbType.SmallDateTime)
+                                         new SqlParameter("@startdate",SqlDbType.SmallDateTime),
+                                         new SqlParameter("@region",SqlDbType.Char)
                                        };
                 param[0].Value = Title;
                 param[1].Value = Description;
@@ -78,6 +80,7 @@ namespace Gettyclasses
                 param[6].Direction = ParameterDirection.InputOutput;
                 param[7].Value = Id;
                 param[8].Value = startdate;
+                param[9].Value = region;
 
                 objsql.ExecuteNonQuery("AN_SP_NewsLiveUpdate_Save", param);
                 count = Convert.ToInt32(param[6].Value);
@@ -146,6 +149,40 @@ namespace Gettyclasses
             catch (Exception ex)
             {
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs GetNewsLiveUpdateDetails", ex);
+            }
+            return dt;
+        }
+
+        public DataTable GetLinks(string siteid)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlParameter[] param = { new SqlParameter("@siteid",SqlDbType.Int) };
+                param[0].Value = siteid;
+                dt = objsql.ExecuteDataTable("AN_SP_GetCacheHyperlink", param);
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs GetLinks", ex);
+            }
+            return dt;
+        }
+
+        public DataTable GetPromotionalLink(string region)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                SqlParameter[] mypara = {
+											new SqlParameter("@region",SqlDbType.VarChar)
+										};
+                mypara[0].Value = region;
+                dt = objsql.ExecuteDataTable("AN_SP_GetOfferLink", mypara);
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs GetLinks", ex);
             }
             return dt;
         }

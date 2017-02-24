@@ -22,40 +22,31 @@ namespace gettywebclasses {
         protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
         
         /// <summary>
-        /// form1 control.
+        /// ed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm ed;
         
         /// <summary>
-        /// btnadd control.
+        /// hdnAU control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnadd;
+        protected global::System.Web.UI.WebControls.HiddenField hdnAU;
         
         /// <summary>
-        /// btndelete control.
+        /// ltback3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btndelete;
-        
-        /// <summary>
-        /// divadd control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divadd;
+        protected global::System.Web.UI.WebControls.Literal ltback3;
         
         /// <summary>
         /// textTitle control.
@@ -65,6 +56,15 @@ namespace gettywebclasses {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox textTitle;
+        
+        /// <summary>
+        /// ddlregion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlregion;
         
         /// <summary>
         /// txtstartdate control.
@@ -94,15 +94,6 @@ namespace gettywebclasses {
         protected global::System.Web.UI.WebControls.Literal ltimg;
         
         /// <summary>
-        /// textdesc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textdesc;
-        
-        /// <summary>
         /// btnsave control.
         /// </summary>
         /// <remarks>
@@ -110,15 +101,6 @@ namespace gettywebclasses {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnsave;
-        
-        /// <summary>
-        /// divlist control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divlist;
         
         /// <summary>
         /// ltlist control.

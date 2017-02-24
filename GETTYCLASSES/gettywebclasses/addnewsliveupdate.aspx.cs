@@ -9,6 +9,7 @@ using System.Data;
 using System.Text;
 using System.IO;
 using System.Net;
+using System.Globalization;
 
 namespace gettywebclasses
 {
@@ -21,14 +22,18 @@ namespace gettywebclasses
         public string userid = "";
         string networkconn = "";
         public string newstitle = "";
-        public string strgeneratexml = "/recacheXML.aspx?commentcacheid=N";
+        public string strgeneratexml = "/recacheXML.aspx?commentcacheid=N";       
         public string siteurl = "";
+        public string autime = "";
+        public string uktime = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
                 try
                 {
+                    autime = DateTime.UtcNow.AddHours(Convert.ToDouble(hdnAU.Value)).ToString("dd/MM/yyyy HH:mm");
+                    uktime = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                     txtstartdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                     siteurl = Request.QueryString["siteurl"];
                     baseurl = commonfn._baseURL;
@@ -38,20 +43,16 @@ namespace gettywebclasses
                     userid = Request.QueryString["userid"];
                     newstitle = Request.QueryString["title"];
                     networkconn = System.Configuration.ConfigurationManager.AppSettings[networkid];
+                    Session["liveupdatesiteid"] = siteid;
+                    Session["liveupdateconn"] = networkconn;
                     if (Request.QueryString["operation"] == "list")
-                    {
-                        divlist.Visible = true;
-                        divadd.Visible = false;
+                    {                      
                         GetNewsLiveUpdateList();
+                       
                     }
                     else
-                    {
-
-                        divlist.Visible = false;
-                        divadd.Visible = true;
-                        btnadd.Visible = false;
-                        btndelete.Visible = false;
-                        
+                    {                    
+                                              
                         if (Request.QueryString["id"] != null)
                         {
                             GetDetails(Request.QueryString["id"]);
@@ -63,12 +64,11 @@ namespace gettywebclasses
                 {
                     CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "addnewliveupdate.aspx.cs !Page.IsPostBack", ex);
                 }
-
             }
-
            
         }
 
+       
 
         public void GetNewsLiveUpdateList()
         {
@@ -138,11 +138,12 @@ namespace gettywebclasses
                     }
                     obj.NewsId = Request.QueryString["newsid"];
                     obj.Title = textTitle.Text;
-                    obj.Description = textdesc.Text;
+                    obj.Description = Request.Form["templateText8"];
                     obj.Addedby = Request.QueryString["userid"];
                     obj.SiteId = Request.QueryString["siteid"];
                     obj.Image = imagename;
                     obj.startdate = GetDate(txtstartdate.Text);
+                    obj.region = ddlregion.SelectedValue;
                     if (Request.QueryString["Id"] != null)
                     {
                         obj.Id = Request.QueryString["Id"];
@@ -165,6 +166,8 @@ namespace gettywebclasses
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "addnewliveupdate.aspx.cs btnsave_click", ex);
             }
         }
+
+      
 
         public static void RefreshCache(string siteurl)
         {
@@ -220,15 +223,7 @@ namespace gettywebclasses
 
         }
 
-        protected void btnadd_click(object sender, EventArgs e)
-        {
-            divlist.Visible = false;
-            divadd.Visible = true;
-            btndelete.Visible = false;
-            btnadd.Visible = false;
-        }
-
-
+       
         public void GetDetails(string id)
         {
             try
@@ -242,8 +237,9 @@ namespace gettywebclasses
                     if (dt.Rows.Count > 0)
                     {
                         textTitle.Text = dt.Rows[0]["title"].ToString();
-                        textdesc.Text = dt.Rows[0]["description"].ToString();
+                        ltback3.Text = dt.Rows[0]["description"].ToString();
                         txtstartdate.Text = Convert.ToDateTime(dt.Rows[0]["startdate"]).ToString("dd/MM/yyyy HH:mm");
+                        ddlregion.SelectedValue = dt.Rows[0]["region"].ToString();
                         if (dt.Rows[0]["image"].ToString() != "")
                         {
                             string imgpath = Gettyclasses.commonfn._baseURL+"newsliveupdate/" + dt.Rows[0]["image"].ToString();
