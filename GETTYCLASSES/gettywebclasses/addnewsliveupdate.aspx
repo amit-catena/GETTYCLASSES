@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="addnewsliveupdate.aspx.cs"
     Inherits="gettywebclasses.addnewsliveupdate"  ValidateRequest="false" %>
-   
+ <html> 
 <head id="Head1" runat="server">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../datepicker/jquery.datetimepicker.css" >
@@ -91,6 +91,7 @@
 
     </script>
 </head>
+
 <body>
     <form id="ed" runat="server" onsubmit="return validate();">   
     <input type="hidden" value="0" name="htm2" id="htm2"> <input type="hidden" value="0" name="htm">
