@@ -76,15 +76,6 @@ namespace gettywebclasses {
         protected global::System.Web.UI.WebControls.TextBox txtstartdate;
         
         /// <summary>
-        /// file1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload file1;
-        
-        /// <summary>
         /// ltimg control.
         /// </summary>
         /// <remarks>
@@ -92,6 +83,15 @@ namespace gettywebclasses {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltimg;
+        
+        /// <summary>
+        /// file1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload file1;
         
         /// <summary>
         /// btnsave control.

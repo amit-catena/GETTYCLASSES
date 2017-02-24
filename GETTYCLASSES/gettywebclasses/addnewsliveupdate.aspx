@@ -136,8 +136,9 @@
                        <span class="bold">Image</span> 
                     </td>
                     <td>
-                        <asp:FileUpload ID="file1" runat="server" /></br>
-                        <asp:Literal ID="ltimg" runat="server"></asp:Literal>
+                        <div style='padding-right: 10px;float:left;'><asp:Literal ID="ltimg" runat="server"></asp:Literal></div>
+                        <asp:FileUpload ID="file1" runat="server" />
+                       
                     </td>
                 </tr>
                
@@ -163,7 +164,7 @@
                 <td class='headings'>
                     Title
                 </td>
-                <td class='headings'>
+                <td class='headings' align="center">
                     Edit
                 </td>
                  <td class='headings'>
