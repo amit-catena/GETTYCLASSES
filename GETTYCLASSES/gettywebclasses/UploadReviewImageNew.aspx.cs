@@ -37,7 +37,7 @@ namespace gettywebclasses
 
                 string imageName = DateTime.Now.ToString("ddMMyyyyHHmmsss") + ".jpg";
                 string imgpath = MapPath("../banner/" + imageName);
-                string newimgpath = "http://www.pix123.com/banner/" + imageName;
+                string newimgpath = Gettyclasses.commonfn._baseURL + "banner/" + imageName;
                 #region :: Base64 ::
                 string strImg = Request.Form["templateText3"]; ;
                 strImg = strImg.Replace("data:image/png;base64,", "");

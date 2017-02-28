@@ -29,9 +29,11 @@
 		</script>
 			
 				<style>
+				   
 				    .darkroom-toolbar-actions li:nth-child(-n+2){ display:none;}
 				    .darkroom-toolbar-actions li:nth-child(3) .darkroom-button:nth-child(1),.darkroom-toolbar-actions li:nth-child(3) .darkroom-button:nth-child(3){ display:none;}
-			SPAN[data-set]:before { COLOR: #ccc; MARGIN: 0px 10px; DISPLAY: inline-block }
+			         
+            SPAN[data-set]:before { COLOR: #ccc; MARGIN: 0px 10px; DISPLAY: inline-block }
 			TABLE ~ SPAN[data-set] { MARGIN-BOTTOM: 10px; PADDING-LEFT: 0px; DISPLAY: inline-block }
 			TABLE ~ SPAN[data-set]:before { PADDING-LEFT: 20px; DISPLAY: block }
 			.addlive { CURSOR: hand }
@@ -49,8 +51,8 @@
 .fileUpload .error.show, .errorCrop.show{opacity:1; visibility:visible; bottom:35px;}
 .errorCrop.show{bottom:42px;}
 .uploadPop{width:300px; min-width:300px; margin-top:50px; position:relative; background:#fff; color: #808080;font-size: 14px;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;cursor: default; visibility:hidden; opacity:0;transition: all 0.3s; -webkit-transition: all 0.3s;-moz-transition: all 0.3s;z-index:99;}
-#uploadOverlay{width:100%; height:100%; position:fixed; top:0; left:0; background:rgba(255,255,255,0.5);transition: all 0.3s; -webkit-transition: all 0.3s;-moz-transition: all 0.3s; visibility:hidden; opacity:0; z-index:98;}
-.uploadPop #imgTarget img{width:100%;}
+#uploadOverlay{width:90px; height:45px; position:fixed; top:0; left:0; background:rgba(255,255,255,0.5);transition: all 0.3s; -webkit-transition: all 0.3s;-moz-transition: all 0.3s; visibility:hidden; opacity:0; z-index:98;}
+.uploadPop #imgTarget img{width:90px;}
 .uploadPop .darkroom-image-container{display:block; overflow:auto;}
 .uploadPop i.remove{width: 24px;height: 24px;position: absolute;top: 5px;right: -5px;cursor: pointer; font-style:normal; font-size:18px;}
 .uploadPop i.remove::before{content:'\2715';}
@@ -85,7 +87,7 @@ body.load #loader::after {margin-left: -30px;width: 20px;height: 20px;border-top
     <tr>
     <td>Hyperlink</td><td><asp:DropDownList ID="ddllink" runat="server" style='width:250px;'></asp:DropDownList></td> </tr>
     <tr><td>Image</td><td><span class="fileUpload">						
-						<input type="file" id="upload" />
+						<input type="file" id="upload" /> <span style="font-family:Verdana;font-size:11px;color:Red;">please upload image (90 * 45) </span>
                         <label class="error"></label>
 					</span></td> </tr>
      
