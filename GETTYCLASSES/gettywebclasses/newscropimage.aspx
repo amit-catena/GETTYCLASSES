@@ -51,6 +51,7 @@ body.crop .uploadPop{visibility:visible; opacity:1;}
 body.crop #uploadOverlay{visibility:visible; opacity:1;}
 .actionBar{padding:15px 10px 0; text-align:center;}
 .actionBar input[id$="btnSave"]{display:inline-block;padding: 10px 15px;background: #0192DD; color:#fff; min-width:60px; position:relative; cursor:pointer; font-family:Arial, Helvetica, sans-serif; font-size:14px; text-transform:uppercase; border:0;}
+.btnsaveimg{display:inline-block;padding: 10px 15px;background: #0192DD; color:#fff; min-width:60px; position:relative; cursor:pointer; font-family:Arial, Helvetica, sans-serif; font-size:14px; text-transform:uppercase; border:0;}
 .actionBar #cancel{display:inline-block;padding: 10px 15px;background: #555; color:#fff; min-width:60px; position:relative; cursor:pointer; font-family:Arial, Helvetica, sans-serif; font-size:14px; text-transform:uppercase;border:0;}
 #loader {position: fixed;top:50%;left: 50%;width: 50px;height: 50px;-webkit-transition: -webkit-transform 0.3s;transition: transform 0.3s;pointer-events: none; display:none; top:50%; left:50%;  -webkit-transform: translateX(-50%) translateY(-50%);
 -moz-transform: translateX(-50%) translateY(-50%);
@@ -88,7 +89,8 @@ body.load #loader::after {margin-left: -30px;width: 20px;height: 20px;border-top
 		</div>
 		<div class="actionBar">
 			<asp:button id="btnSave" OnClick="btnSave_Click" Runat="server" CssClass="buttontext" Text="Save"
-						CausesValidation="False"></asp:button>
+						CausesValidation="False" style="display:none"></asp:button>
+            <input type="button" name="dummySave" id="dummySave" value="Save"   class="btnsaveimg" />
 			<input type="button" name="cancel" id="cancel" value="Cancel" />
 		</div>
 	</div>
@@ -161,7 +163,7 @@ body.load #loader::after {margin-left: -30px;width: 20px;height: 20px;border-top
 		        cropper.selfDestroy();
 		        parent.updateHeight();
 		    }
-		    var remove = document.querySelector('.uploadPop .remove'), _cancel = document.querySelector('#cancel'), _upload = document.querySelector('input[id$="btnSave"]');
+		    var remove = document.querySelector('.uploadPop .remove'), _cancel = document.querySelector('#cancel'), _upload = document.querySelector('input[id$="btnSave"]'), _dummy = document.querySelector('#dummySave');
 		    remove.addEventListener('click', cancel, false);
 		    err.addEventListener('click', function () { this.classList.remove('show'); }, false)
 		    _cancel.addEventListener('click', cancel, false);
@@ -174,7 +176,7 @@ body.load #loader::after {margin-left: -30px;width: 20px;height: 20px;border-top
 		        parent.scrollPage();
 		        errTimer = setTimeout(function () { cErr.classList.remove('show'); }, 4000)
 		    }
-		    _upload.addEventListener('click', function (e) {
+		    _dummy.addEventListener('click', function (e) {
 		        //this.darkroom.selfDestroy(); // Cleanup
 		        //var newImage = dkrm.canvas.toDataURL();
 		        e.preventDefault();
@@ -188,7 +190,7 @@ body.load #loader::after {margin-left: -30px;width: 20px;height: 20px;border-top
 
 
 		    }, false);
-		    window.addEventListener('image:change', function () { cropper.selfDestroy(); var img = cropper.canvas.toDataURL(); imgBasket.innerHTML = img; _body.classList.remove('load'); document.forms[0].submit(); parent.updateHeight(); clearTimeout(errTimer); })
+		    window.addEventListener('image:change', function () { cropper.selfDestroy(); var img = cropper.canvas.toDataURL(); imgBasket.innerHTML = img; _body.classList.remove('load'); document.forms[0].btnSave.click(); parent.updateHeight(); clearTimeout(errTimer); })
 		    window.addEventListener('crop:update', function () {   })
 		    var upload = document.querySelector('#upload');
 		    upload.addEventListener('change', getImage, false);

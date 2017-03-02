@@ -24,7 +24,43 @@ namespace gettywebclasses
             {
                 if (!Page.IsPostBack)
                 {
-                   
+
+                }
+                else
+                {
+                    /*try
+                    {
+                        string imageName = DateTime.Now.ToString("ddMMyyyyHHmmsss") + ".jpg";
+                        string dir = MapPath("~/" + Request.QueryString["sitename"] + "/" + GetImageFolderNameToUpload());
+
+                        if (Request.Form["templateText3"] != null)
+                        {
+                            if (Request.Form["templateText3"].Trim().Length > 10)
+                            {
+                                string imgpath = dir + imageName;
+                                #region :: Base64 ::
+                                string strImg = Request.Form["templateText3"];
+                                strImg = strImg.Replace("data:image/jpeg;base64,", "");
+                                strImg = strImg.Replace("data:image/png;base64,", "");
+
+                                if (strImg.Trim().Length > 0)
+                                {
+                                    ValidateDateFolder();
+                                    Base64ToImage(strImg).Save(imgpath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                    string Tnname = "";
+                                    Tnname = Function.SaveThumbnailCompress(imageName, dir, "TN", 300, 225);
+                                    Function.SaveThumbnailCompress(imageName, dir, "TN_TN", 128, 85);
+                                    Page.RegisterStartupScript("onsave", "<script>closePOP('" + Tnname + "');</script>");
+                                }
+                                #endregion
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "btnSave_Click", ex);
+                    }*/
                 }
             }
             catch (Exception ex)
@@ -37,7 +73,7 @@ namespace gettywebclasses
             try
             {
                 string imageName = DateTime.Now.ToString("ddMMyyyyHHmmsss") +".jpg";             
-                string dir = MapPath("../" + Request.QueryString["sitename"] + "/" + GetImageFolderNameToUpload());
+                string dir = MapPath("~/" + Request.QueryString["sitename"] + "/" + GetImageFolderNameToUpload());
                
                 string imgpath = dir + imageName;
                 #region :: Base64 ::
