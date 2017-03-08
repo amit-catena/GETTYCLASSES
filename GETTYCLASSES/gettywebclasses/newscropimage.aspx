@@ -39,7 +39,7 @@
 .errorCrop::after{content:''; width:0; height:0; position: absolute;bottom: -10px;left: 50%; border-top: 10px solid #FF94B2;border-left: 7px solid transparent;border-right: 7px solid rgba(0, 0, 0, 0);}
 .fileUpload .error.show, .errorCrop.show{opacity:1; visibility:visible; bottom:35px;}
 .errorCrop.show{bottom:42px;}
-.uploadPop{width:940px; min-width:850px; margin-top:50px; position:relative; background:#fff; color: #808080;font-size: 14px;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;cursor: default; visibility:hidden; opacity:0;transition: all 0.3s; -webkit-transition: all 0.3s;-moz-transition: all 0.3s;z-index:99;}
+.uploadPop{width:940px; min-width:850px; margin-top:50px; position:relative; background:#fff; color: #808080;font-size: 14px;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;cursor: default; visibility:hidden; opacity:0;transition: all 0.3s; -webkit-transition: all 0.3s;-moz-transition: all 0.3s;z-index:99;height:500px;overflow-y:auto;}
 #uploadOverlay{width:100%; height:100%; position:fixed; top:0; left:0; background:rgba(255,255,255,0.5);transition: all 0.3s; -webkit-transition: all 0.3s;-moz-transition: all 0.3s; visibility:hidden; opacity:0; z-index:98;}
 .uploadPop #imgTarget{text-align:center;}
 .uploadPop #imgTarget img{}
