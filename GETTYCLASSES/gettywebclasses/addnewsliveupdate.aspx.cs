@@ -26,8 +26,11 @@ namespace gettywebclasses
         public string siteurl = "";
         public string autime = "";
         public string uktime = "";
+        public string _randomCookie = "";
         protected void Page_Load(object sender, EventArgs e)
         {
+            _randomCookie = Session.SessionID + RandomNumber(10, 20008).ToString(); 
+           
             if (!Page.IsPostBack)
             {
                 try
@@ -65,7 +68,15 @@ namespace gettywebclasses
                 }
             }           
         }
-       
+
+        public static int RandomNumber(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min, max);
+        }
+
+
+
 
         public void GetNewsLiveUpdateList()
         {
