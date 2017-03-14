@@ -47,11 +47,10 @@ namespace gettywebclasses
                     Session["liveupdateconn"] = networkconn;
                     if (Request.QueryString["operation"] == "list")
                     {                      
-                        GetNewsLiveUpdateList();
-                       
+                        GetNewsLiveUpdateList();                       
                     }
                     else
-                    {                    
+                    {                 
                                               
                         if (Request.QueryString["id"] != null)
                         {
@@ -64,10 +63,8 @@ namespace gettywebclasses
                 {
                     CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "addnewliveupdate.aspx.cs !Page.IsPostBack", ex);
                 }
-            }
-           
+            }           
         }
-
        
 
         public void GetNewsLiveUpdateList()
@@ -92,6 +89,15 @@ namespace gettywebclasses
                             sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", dr["title"].ToString()));
                             sb.Append("<td class='text' align='center' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'><a title='click to manage' class='editlink' href='addnewsliveupdate.aspx?id=" + dr["Id"].ToString() + "&networkid=" + networkid + "&siteid=" + siteid + "&userid=" + dr["UID"].ToString() + "&newsid=" + dr["newsid"].ToString() + "'>Edit</a></td>");
                             sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", Convert.ToDateTime(dr["startdate"]).ToString("dd-MM-yyyy HH:mm tt")));
+                            if (dr["ishighlight"].ToString() == "Y")
+                            {
+                                sb.Append(string.Format("<td align= 'center' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", "<img src='http://www.writersllc.com/images/icon_status_green.gif' />"));
+                            }
+                            else
+                            {
+                                sb.Append(string.Format("<td align= 'center' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", "<img src='http://www.writersllc.com/images/icon_status_red.gif' />"));
+
+                            }
                             
                             sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", Convert.ToDateTime(dr["addedon"]).ToString("dd-MM-yyyy HH:mm tt")));
                             sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", dr["Name"].ToString()));
@@ -151,6 +157,14 @@ namespace gettywebclasses
                     else
                     {
                         obj.Id = "0";
+                    }
+                    if (chkhighlight.Checked == true)
+                    {
+                        obj.ishighlight = "Y";
+                    }
+                    else
+                    {
+                        obj.ishighlight = "N";
                     }
                     count= obj.SaveLiveNewsUpdate();
                     if (Request.QueryString["siteurl"] != null)
@@ -240,6 +254,14 @@ namespace gettywebclasses
                         ltback3.Text = dt.Rows[0]["description"].ToString();
                         txtstartdate.Text = Convert.ToDateTime(dt.Rows[0]["startdate"]).ToString("dd/MM/yyyy HH:mm");
                         ddlregion.SelectedValue = dt.Rows[0]["region"].ToString();
+                        if (dt.Rows[0]["ishighlight"].ToString() == "Y")
+                        {
+                            chkhighlight.Checked = true;
+                        }
+                        else
+                        {
+                            chkhighlight.Checked = false;
+                        }
                         if (dt.Rows[0]["image"].ToString() != "")
                         {
                             string imgpath = Gettyclasses.commonfn._baseURL+"newsliveupdate/" + dt.Rows[0]["image"].ToString();

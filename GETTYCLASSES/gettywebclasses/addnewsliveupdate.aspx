@@ -104,9 +104,10 @@
        
         <span id="newstitle" style="display: none;"></span>
         <span class="submit-btn">      
-        <input type=button id="btnadd" value="Add" />
-        &nbsp;       
-         <input type=button id="btndelete" value="Delete" />
+        <input type="button" id="btnadd" value="Add" class="buttontext" />            
+         <input type="button" id="btndelete" value="Delete" class="buttontext" />
+         <input type="button" id="btnsethighlight" value="Set Highlight" class="buttontext" />
+         <input type="button" id="btnremovehighlight" value="Remove Highlight" class="buttontext" />
         </span>
         <div class="divtheme"  id="divadd" style="display:none;">
             <table cellpadding="3" cellspacing="0">
@@ -129,6 +130,14 @@
                        <asp:ListItem Text="UK" Value="GB" Selected="True"></asp:ListItem>
                        </asp:DropDownList>&nbsp;  <asp:TextBox ID="txtstartdate" runat="server"></asp:TextBox>    
                                        
+                    </td>
+                </tr>
+                 <tr>
+                    <td class="headings">
+                      <span class="bold">Is Highlight</span>  
+                    </td>
+                    <td>
+                       <asp:CheckBox ID="chkhighlight" runat="server" />   
                     </td>
                 </tr>
                 <tr>
@@ -170,6 +179,9 @@
                  <td class='headings'>
                    Time
                 </td>
+                <td class='headings' align="center">
+                   Highlight
+                </td>
                 <td class='headings'>
                     Addedon
                 </td>
@@ -186,7 +198,7 @@
 
         window.onload = function (e) {
             var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-            
+
             if (url[5] == "operation=list") {
                 $("#divlist").show();
             }
@@ -195,6 +207,8 @@
                 $("#divlist").hide();
                 $("#btndelete").hide();
                 $("#btnadd").hide();
+                $("#btnsethighlight").hide();
+                $("#btnremovehighlight").hide();
             }
 
         }
@@ -217,6 +231,8 @@
             $("#divlist").hide();
             $("#btndelete").hide();
             $("#btnadd").hide();
+            $("#btnsethighlight").hide();
+            $("#btnremovehighlight").hide();
 
         });
         $("#checkAll").change(function () {
@@ -242,6 +258,66 @@
                     data: { type: 'deletenewsliveupdate', ids: favoriteids, networkid: _networkid, newsid: _newsid, siteurl: _siteurl },
                     success: function (msg) {
                         closePOP(msg, _newsid);
+                    },
+                    error: function (request, err) {
+                    }
+                });
+            }
+            else {
+                alert("please select article");
+                return false;
+            }
+
+        });
+
+        $("#btnsethighlight").click(function () {
+            var _siteurl = '<%=siteurl %>';
+            var _newsid = '<%=newsid %>';
+            var url = "<%=baseurl%>ajaxpost.aspx";
+            var favoriteids = [];
+            var _networkid = '<%=networkid %>';
+            $("input:checkbox[class=source]:checked").each(function () {
+                favoriteids.push($(this).val());
+            });
+            favoriteids = favoriteids.join(", ");
+            if (favoriteids != "") {
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    cache: false,
+                    data: { type: 'highlightnewsliveupdate', ids: favoriteids, networkid: _networkid,  siteurl: _siteurl,status: 'Y' },
+                    success: function (msg) {
+                        window.location.reload();
+                    },
+                    error: function (request, err) {
+                    }
+                });
+            }
+            else {
+                alert("please select article");
+                return false;
+            }
+
+        });
+
+        $("#btnremovehighlight").click(function () {
+            var _siteurl = '<%=siteurl %>';
+            var _newsid = '<%=newsid %>';
+            var url = "<%=baseurl%>ajaxpost.aspx";
+            var favoriteids = [];
+            var _networkid = '<%=networkid %>';
+            $("input:checkbox[class=source]:checked").each(function () {
+                favoriteids.push($(this).val());
+            });
+            favoriteids = favoriteids.join(", ");
+            if (favoriteids != "") {
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    cache: false,
+                    data: { type: 'highlightnewsliveupdate', ids: favoriteids, networkid: _networkid, siteurl: _siteurl, status: 'N' },
+                    success: function (msg) {
+                        window.location.reload();
                     },
                     error: function (request, err) {
                     }

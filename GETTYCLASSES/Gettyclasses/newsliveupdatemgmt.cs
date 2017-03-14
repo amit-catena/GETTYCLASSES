@@ -48,6 +48,7 @@ namespace Gettyclasses
         public string Id { get; set; }
         public string startdate { get; set; }
         public string region { get; set; }
+        public string ishighlight { get; set; }
 
 
         #endregion
@@ -68,7 +69,8 @@ namespace Gettyclasses
                                          new SqlParameter("@retCount",SqlDbType.Int),
                                          new SqlParameter("@Id",SqlDbType.Int),
                                          new SqlParameter("@startdate",SqlDbType.SmallDateTime),
-                                         new SqlParameter("@region",SqlDbType.Char)
+                                         new SqlParameter("@region",SqlDbType.Char),
+                                         new SqlParameter("@ishighlight",SqlDbType.Char)
                                        };
                 param[0].Value = Title;
                 param[1].Value = Description;
@@ -81,6 +83,7 @@ namespace Gettyclasses
                 param[7].Value = Id;
                 param[8].Value = startdate;
                 param[9].Value = region;
+                param[10].Value = ishighlight;
 
                 objsql.ExecuteNonQuery("AN_SP_NewsLiveUpdate_Save", param);
                 count = Convert.ToInt32(param[6].Value);
@@ -131,6 +134,28 @@ namespace Gettyclasses
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs DeleteNewsUpdateLive", ex);
             }
             return count;
+        }
+
+
+        public void SetHighlightNewsUpdateLive(string ids, string highlightstatus)
+        {
+            
+            try
+            {
+                SqlParameter[] param = { new SqlParameter("@id", SqlDbType.VarChar),
+                                       new SqlParameter("@ishighlight",SqlDbType.Char),
+                                       };
+                param[0].Value = ids;
+                param[1].Value = highlightstatus;
+
+                objsql.ExecuteNonQuery("AN_SP_SetHighlightNewsLiveUpdate", param);
+               
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs SetHighlightNewsUpdateLive", ex);
+            }
+           
         }
 
 

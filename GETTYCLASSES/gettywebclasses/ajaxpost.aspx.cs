@@ -28,6 +28,9 @@ namespace gettywebclasses
                     case "DELETENEWSLIVEUPDATE":
                         DeleteNewsLiveUpdate(Request.Form["ids"], Request.Form["networkid"],Request.Form["newsid"],Request.Form["siteurl"]);
                         break;
+                    case "HIGHLIGHTNEWSLIVEUPDATE":
+                        SetHighlightNewsLiveUpdate(Request.Form["ids"], Request.Form["networkid"], Request.Form["siteurl"],Request.Form["status"]);
+                        break;
                     case "PROMOTIONALLINK":
                         PROMOTIONALLINK();
                         break;
@@ -76,6 +79,23 @@ namespace gettywebclasses
             catch (Exception ex)
             {
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "ajaxpost.aspx.cs DeleteNewsLiveUpdate", ex);
+            }
+        }
+
+        public void SetHighlightNewsLiveUpdate(string ids, string networkid,string siteurl,string status)
+        {
+            try
+            {
+                string networkconn = System.Configuration.ConfigurationManager.AppSettings[networkid].ToString();
+                using (Gettyclasses.newsliveupdatemgmt objnews = new Gettyclasses.newsliveupdatemgmt(networkconn))
+                {
+                    objnews.SetHighlightNewsUpdateLive(ids,status);                  
+                    RefreshCache(siteurl + strgeneratexml);
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "ajaxpost.aspx.cs SetHighlightNewsLiveUpdate", ex);
             }
         }
 
