@@ -60,7 +60,7 @@ namespace Gettyclasses
             int count = 0;
             try
             {
-                SqlParameter[] param = { new SqlParameter("@title",SqlDbType.VarChar),
+                SqlParameter[] param = { new SqlParameter("@title",SqlDbType.NVarChar),
                                          new SqlParameter("@description",SqlDbType.NText),
                                          new SqlParameter("@siteid",SqlDbType.Int),
                                          new SqlParameter("@addedby",SqlDbType.Int),
