@@ -26,12 +26,14 @@ namespace gettywebclasses
         public string siteurl = "";
         public string autime = "";
         public string uktime = "";
+       
       
         protected void Page_Load(object sender, EventArgs e)
-        {         
+        {
            
             if (!Page.IsPostBack)
             {
+                ltimg.Text = "<img ID='imggetty'  src='' />";
                 try
                 {
                     autime = DateTime.UtcNow.AddHours(Convert.ToDouble(hdnAU.Value)).ToString("dd/MM/yyyy HH:mm");
@@ -67,9 +69,8 @@ namespace gettywebclasses
                 }
             }           
         }
-
+        
        
-
 
         public void GetNewsLiveUpdateList()
         {
@@ -146,6 +147,11 @@ namespace gettywebclasses
                             imagename = ViewState["img"].ToString(); 
                         }
                     }
+                    if (!string.IsNullOrEmpty(Request.Form["hdngettyimg"].ToString()))
+                    {
+                        imagename = Request.Form["hdngettyimg"].ToString();
+                    }
+
                     obj.NewsId = Request.QueryString["newsid"];
                     obj.Title = textTitle.Text;
                     obj.Description = Request.Form["templateText8"];
@@ -271,7 +277,7 @@ namespace gettywebclasses
                         if (dt.Rows[0]["image"].ToString() != "")
                         {
                             string imgpath = Gettyclasses.commonfn._baseURL+"newsliveupdate/" + dt.Rows[0]["image"].ToString();
-                            ltimg.Text = "<img src='" + imgpath + "' height='50px' width='50px'/>";
+                            ltimg.Text = "<img id='imggetty' src='" + imgpath + "' height='50px' width='50px'/>";
                             ViewState["img"] = dt.Rows[0]["image"].ToString();
                         }
                     }

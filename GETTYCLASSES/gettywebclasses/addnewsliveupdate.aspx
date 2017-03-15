@@ -97,6 +97,7 @@
 
 <body>
     <form id="ed" runat="server" onsubmit="return validate();">   
+    <input type="hidden" id="hdngettyimg" name="hdngettyimg" />
     <input type="hidden" value="0" name="htm2" id="htm2"> <input type="hidden" value="0" name="htm">
     <asp:HiddenField ID="hdnAU" Value="11" runat="server" />
     <div class="container">
@@ -148,9 +149,11 @@
                        <span class="bold">Image</span> 
                     </td>
                     <td>
-                        <div style='padding-right: 10px;float:left;'><asp:Literal ID="ltimg" runat="server"></asp:Literal></div>
+                       
                         <asp:FileUpload ID="file1" runat="server" />
-                        <a href="javascript:void(0);" id="gettyimg">Getty Image</a>
+                        <a href="javascript:void(0);" id="gettyimg">Getty Image</a><br />
+                        <asp:Literal ID="ltimg" runat="server"></asp:Literal>
+                       
                     </td>
                 </tr>
                 <tr>
@@ -158,7 +161,7 @@
                       <span class="bold">Image Text</span>  
                     </td>
                     <td>
-                       <asp:TextBox ID="txtimgtext" runat="server" style="width:500px;"></asp:TextBox>
+                       <asp:TextBox ID="txtimgtext" runat="server" style="width:500px;" TextMode="MultiLine" Rows="4" ></asp:TextBox>
                     </td>
                 </tr>
                
@@ -206,6 +209,11 @@
     </div>
      <script src="../datepicker/jquery.datetimepicker.js"></script>
     <script>
+
+        window.addEventListener('message', function (e) {
+            var message = e.data;
+            alert(message);
+        });
 
         window.onload = function (e) {
             var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -381,15 +389,20 @@
             }
         })
         starter();
-              
-        
 
-        $("#gettyimg").click(function () {               
-             window.open("superevent/liveupdateigettymage.aspx", "NewsImage", "menubar=no,toolbar=no,titlebar=no,location=no,width=1500,height=800,scrollbars=yes");
 
-         });
 
-        
+        $("#gettyimg").click(function () {
+            showgetty();
+        });
+
+               
+         function showgetty() {         
+
+             childWindow = window.open("http://anil-pc/gettyclasses/gettywebclasses/newsingleimage.aspx", "NewsImage", "menubar=no,toolbar=no,titlebar=no,location=no,width=1500,height=800,scrollbars=yes");
+                     
+           
+         }
         
       
     </script>
