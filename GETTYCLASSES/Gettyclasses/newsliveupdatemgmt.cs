@@ -49,6 +49,7 @@ namespace Gettyclasses
         public string startdate { get; set; }
         public string region { get; set; }
         public string ishighlight { get; set; }
+        public string imagebelowtext { get; set; }
 
 
         #endregion
@@ -70,7 +71,8 @@ namespace Gettyclasses
                                          new SqlParameter("@Id",SqlDbType.Int),
                                          new SqlParameter("@startdate",SqlDbType.SmallDateTime),
                                          new SqlParameter("@region",SqlDbType.Char),
-                                         new SqlParameter("@ishighlight",SqlDbType.Char)
+                                         new SqlParameter("@ishighlight",SqlDbType.Char),
+                                          new SqlParameter("@imagebelowtext",SqlDbType.NVarChar)
                                        };
                 param[0].Value = Title;
                 param[1].Value = Description;
@@ -84,6 +86,7 @@ namespace Gettyclasses
                 param[8].Value = startdate;
                 param[9].Value = region;
                 param[10].Value = ishighlight;
+                param[11].Value = imagebelowtext;
 
                 objsql.ExecuteNonQuery("AN_SP_NewsLiveUpdate_Save", param);
                 count = Convert.ToInt32(param[6].Value);

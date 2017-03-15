@@ -26,10 +26,9 @@ namespace gettywebclasses
         public string siteurl = "";
         public string autime = "";
         public string uktime = "";
-        public string _randomCookie = "";
+      
         protected void Page_Load(object sender, EventArgs e)
-        {
-            _randomCookie = Session.SessionID + RandomNumber(10, 20008).ToString(); 
+        {         
            
             if (!Page.IsPostBack)
             {
@@ -69,13 +68,7 @@ namespace gettywebclasses
             }           
         }
 
-        public static int RandomNumber(int min, int max)
-        {
-            Random random = new Random();
-            return random.Next(min, max);
-        }
-
-
+       
 
 
         public void GetNewsLiveUpdateList()
@@ -177,6 +170,7 @@ namespace gettywebclasses
                     {
                         obj.ishighlight = "N";
                     }
+                    obj.imagebelowtext = txtimgtext.Text;
                     count= obj.SaveLiveNewsUpdate();
                     if (Request.QueryString["siteurl"] != null)
                     {
@@ -273,6 +267,7 @@ namespace gettywebclasses
                         {
                             chkhighlight.Checked = false;
                         }
+                        txtimgtext.Text = dt.Rows[0]["imagebelowtext"].ToString();
                         if (dt.Rows[0]["image"].ToString() != "")
                         {
                             string imgpath = Gettyclasses.commonfn._baseURL+"newsliveupdate/" + dt.Rows[0]["image"].ToString();

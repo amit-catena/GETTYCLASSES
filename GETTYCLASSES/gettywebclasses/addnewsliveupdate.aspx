@@ -5,6 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../datepicker/jquery.datetimepicker.css" >
     <script src="../scripts/toolbarfuncs8.js" type="text/javascript"></script>   
+   
     <title></title>
     <style>
         .container
@@ -83,6 +84,8 @@
     </style>
     <script>
 
+        
+
         function closePOP(count, newsid) {
             var retVal = count + '_' + newsid
             parent.postMessage(retVal, '*');
@@ -147,7 +150,15 @@
                     <td>
                         <div style='padding-right: 10px;float:left;'><asp:Literal ID="ltimg" runat="server"></asp:Literal></div>
                         <asp:FileUpload ID="file1" runat="server" />
-                       
+                        <a href="javascript:void(0);" id="gettyimg">Getty Image</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="headings">
+                      <span class="bold">Image Text</span>  
+                    </td>
+                    <td>
+                       <asp:TextBox ID="txtimgtext" runat="server" style="width:500px;"></asp:TextBox>
                     </td>
                 </tr>
                
@@ -370,123 +381,14 @@
             }
         })
         starter();
-
-        var postwin;
-        var postintervalID, postchildWindow;
-        var Site = '<% Response.Write(siteid); %>';
-       
-        var randomID = '<% Response.Write(_randomCookie); %>';
-        function Postimagefrmgetty() {
-            window.clearInterval(postintervalID);
-            var Site = '<% Response.Write(siteid); %>';
-            var valrandom = getRandomArbitary(100, 5000);
-            
-            randomID = randomID + valrandom;
-            postchildWindow = window.open("http://amitk.invitrat.com/gettyclasses/gettywebclasses/newsletterimages.aspx?NwtID=Network1&randomID=" + randomID + "&SiteId=" + Site, "NewsImage", "menubar=no,toolbar=no,titlebar=no,location=no,width=1500,height=800,scrollbars=yes");
-            postintervalID = window.setInterval(Addedimagetty, 500);
-
-        }
-
-        function Addedimagetty() {
+              
         
-            var Site = '<% Response.Write(siteid); %>';
-            if (postchildWindow && postchildWindow.closed) {
-                window.clearInterval(postintervalID);
 
-                var urlgetty = "http://amitk/gamingnetadmin/AjaxGetty.aspx";
-                $.ajax({
-                    type: "POST",
-                    url: urlgetty,
-                    cache: false,
-                    async: false,
-                    data: { type: 'ADDIMAGEINNEWSDESC', siteid: Site, randomid: randomID },
-                    success: function (msg) {
+        $("#gettyimg").click(function () {               
+             window.open("superevent/liveupdateigettymage.aspx", "NewsImage", "menubar=no,toolbar=no,titlebar=no,location=no,width=1500,height=800,scrollbars=yes");
 
-                        var states = msg;
-                        GetpostGettyimage_CallBack(msg);
+         });
 
-                    },
-                    error: function (request, err) {
-                    }
-                });
-
-                //add_newnews.Addimageinnewsdesc(Site,randomID,GetpostGettyimage_CallBack);
-            }
-
-        }
-
-
-        function getRandomArbitary(min, max) {
-            return Math.random() * (max - min) + min;
-        }
-
-
-        function GetpostGettyimage_CallBack(response) {
-            var _imgurl, _imgtext;
-            var states = response;
-            var j = 0;
-            if (states != "") {
-
-                var _IDs = states.split('&&');
-                //alert(_IDs.length);
-                for (i = 0; i < _IDs.length; i++) {
-                    //alert(_IDs[0].value +"url"+_IDs[1].value);
-                    _imgurl = _IDs[i + j];
-                    if (i > 0)
-                        _imgtext = "<i>" + _IDs[i + j + 1] + "</i>";
-                    else
-                        _imgtext = "<i>" + _IDs[1] + "</i>";
-                    j++;
-
-                    if (_imgurl != "" && _imgurl != null) {
-                        Postimageonnewsbygetty(_imgurl, _imgtext);
-                    }
-                    else {
-                        break;
-                    }
-                }
-
-
-            }
-        }
-
-
-        function Postimageonnewsbygetty(strimageval, gettydecp) {
-
-
-            if (document.selection && document.selection.createRange) {
-
-                var range = window.parent.idContent8.document.selection.createRange();
-                window.parent.idContent8.focus();
-            }
-            else if (window.getSelection) {
-                var userSelection;
-                var iframe = window.parent.document.getElementById('idContent8');
-                var userSelection = iframe.contentWindow.getSelection();
-                window.parent.idContent8.focus();
-            }
-
-            if (document.selection && document.selection.createRange) {
-                range.pasteHTML('<img  src=\"' + strimageval + '\"   width=\'590px\'  class=\'intdecimg\'  style=\'width:590px\'>' + range.text + '</img></br></br>' + gettydecp + '</br></br>');
-            }
-            else if (window.getSelection) {
-                var range, node;
-                range = getRangeObject(userSelection);
-                node = range.createContextualFragment('<img   src=\"' + strimageval + '\"  class=\'intdecimg\'  width=\'590px\'  style=\'width:590px\'>' + userSelection + '</img></br></br>' + gettydecp + '</br></br>');
-                range.deleteContents();
-                range.insertNode(node);
-
-            }
-            else {
-                var range = getRangeObject(userSelection);
-                var newSpan = window.parent.document.createElement('span');
-                newSpan.innerHTML = '<img href=\"' + strimageval + '\"    width=\'590px\' class=\'intdecimg\'  style=\'width:590px\' >' + userSelection + '</img></br></br>' + gettydecp + '</br></br>';
-                range.deleteContents();
-                range.insertNode(newSpan);
-
-            }
-
-        }
         
         
       
