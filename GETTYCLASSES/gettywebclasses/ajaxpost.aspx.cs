@@ -56,6 +56,7 @@ namespace gettywebclasses
                     objnews.NewsId = newsid;
                     count=objnews.SaveLiveNewsUpdate();
                     ltresult.Text = count.ToString();
+                    
                 }
             }
             catch (Exception ex)
