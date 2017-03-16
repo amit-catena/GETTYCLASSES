@@ -10,6 +10,7 @@ using System.Text;
 using System.IO;
 using System.Net;
 using System.Globalization;
+using System.Drawing;
 
 namespace gettywebclasses
 {
@@ -151,7 +152,17 @@ namespace gettywebclasses
                     {
                         imagename = Request.Form["hdngettyimg"].ToString();
                     }
-
+                   
+                    if (!string.IsNullOrEmpty(imagename))
+                    {
+                        string imgpath = MapPath("../newsliveupdate/" + imagename);
+                        int widthAct = System.Drawing.Image.FromFile(imgpath).Width;
+                        if (widthAct > 600)
+                        {
+                            imagename = Function.SaveThumbnailCompress(imagename, HttpContext.Current.Server.MapPath("~/newsliveupdate/"), "TN_", 600, 402);
+                        }
+                    }
+                    
                     obj.NewsId = Request.QueryString["newsid"];
                     obj.Title = textTitle.Text;
                     obj.Description = Request.Form["templateText8"];
@@ -192,7 +203,51 @@ namespace gettywebclasses
             }
         }
 
-      
+
+        private string SaveThumbnail(string img)
+        {
+
+            string imgpath = "";
+            string albumPath = "";
+            imgpath = MapPath("../newsliveupdate/" + img);
+            albumPath = MapPath("../newsliveupdate/");
+
+            int jheight = System.Drawing.Image.FromFile(imgpath).Height;
+            int jwidthAct = System.Drawing.Image.FromFile(imgpath).Width;
+            double ratio = (double)jheight / (double)jwidthAct;
+            int jwidth = 200;
+            double calHeight = jwidth * ratio;
+
+            string ImgFilePath = img;
+            string uriName = Path.GetFileName(imgpath);
+            Bitmap SourceBitmap = null;
+            System.Drawing.Image thumbnail = null;
+            string fnameHRW = "TN_" + uriName;
+            Bitmap SourceBitmap1 = null;
+            System.Drawing.Image thumbnail1 = null;
+            try
+            {
+                SourceBitmap = new Bitmap(albumPath + uriName);
+                thumbnail = SourceBitmap.GetThumbnailImage(jwidth, Convert.ToInt32(Math.Round(calHeight)), null, IntPtr.Zero);
+                FileStream fs = File.Create(albumPath + fnameHRW);
+                thumbnail.Save(fs, SourceBitmap.RawFormat);
+                fs.Flush();
+                fs.Close();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                SourceBitmap.GetThumbnailImage(jwidth, Convert.ToInt32(Math.Round(calHeight)), null, IntPtr.Zero).Dispose();
+                thumbnail.Dispose();
+                SourceBitmap.Dispose();
+            }
+
+            return "TN_" + img;
+        }
+
+
 
         public static void RefreshCache(string siteurl)
         {
