@@ -140,6 +140,7 @@ namespace gettywebclasses
                         imagename = string.Format("{0}{1}", DateTime.Now.ToString("ddMMyyhhmmss"), Path.GetExtension(file1.FileName));
 
                         file1.SaveAs(Server.MapPath("~/newsliveupdate/") + imagename);
+                        file1.Dispose();
                     }
                     else
                     {
@@ -155,12 +156,16 @@ namespace gettywebclasses
                    
                     if (!string.IsNullOrEmpty(imagename))
                     {
-                        string imgpath = MapPath("../newsliveupdate/" + imagename);
-                        int widthAct = System.Drawing.Image.FromFile(imgpath).Width;
-                        if (widthAct > 600)
+                        try
                         {
-                            imagename = Function.SaveThumbnailCompress(imagename, HttpContext.Current.Server.MapPath("~/newsliveupdate/"), "TN_", 600, 402);
+                            string imgpath = MapPath("~/newsliveupdate/" + imagename);
+                            int widthAct = System.Drawing.Image.FromFile(imgpath).Width;
+                            if (widthAct > 600)
+                            {
+                                imagename = Function.SaveThumbnailCompress(imagename, HttpContext.Current.Server.MapPath("~/newsliveupdate/"), "TN_", 600, 402);
+                            }
                         }
+                        catch { }
                     }
                     
                     obj.NewsId = Request.QueryString["newsid"];
