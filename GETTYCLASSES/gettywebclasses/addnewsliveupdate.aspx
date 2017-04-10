@@ -145,6 +145,52 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="headings">
+                       <span class="bold">Link</span> 
+                    </td>
+                    <td>                                 
+                     <asp:DropDownList ID="sellink" style="width:250px;"  Runat="server"></asp:DropDownList>
+                     OR                                          
+                                       
+                    </td>
+                </tr>
+                <tr>
+                    <td class="headings">
+                      <span class="bold">Promotional Link</span>  
+                    </td>
+                    <td>
+                     <select id="ddlpromoregion" name="ddlpromoregion" runat="server" onchange="javascript:Setlink();">
+                            <option value="0" selected>-select-</option>
+							<option value="GB" >GB</option>
+							<option value="AU">AU</option>
+						</select>&nbsp;<select id="ddlpromolink" name="ddlpromolink" runat="server">
+                        <option>-select promotional link-</option>
+                        </select>OR
+                    </td>
+                </tr>
+                  <tr>
+                    <td class="headings">
+                      <span class="bold">External Link</span>  
+                    </td>
+                    <td>
+                     <asp:TextBox ID="txtexternallink" runat="server" style="width:500px;"></asp:TextBox>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="headings">
+                      <span class="bold">Target</span>  
+                    </td>
+                    <td>
+                     <asp:DropDownList ID="ddltargetto" runat="server">
+                     <asp:ListItem Value="_blank">new</asp:ListItem>
+                     <asp:ListItem Value="_selt">same</asp:ListItem>
+                     </asp:DropDownList>
+                    </td>
+                </tr>
+              
+
+                <tr>
                     <td class="headings tblliveudt">
                        <span class="bold">Image</span> 
                     </td>
@@ -403,8 +449,75 @@
                      
            
          }
-        
-      
+
+
+         window.addEventListener("message", receiveMessage, false);
+         function receiveMessage(e) {
+             Settwitterdat(e.data);
+         }
+
+         function Settwitterdat(strkey) {
+             if (document.selection && document.selection.createRange) {
+
+                 var range = idContent8.document.selection.createRange();
+                 idContent8.focus();
+             }
+             else if (window.getSelection) {
+                 var userSelection;
+                 var iframe = document.getElementById('idContent8');
+                 var userSelection = iframe.contentWindow.getSelection();
+                 idContent8.focus();
+             }
+
+             if (document.selection && document.selection.createRange) {
+                 range.pasteHTML(strkey);
+             }
+             else if (window.getSelection) {
+                 var range, node;
+
+                 range = getRangeObject(userSelection);
+                 node = range.createContextualFragment(strkey);
+                 range.deleteContents();
+                 range.insertNode(node);
+
+
+             }
+             else {
+                 var range = getRangeObject(userSelection);
+                 var newSpan = document.createElement('span');
+                 newSpan.innerHTML = strkey;
+
+                 range.deleteContents();
+                 range.insertNode(newSpan);
+             }
+
+         }
+
+         function Setlink() {
+             var e = document.getElementById("ddlpromoregion");
+             var strUser = e.options[e.selectedIndex].value;
+             filllink(strUser);
+         }
+
+         function filllink(region) {
+             var url = "<%=baseurl%>ajaxpost.aspx";
+             $.ajax({
+                 type: 'POST',
+                 url: url,
+                 cache: false,
+                 data: { type: 'PROMOTIONALLINK', region: region },
+                 success: function (msg) {                
+                     
+                         $("#ddlpromolink").html(msg);                    
+                    
+                 },
+                 error: function (request, err) {
+                     alert(err.status);
+                 }
+             });
+         } 
+
+
     </script>
     </form>
 </body>

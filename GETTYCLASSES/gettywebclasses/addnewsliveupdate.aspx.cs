@@ -34,9 +34,12 @@ namespace gettywebclasses
            
             if (!Page.IsPostBack)
             {
+
                 ltimg.Text = "<img ID='imggetty'  src='' />";
                 try
                 {
+                   
+
                     autime = DateTime.UtcNow.AddHours(Convert.ToDouble(hdnAU.Value)).ToString("dd/MM/yyyy HH:mm");
                     uktime = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                     txtstartdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
@@ -50,6 +53,8 @@ namespace gettywebclasses
                     networkconn = System.Configuration.ConfigurationManager.AppSettings[networkid];
                     Session["liveupdatesiteid"] = siteid;
                     Session["liveupdateconn"] = networkconn;
+
+                    FillLinks(Session["liveupdatesiteid"].ToString());
                     if (Request.QueryString["operation"] == "list")
                     {                      
                         GetNewsLiveUpdateList();                       
@@ -113,7 +118,7 @@ namespace gettywebclasses
                     }
                     else
                     {
-                        sb.Append("<tr><td style='color:red' colspan='6'>record not found </td></tr>");
+                        sb.Append("<tr><td style='color:red' colspan='7'>record not found </td></tr>");
                     }
                     ltlist.Text = sb.ToString();
                 }
@@ -193,6 +198,12 @@ namespace gettywebclasses
                         obj.ishighlight = "N";
                     }
                     obj.imagebelowtext = txtimgtext.Text;
+                    obj.LinkId = sellink.SelectedValue;
+                    obj.Promoregion = ddlpromoregion.Value;
+                    obj.PromoLink = Request.Form["ddlpromolink"];
+                    obj.Externallink = txtexternallink.Text;
+                    obj.TargetTo = ddltargetto.SelectedValue;
+
                     count= obj.SaveLiveNewsUpdate();
                     if (Request.QueryString["siteurl"] != null)
                     {
@@ -340,6 +351,13 @@ namespace gettywebclasses
                             ltimg.Text = "<img id='imggetty' src='" + imgpath + "' height='50px' width='50px'/>";
                             ViewState["img"] = dt.Rows[0]["image"].ToString();
                         }
+                        sellink.SelectedValue = dt.Rows[0]["linkid"].ToString();
+                        ddlpromoregion.Value = dt.Rows[0]["promoregion"].ToString();
+                        FillPromoLink(ddlpromoregion.Value);
+                        ddlpromolink.Value = dt.Rows[0]["promolink"].ToString();
+                        txtexternallink.Text = dt.Rows[0]["externallink"].ToString();
+                        ddltargetto.SelectedValue = dt.Rows[0]["targetto"].ToString();
+
                     }
                 }
             }
@@ -348,6 +366,80 @@ namespace gettywebclasses
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "addnewliveupdate.aspx.cs GetDetails", ex);
             }
 
+        }
+
+
+        public void FillLinks(string siteid)
+        {
+            DataTable dt = new DataTable();
+            try
+            {                
+                using (newsliveupdatemgmt obj = new newsliveupdatemgmt(Session["liveupdateconn"].ToString()))
+                {
+                    dt = obj.GetLinks(siteid);
+                    if (dt.Rows.Count > 0)
+                    {
+                        sellink.DataSource = dt;
+                        sellink.DataTextField = "LinkName";
+                        sellink.DataValueField = "LinkID";
+                        sellink.DataBind();
+                    }
+                    sellink.Items.Insert(0, new ListItem("-select-", "0"));
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "addnewliveupdate.aspx.cs FillLinks", ex);
+            }
+        }
+
+
+        public void FillPromoLink(string region)
+        {
+            string URL = "";
+            try
+            {
+                DataTable dt = new DataTable();
+                string conn = System.Configuration.ConfigurationManager.AppSettings["gamingnetAdsenseconn"];
+
+                using (newsliveupdatemgmt objpromo = new newsliveupdatemgmt(conn))
+                {
+                    dt = objpromo.GetPromotionalLink(region);
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        URL = "";
+                        try
+                        {
+                            if (r["shortenurl"].ToString().Trim().StartsWith("f.ast.bet/go"))
+                            {
+                                URL = string.Format("http://{0}", r["shortenurl"].ToString().Trim());
+                               
+                            }
+                            else
+                            {
+                                URL = string.Format("//www.caledonianmedia.com/promotionalstat.aspx?siteurl={0}&siteid={1}", r["LinkID"].ToString(), Session["liveupdatesiteid"].ToString());
+                            }
+                        }
+                        catch
+                        {
+                            URL = "";
+                        }
+                        if (URL.Length > 1)
+                        {                          
+
+                            ddlpromolink.Items.Add(new ListItem(r["LinkName"].ToString(),URL));
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+               CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "addnewliveupdate.aspx.cs FillPromoLink", ex);
+            }
         }
          
     }
