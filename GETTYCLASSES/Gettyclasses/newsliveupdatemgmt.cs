@@ -50,6 +50,11 @@ namespace Gettyclasses
         public string region { get; set; }
         public string ishighlight { get; set; }
         public string imagebelowtext { get; set; }
+        public string LinkId { get; set; }
+        public string PromoLink { get; set; }
+        public string Promoregion { get; set; }
+        public string Externallink { get; set; }
+        public string TargetTo { get; set; }
 
 
         #endregion
@@ -72,7 +77,12 @@ namespace Gettyclasses
                                          new SqlParameter("@startdate",SqlDbType.SmallDateTime),
                                          new SqlParameter("@region",SqlDbType.Char),
                                          new SqlParameter("@ishighlight",SqlDbType.Char),
-                                          new SqlParameter("@imagebelowtext",SqlDbType.NVarChar)
+                                         new SqlParameter("@imagebelowtext",SqlDbType.NVarChar),
+                                         new SqlParameter("@linkid ",SqlDbType.Int),
+                                         new SqlParameter("@promoregion",SqlDbType.Char),
+                                         new SqlParameter("@promolink",SqlDbType.NVarChar),
+                                         new SqlParameter("@externallink",SqlDbType.NVarChar),
+                                         new SqlParameter("@targetto",SqlDbType.VarChar)
                                        };
                 param[0].Value = Title;
                 param[1].Value = Description;
@@ -87,6 +97,11 @@ namespace Gettyclasses
                 param[9].Value = region;
                 param[10].Value = ishighlight;
                 param[11].Value = imagebelowtext;
+                param[12].Value = LinkId;
+                param[13].Value = Promoregion;
+                param[14].Value = PromoLink;
+                param[15].Value = Externallink;
+                param[16].Value = TargetTo;
 
                 objsql.ExecuteNonQuery("AN_SP_NewsLiveUpdate_Save", param);
                 count = Convert.ToInt32(param[6].Value);
