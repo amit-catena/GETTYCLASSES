@@ -109,6 +109,17 @@ namespace gettywebclasses
                                 sb.Append(string.Format("<td align= 'center' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", "<img src='http://www.writersllc.com/images/icon_status_red.gif' />"));
 
                             }
+
+                            if (dr["ispin"].ToString() == "Y")
+                            {
+                                sb.Append(string.Format("<td align= 'center' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", "<img src='http://www.writersllc.com/images/icon_status_green.gif' />"));
+                            }
+                            else
+                            {
+                                sb.Append(string.Format("<td align= 'center' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", "<img src='http://www.writersllc.com/images/icon_status_red.gif' />"));
+
+                            }
+                            
                             
                             sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", Convert.ToDateTime(dr["addedon"]).ToString("dd-MM-yyyy HH:mm tt")));
                             sb.Append(string.Format("<td align= 'left' bgcolor='#FFFFFF' valign='middle' style='font-family:verdana;font-size:11px;'>{0}</td>", dr["Name"].ToString()));

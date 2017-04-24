@@ -176,6 +176,28 @@ namespace Gettyclasses
            
         }
 
+        public void SetFeaturedNewsUpdateLive(string ids, string featuredstatus)
+        {
+
+            try
+            {
+                SqlParameter[] param = { new SqlParameter("@id", SqlDbType.VarChar),
+                                       new SqlParameter("@isfeatured",SqlDbType.Char),
+                                       };
+                param[0].Value = ids;
+                param[1].Value = featuredstatus;
+
+                objsql.ExecuteNonQuery("AN_SP_SetFeatured_NewsLiveUpdate", param);
+
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs SetFeaturedNewsUpdateLive", ex);
+            }
+
+        }
+
+
 
         public DataTable GetNewsLiveUpdateDetails(string id)
         {

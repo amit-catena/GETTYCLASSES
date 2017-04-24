@@ -112,6 +112,8 @@
          <input type="button" id="btndelete" value="Delete" class="buttontext" />
          <input type="button" id="btnsethighlight" value="Set Highlight" class="buttontext" />
          <input type="button" id="btnremovehighlight" value="Remove Highlight" class="buttontext" />
+         <input type="button" id="btnsetfeatured" value="Set Pin" class="buttontext" />
+         <input type="button" id="btnremovefeatured" value="Remove Pin" class="buttontext" />
         </span>
         <div class="divtheme"  id="divadd" style="display:none;">
             <table cellpadding="3" cellspacing="0">
@@ -163,9 +165,9 @@
                             <option value="0" selected>-select-</option>
 							<option value="GB" >GB</option>
 							<option value="AU">AU</option>
-						</select>&nbsp;<select id="ddlpromolink" name="ddlpromolink" runat="server">
+						</select>&nbsp;<select id="ddlpromolink" name="ddlpromolink" runat="server" style='width:180px;'>
                         <option>-select promotional link-</option>
-                        </select>OR
+                        </select>&nbsp;OR
                     </td>
                 </tr>
                   <tr>
@@ -242,6 +244,9 @@
                 <td class='headings' align="center">
                    Highlight
                 </td>
+                <td class='headings' align="center">
+                   Pin
+                </td>
                 <td class='headings'>
                     Addedon
                 </td>
@@ -274,6 +279,8 @@
                 $("#btnadd").hide();
                 $("#btnsethighlight").hide();
                 $("#btnremovehighlight").hide();
+                $("#btnsetfeatured").hide();
+                $("#btnremovefeatured").hide();
             }
 
         }
@@ -298,6 +305,8 @@
             $("#btnadd").hide();
             $("#btnsethighlight").hide();
             $("#btnremovehighlight").hide();
+            $("#btnsetfeatured").hide();
+            $("#btnremovefeatured").hide();
 
         });
         $("#checkAll").change(function () {
@@ -515,7 +524,70 @@
                      alert(err.status);
                  }
              });
-         } 
+         }
+
+
+         $("#btnsetfeatured").click(function () {
+             var _siteurl = '<%=siteurl %>';
+             var _newsid = '<%=newsid %>';
+             var url = "<%=baseurl%>ajaxpost.aspx";
+             var favoriteids = [];
+             var _networkid = '<%=networkid %>';
+             $("input:checkbox[class=source]:checked").each(function () {
+                 favoriteids.push($(this).val());
+             });
+             favoriteids = favoriteids.join(", ");
+             if (favoriteids != "") {
+                 $.ajax({
+                     type: 'POST',
+                     url: url,
+                     cache: false,
+                     data: { type: 'featurednewsliveupdate', ids: favoriteids, networkid: _networkid, siteurl: _siteurl, status: 'Y' },
+                     success: function (msg) {
+                         window.location.reload();
+                     },
+                     error: function (request, err) {
+                     }
+                 });
+             }
+             else {
+                 alert("please select article");
+                 return false;
+             }
+
+         });
+
+
+         $("#btnremovefeatured").click(function () {
+             var _siteurl = '<%=siteurl %>';
+             var _newsid = '<%=newsid %>';
+             var url = "<%=baseurl%>ajaxpost.aspx";
+             var favoriteids = [];
+             var _networkid = '<%=networkid %>';
+             $("input:checkbox[class=source]:checked").each(function () {
+                 favoriteids.push($(this).val());
+             });
+             favoriteids = favoriteids.join(", ");
+             if (favoriteids != "") {
+                 $.ajax({
+                     type: 'POST',
+                     url: url,
+                     cache: false,
+                     data: { type: 'featurednewsliveupdate', ids: favoriteids, networkid: _networkid, siteurl: _siteurl, status: 'N' },
+                     success: function (msg) {
+                         window.location.reload();
+                     },
+                     error: function (request, err) {
+                     }
+                 });
+             }
+             else {
+                 alert("please select article");
+                 return false;
+             }
+
+         });
+
 
 
     </script>
