@@ -14,7 +14,7 @@ namespace gettywebclasses
 {
     public partial class ajaxpost : System.Web.UI.Page
     {
-        public string strgeneratexml = "/recacheXML.aspx?commentcacheid=N";
+        public string strgeneratexml = "/recacheXML.aspx";
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -30,6 +30,9 @@ namespace gettywebclasses
                         break;
                     case "HIGHLIGHTNEWSLIVEUPDATE":
                         SetHighlightNewsLiveUpdate(Request.Form["ids"], Request.Form["networkid"], Request.Form["siteurl"],Request.Form["status"]);
+                        break;
+                    case "FEATUREDNEWSLIVEUPDATE":
+                        SetFeaturedNewsLiveUpdate(Request.Form["ids"], Request.Form["networkid"], Request.Form["siteurl"], Request.Form["status"]);
                         break;
                     case "PROMOTIONALLINK":
                         PROMOTIONALLINK();
@@ -97,6 +100,24 @@ namespace gettywebclasses
             catch (Exception ex)
             {
                 CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "ajaxpost.aspx.cs SetHighlightNewsLiveUpdate", ex);
+            }
+        }
+
+
+        public void SetFeaturedNewsLiveUpdate(string ids, string networkid, string siteurl, string status)
+        {
+            try
+            {
+                string networkconn = System.Configuration.ConfigurationManager.AppSettings[networkid].ToString();
+                using (Gettyclasses.newsliveupdatemgmt objnews = new Gettyclasses.newsliveupdatemgmt(networkconn))
+                {
+                    objnews.SetFeaturedNewsUpdateLive(ids, status);
+                    RefreshCache(siteurl + strgeneratexml);
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "ajaxpost.aspx.cs SetFeaturedNewsLiveUpdate", ex);
             }
         }
 
