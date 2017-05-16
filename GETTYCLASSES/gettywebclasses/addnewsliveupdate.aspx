@@ -104,8 +104,8 @@
         <div style="LEFT: -100px; VISIBILITY: hidden; WIDTH: 0px; POSITION: absolute; TOP: 0px; HEIGHT: 0px" align="center">
 		<TEXTAREA id="templateText8" name="templateText8" rows="4" cols="70"><asp:Literal id='ltback3' runat='server'></asp:Literal></TEXTAREA>
 		</div>
-        <span style='font: size:10px; font-family: Verdana; text-align: center;'><b>Live Update</b></span><br />
-       
+        <span style='font: size:10px; font-family: Verdana; text-align: center;'><b>Live Update</b></span><br /><br />
+        <span class="headings tblliveudt">Header</span>  <span style="padding-left:58px;"> <asp:TextBox ID="txtHeader" runat="server" style="width:500px;"></asp:TextBox>&nbsp;  <input type="button" id="btnsetheader" value="Set Header" class="buttontext" /></span>
         <span id="newstitle" style="display: none;"></span>
         <span class="submit-btn">      
         <input type="button" id="btnadd" value="Add" class="buttontext" />            
@@ -585,6 +585,27 @@
                  alert("please select article");
                  return false;
              }
+
+         });
+
+
+         $("#btnsetheader").click(function () {
+             var _siteurl = '<%=siteurl %>';
+             var _newsid = '<%=newsid %>';
+             var url = "<%=baseurl%>ajaxpost.aspx";
+             var _networkid = '<%=networkid %>';
+             var _header = $("#txtHeader").val();
+             $.ajax({
+                 type: 'POST',
+                 url: url,
+                 cache: false,
+                 data: { type: 'liveupdateheader', newsid: _newsid, header: _header, networkid: _networkid, siteurl: _siteurl },
+                 success: function (msg) {
+                     alert("Header save successfully");
+                 },
+                 error: function (request, err) {
+                 }
+             });
 
          });
 

@@ -251,6 +251,45 @@ namespace Gettyclasses
             }
             return dt;
         }
+
+        public void SetLiveUpdateHeader(string newsid,string header)
+        {
+            try
+            {
+                SqlParameter[] mypara = { new SqlParameter("@newsid", SqlDbType.Int),
+                                        new SqlParameter("@liveupdateheader",SqlDbType.NVarChar)};
+                mypara[0].Value = newsid;
+                mypara[1].Value = header;
+                objsql.ExecuteNonQuery("AN_SP_SetLiveUpdateHeader", mypara);
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs SetLiveUpdateHeader", ex);
+            }
+        }
+
+        public string GetLiveUpdateHeader(string newsid)
+        {
+            string header = string.Empty;
+            object objheader = null;
+            try
+            {
+                SqlParameter[] mypara = { new SqlParameter("@newsid", SqlDbType.Int)
+                                         };
+                mypara[0].Value = newsid;
+                objheader= objsql.ExecuteScaler("AN_SP_GetLiveUpdateHeader", mypara);
+                if (objheader != null)
+                {
+                    header = objheader.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "newsliveupdatemgmt.cs SetLiveUpdateHeader", ex);
+            }
+            return header;
+        }
+        
         
 
         #endregion

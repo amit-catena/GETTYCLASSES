@@ -2303,9 +2303,11 @@ namespace Gettyclasses
             string Tnname = string.Empty;
             string orgname = string.Empty;
             bool result = false;
-            SiteInfo objsite = new SiteInfo();
+            /*
+          SiteInfo objsite = new SiteInfo();
             objsite.NetWorkID = _strnetworkID.ToString();
             objsite.GetSiteDetails(_strsiteID, _strnetworkID.ToString());
+          
             if (objsite.ImageServer)
             {
                 sitefolder = Function.GetSiteFolderName(objsite.SiteUrl);
@@ -2321,6 +2323,7 @@ namespace Gettyclasses
                 pathclient = HttpContext.Current.Server.MapPath("images/newsimages/");
                 _imagepathdownload = ConfigurationSettings.AppSettings["ImagePath"];
             }
+             */
             try
             {
                 string imgExt = Path.GetExtension(imgSrcURL);
@@ -2330,6 +2333,7 @@ namespace Gettyclasses
                 filename = DateTime.Now.ToString("yyyyMMMddhhmmss") + "_" + imgID + ".jpg";
                 System.Net.WebClient webClient = new System.Net.WebClient();
                 webClient.DownloadFile(imgSrcURL, HttpContext.Current.Server.MapPath("~/newsliveupdate/") + filename);
+                
 
                 webClient.Dispose();
 

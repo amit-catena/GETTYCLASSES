@@ -38,8 +38,8 @@ namespace gettywebclasses
                 ltimg.Text = "<img ID='imggetty'  src='' />";
                 try
                 {
-                   
 
+                  
                     autime = DateTime.UtcNow.AddHours(Convert.ToDouble(hdnAU.Value)).ToString("dd/MM/yyyy HH:mm");
                     uktime = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                     txtstartdate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
@@ -53,7 +53,10 @@ namespace gettywebclasses
                     networkconn = System.Configuration.ConfigurationManager.AppSettings[networkid];
                     Session["liveupdatesiteid"] = siteid;
                     Session["liveupdateconn"] = networkconn;
-
+                    using (newsliveupdatemgmt obj = new newsliveupdatemgmt(networkconn))
+                    {
+                        txtHeader.Text = obj.GetLiveUpdateHeader(newsid);
+                    }
                     FillLinks(Session["liveupdatesiteid"].ToString());
                     if (Request.QueryString["operation"] == "list")
                     {                      

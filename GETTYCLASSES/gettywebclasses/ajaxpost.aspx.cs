@@ -37,6 +37,9 @@ namespace gettywebclasses
                     case "PROMOTIONALLINK":
                         PROMOTIONALLINK();
                         break;
+                    case "LIVEUPDATEHEADER":
+                        SetLiveUpdateHeader(Request.Form["newsid"], Request.Form["header"], Request.Form["networkid"], Request.Form["siteurl"]);
+                        break;
 
                 }
             }
@@ -208,6 +211,25 @@ namespace gettywebclasses
             ltresult.Text = sb.ToString(); sb = null;
 
 
+        }
+
+
+        public void SetLiveUpdateHeader(string newsid,string header ,string networkid, string siteurl)
+        {
+            try
+            {
+                string networkconn = System.Configuration.ConfigurationManager.AppSettings[networkid].ToString();
+                using (Gettyclasses.newsliveupdatemgmt objnews = new Gettyclasses.newsliveupdatemgmt(networkconn))
+                {
+                    objnews.SetLiveUpdateHeader(newsid, header);
+                    RefreshCache(siteurl + strgeneratexml);
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.BLL, "ajaxpost.aspx.cs SetLiveUpdateHeader", ex);
+            }
         }
     }
 }
