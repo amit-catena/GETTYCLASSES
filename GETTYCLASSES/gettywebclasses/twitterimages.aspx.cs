@@ -109,9 +109,14 @@ namespace gettywebclasses
                     ValidateDateFolder();
                     string dir = ConfigurationSettings.AppSettings["newImagePath"];
                     imagedate = GetImageFolderNameToUpload();
-                    
+
                     if (_strtweetimg == "y")
-                        dir = dir + ConfigurationSettings.AppSettings["TweetImageFolder"] + "/";
+                    {
+                        if (null != Request.QueryString["sst"] && Request.QueryString["sst"] == "y")
+                            dir = dir + ConfigurationSettings.AppSettings["SportTweetImageFolder"] + "/";
+                        else
+                            dir = dir + ConfigurationSettings.AppSettings["TweetImageFolder"] + "/";
+                    }
                     else
                         dir = dir + ConfigurationSettings.AppSettings["HandleImageFolder"] + "/";
 
@@ -159,7 +164,12 @@ namespace gettywebclasses
                 string folder = string.Empty;
 
                 if (_strtweetimg == "y")
-                    folder = ConfigurationSettings.AppSettings["TweetImageFolder"];
+                {
+                    if (null != Request.QueryString["sst"] && Request.QueryString["sst"] == "y")
+                        folder = ConfigurationSettings.AppSettings["SportTweetImageFolder"];
+                    else
+                        folder = ConfigurationSettings.AppSettings["TweetImageFolder"];
+                }
                 else
                     folder = ConfigurationSettings.AppSettings["HandleImageFolder"];
 
