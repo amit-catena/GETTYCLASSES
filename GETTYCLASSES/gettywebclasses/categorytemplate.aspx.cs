@@ -28,6 +28,7 @@ namespace gettywebclasses
             if (Request.QueryString["catname"] != null && Request.QueryString["siteid"] != null && Request.QueryString["networkid"] != null && Request.QueryString["catid"] != null)
             {
                 networkid = Request.QueryString["networkid"];
+                Session["SITE_NW"] = Request.QueryString["networkid"];
                 siteid = Request.QueryString["siteid"];
                 catalias = Request.QueryString["catname"];
                 catid= Request.QueryString["catid"];
