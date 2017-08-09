@@ -1,0 +1,13 @@
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\newgettyimagesAPI.dll.config
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\newgettyimagesAPI.dll
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\newgettyimagesAPI.pdb
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\GettyImages.Api.dll
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\Newtonsoft.Json.dll
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\nunit.framework.dll
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\System.Net.Http.Formatting.dll
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\TechTalk.SpecFlow.dll
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\Newtonsoft.Json.xml
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\System.Net.Http.Formatting.xml
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\obj\Debug\newgettyimagesAPI.csprojResolveAssemblyReference.cache
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\obj\Debug\newgettyimagesAPI.dll
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\obj\Debug\newgettyimagesAPI.pdb

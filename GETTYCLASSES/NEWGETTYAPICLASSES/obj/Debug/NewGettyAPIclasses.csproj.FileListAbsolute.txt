@@ -1,0 +1,5 @@
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\NewGettyAPIclasses.dll
+D:\www\NewGettyAPIclasses\newgettyimagesAPI\bin\NewGettyAPIclasses.pdb
+D:\www\NewGettyAPIclasses\NewGettyAPIclasses\obj\Debug\NewGettyAPIclasses.dll
+D:\www\NewGettyAPIclasses\NewGettyAPIclasses\obj\Debug\NewGettyAPIclasses.pdb
+D:\www\NewGettyAPIclasses\NewGettyAPIclasses\obj\Debug\NewGettyAPIclasses.csprojResolveAssemblyReference.cache
