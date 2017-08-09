@@ -134,7 +134,7 @@ body.load #loader::after {margin-left: -30px;width: 20px;height: 20px;border-top
 		            img.onload = function () {
 		                var w = img.width, h = img.height;
 		                _body.classList.remove('load')
-		                if (w > 400 && h > 226) {
+		                if (w > 355 && h > 226) {
 		                    var wh = h / w;
 		                    h = w > 1300 ? 1300 * wh : h;
 		                    w = w > 1300 ? 1300 : w;
@@ -148,7 +148,7 @@ body.load #loader::after {margin-left: -30px;width: 20px;height: 20px;border-top
 		                    // cropper = new Darkroom('#target', { minWidth: 900, minHeight: 310, maxWidth: 2500, maxHeight: 1200, plugins: { crop: { quickCropKey: 67, minHeight: 310, minWidth: 900} }, init: function () { var cropPlugin = this.getPlugin('crop'); cropPlugin.selectZone(25, 15, 850, 310); }
 		                    //  cropper = new Darkroom('#target', { minWidth: 300, minHeight: 201, maxWidth: 1300, maxHeight: h, plugins: { crop: { quickCropKey: 67, minHeight: 201, minWidth: 300} }, init: function () { var cropPlugin = this.getPlugin('crop'); cropPlugin.selectZone(al, at, pw, ph); }
 
-		                    cropper = new Darkroom('#target', { minWidth: 800, minHeight: 310, maxWidth: 1300, maxHeight: 600, plugins: { crop: { quickCropKey: 67, minHeight:226 , minWidth:400 } }, init: function () { var cropPlugin = this.getPlugin('crop'); cropPlugin.selectZone(25, 15, 400, 226); }
+		                    cropper = new Darkroom('#target', { minWidth: 800, minHeight: 310, maxWidth: 1300, maxHeight: 600, plugins: { crop: { quickCropKey: 67, minHeight:226 , minWidth:355 } }, init: function () { var cropPlugin = this.getPlugin('crop'); cropPlugin.selectZone(25, 15, 355, 226); }
 		                    });
 		                    //parent.updateHeight();
 		                } else {

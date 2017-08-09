@@ -14,7 +14,7 @@ namespace Gettyevents
                 Getimagedata _obj = new Getimagedata();
                 Console.WriteLine("Scheduler started");  
                 _obj._strnetworkID = commonfn._defaultNetwork;
-                _obj.AddGettyeventdetails();
+                _obj.NewFN_AddGettyeventdetails();
                 Console.WriteLine("Scheduler end");  
             }
             catch (Exception ex)

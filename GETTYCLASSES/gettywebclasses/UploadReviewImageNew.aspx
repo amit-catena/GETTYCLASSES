@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UploadReviewImageNew.aspx.cs" Inherits="gettywebclasses.UploadReviewImageNew1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UploadReviewImageNew.aspx.cs" Inherits="gettywebclasses.UploadReviewImageNew" %>
 
 <HTML>
 	<HEAD>
@@ -40,7 +40,7 @@
 .errorCrop::after{content:''; width:0; height:0; position: absolute;bottom: -10px;left: 50%; border-top: 10px solid #FF94B2;border-left: 7px solid transparent;border-right: 7px solid rgba(0, 0, 0, 0);}
 .fileUpload .error.show, .errorCrop.show{opacity:1; visibility:visible; bottom:35px;}
 .errorCrop.show{bottom:42px;}
-.uploadPop{max-width:1300px; min-width:850px; margin-top:0; position:relative; background:#fff; color: #808080;font-size: 14px;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;cursor: default; visibility:hidden; opacity:0;transition: all 0.3s; -webkit-transition: all 0.3s;-moz-transition: all 0.3s;z-index:99; height:700px;overflow-y:auto;}
+.uploadPop{max-width:1300px; margin-top:0; position:relative; background:#fff; color: #808080;font-size: 14px;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;cursor: default; visibility:hidden; opacity:0;transition: all 0.3s; -webkit-transition: all 0.3s;-moz-transition: all 0.3s;z-index:99; height:700px;overflow-y:auto;}
 #uploadOverlay{width:100%; height:100%; position:fixed; top:0; left:0; background:rgba(255,255,255,0.5);transition: all 0.3s; -webkit-transition: all 0.3s;-moz-transition: all 0.3s; visibility:hidden; opacity:0; z-index:98;}
 .uploadPop #imgTarget{text-align:center;}
 .uploadPop #imgTarget img{}
@@ -140,7 +140,7 @@ body.load #loader::after {margin-left: -30px;width: 20px;height: 20px;border-top
 		            img.onload = function () {
 		                var w = img.width, h = img.height;
 		                _body.classList.remove('load')
-		                if (w > 150 && h > 100) {
+		                if (w > 90 && h > 45) {
 		                    var wh = h / w;
 		                    h = w > 1300 ? 1300 * wh : h;
 		                    w = w > 1300 ? 1300 : w;

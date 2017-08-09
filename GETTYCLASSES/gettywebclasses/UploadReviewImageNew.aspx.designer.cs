@@ -10,7 +10,7 @@
 namespace gettywebclasses {
     
     
-    public partial class UploadReviewImageNew1 {
+    public partial class UploadReviewImageNew {
         
         /// <summary>
         /// ed control.

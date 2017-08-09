@@ -21,36 +21,46 @@ namespace gettywebclasses
         public string AllTicketSport = "";
         public string StreamData = "[]";
         public string SportAndCasino = "[]";
+        public string userid = "1";
         protected void Page_Load(object sender, EventArgs e)
         {
-            
 
-            if (Request.QueryString["catname"] != null && Request.QueryString["siteid"] != null && Request.QueryString["networkid"] != null && Request.QueryString["catid"] != null)
+            try
             {
-                networkid = Request.QueryString["networkid"];
-                Session["SITE_NW"] = Request.QueryString["networkid"];
-                siteid = Request.QueryString["siteid"];
-                catalias = Request.QueryString["catname"];
-                catid= Request.QueryString["catid"];
-                Strlinks = GetLink(siteid, networkid);
-                catjson = GetSubcatJson(siteid, networkid, catalias, catid);
-                quicklink = GetQuicklink(siteid, networkid, catid);
-                catdesc = CategoryDescription(siteid, networkid, catid);
-                allcatsubcatjson = GetAllcategorySubcategoryJson(siteid, networkid);
-                StreamData = GetStreamdata(siteid, networkid);
-                SportAndCasino = Getsitesportandcasino(siteid, networkid);
-                centraltableurl=string.Format("http://admin.writersllc.com/posttableindesc.aspx?siteid={0}&networkid={1}&userid=1&temp=1",siteid,networkid);
-                if (!Page.IsPostBack)
-                    SetTemplateData();
-                else
+                if (Request.QueryString["catname"] != null && Request.QueryString["siteid"] != null && Request.QueryString["networkid"] != null && Request.QueryString["catid"] != null)
                 {
-                    CategoryTemplate obj = new CategoryTemplate();
-                    result = obj.SaveTemplate(catid, siteid, networkid, Request.Form["hddata"]);
-                    if (result == "saved")
-                        Page.RegisterStartupScript("onsave", "<script>closePOP();</script>");
+
+                    if (Request.QueryString["userid"] != null)
+                        userid = Request.QueryString["userid"];
+                    networkid = Request.QueryString["networkid"];
+                    Session["SITE_NW"] = Request.QueryString["networkid"];
+                    siteid = Request.QueryString["siteid"];
+                    catalias = Request.QueryString["catname"];
+                    catid = Request.QueryString["catid"];
+                    Strlinks = GetLink(siteid, networkid);
+                    catjson = GetSubcatJson(siteid, networkid, catalias, catid);
+                    quicklink = GetQuicklink(siteid, networkid, catid);
+                    catdesc = CategoryDescription(siteid, networkid, catid);
+                    allcatsubcatjson = GetAllcategorySubcategoryJson(siteid, networkid);
+                    StreamData = GetStreamdata(siteid, networkid);
+                    SportAndCasino = Getsitesportandcasino(siteid, networkid);
+                    centraltableurl = string.Format("http://admin.writersllc.com/posttableindesc.aspx?siteid={0}&networkid={1}&userid={2}&temp=1", siteid, networkid, userid);
+                    if (!Page.IsPostBack)
+                        SetTemplateData();
+                    else
+                    {
+                        CategoryTemplate obj = new CategoryTemplate();
+                        result = obj.SaveTemplate(catid, siteid, networkid, Request.Form["hddata"]);
+                        if (result == "saved")
+                            Page.RegisterStartupScript("onsave", "<script>closePOP();</script>");
+                    }
+                    Allsports = GetAllSportsJson();
+                    AllTicketSport = GetAllTicketSportsJson();
                 }
-                Allsports = GetAllSportsJson();
-                AllTicketSport = GetAllTicketSportsJson();
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "CategoryTemaplate",ex);
             }
         }
 
