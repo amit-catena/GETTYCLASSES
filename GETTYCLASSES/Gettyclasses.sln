@@ -1,11 +1,23 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gettyclasses", "Gettyclasses\Gettyclasses.csproj", "{56FA2103-14AA-46EE-BCF1-FF8E51C0DCB7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C} = {04CF0579-503A-4667-9EB6-1FE72A39D57C}
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8} = {1F5865B9-11BA-40E4-9E06-EE98ADE581B8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gettywebclasses", "gettywebclasses\gettywebclasses.csproj", "{4DC87492-C5A5-4481-B01E-F15EC5A76A67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gettyevents", "Gettyevents\Gettyevents.csproj", "{80DBB00D-CBCC-4FFB-BA70-3E80B0A4CAB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettyupdateCount", "GettyupdateCount\GettyupdateCount.csproj", "{E7AE306B-0F3F-40EA-8283-E9CE099327AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewGettyAPIclasses", "..\NewGettyAPIclasses\NewGettyAPIclasses\NewGettyAPIclasses.csproj", "{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "newgettyimagesAPI", "..\NewGettyAPIclasses\newgettyimagesAPI\newgettyimagesAPI.csproj", "{04CF0579-503A-4667-9EB6-1FE72A39D57C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +59,40 @@ Global
 		{80DBB00D-CBCC-4FFB-BA70-3E80B0A4CAB7}.Release|Mixed Platforms.Build.0 = Release|x86
 		{80DBB00D-CBCC-4FFB-BA70-3E80B0A4CAB7}.Release|x86.ActiveCfg = Release|x86
 		{80DBB00D-CBCC-4FFB-BA70-3E80B0A4CAB7}.Release|x86.Build.0 = Release|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Debug|x86.ActiveCfg = Debug|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Debug|x86.Build.0 = Debug|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Release|Any CPU.ActiveCfg = Release|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Release|Mixed Platforms.Build.0 = Release|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Release|x86.ActiveCfg = Release|x86
+		{E7AE306B-0F3F-40EA-8283-E9CE099327AD}.Release|x86.Build.0 = Release|x86
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Debug|x86.Build.0 = Debug|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F5865B9-11BA-40E4-9E06-EE98ADE581B8}.Release|x86.Build.0 = Release|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Debug|x86.Build.0 = Debug|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Release|x86.ActiveCfg = Release|Any CPU
+		{04CF0579-503A-4667-9EB6-1FE72A39D57C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
