@@ -14,6 +14,9 @@ using System.Text;
 using System.Web.Services;
 using System.Configuration;
 using Gettyclasses;
+using System.Net;
+using Newtonsoft.Json;
+
 #endregion
 
 namespace gettywebclasses
@@ -77,7 +80,31 @@ namespace gettywebclasses
                 dir = Server.MapPath(string.Format("{0}/", "signup")); //BLL.Constants.SaveImagePathSignUp;
                 CommonLib.CurrentPage.LinkCSS("http://www.developersllc.com/signup/css/style.css");
                 CommonLib.CurrentPage.IncludeScript("http://www.developersllc.com/signup/js/jquery-1.4.4.min.js");
-               
+
+                if (IsPostBack && !string.IsNullOrEmpty(txtgettysearch.Text.ToString()))
+                {
+                    string systemid = ConfigurationManager.AppSettings["systemId"];
+                    string systemPassword = ConfigurationManager.AppSettings["syspassword"];
+                    string gettyuserid = ConfigurationManager.AppSettings["Username"];
+                    string userPassword = ConfigurationManager.AppSettings["Password"];
+                    string imgListCount = ConfigurationManager.AppSettings["Imagedisplaycount"];
+                    string searchterm = string.Empty;
+                    string searchmode = "horizontal";
+                    int startindex = 1;
+                    try
+                    {
+                        searchterm = txtgettysearch.Text.ToString();
+                            if (rdlandscape.Checked == true)
+                                searchmode = "horizontal";
+                            if (rdportrait.Checked == true)
+                                searchmode = "verticle"; 
+                            
+                            ltgettyimages.Text = BindImagesData(searchterm, searchmode);                       
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
                 if (IsPostBack && FileUpload1.PostedFile != null)
                 {                    
                     string FName = Path.GetFileName(FileUpload1.PostedFile.FileName);
@@ -155,33 +182,65 @@ namespace gettywebclasses
             }
         }
         #region :: methods ::
-        protected void DeleteImage(object sender, EventArgs e)
+        protected string BindImagesData(string _strtext, string SearchMode)
         {
-            string path = string.Empty;
+
+            string ImageTitle = string.Empty;
+            string ImageUrl = string.Empty;
+            string ImgUrlThumbformat = string.Empty;
+            string Imageid = string.Empty;
+            string Imagecaption = string.Empty;
+            string ImgArtist = string.Empty;
+            string ImgPreviewUrl = string.Empty;
+            string ImgCollectionid = string.Empty;
+            string ImgCollectionname = string.Empty;
+
+            StringBuilder _maindiv = new StringBuilder();
+            StringBuilder _innerdiv = new StringBuilder();
+            string _strinnerhtml = string.Empty;
+            string _strhtml = string.Empty;
+            string _gettyimages = string.Empty;
+            string url = "http://admin.shoptweets.com/storify/gettyimages.aspx?searchterm=" + _strtext + "&searchmode=" + SearchMode + "&startindex=1";
+
+            StringBuilder str = new StringBuilder();
+
             try
             {
-                using (Signup objsignup = new Signup())
+
+                #region :: get all promotions from the url ::
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
+                request.UserAgent = "slotsinc";
+                request.Method = WebRequestMethods.Http.Get;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string Charset = response.CharacterSet;
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                String responseString = reader.ReadToEnd();
+                response.Close();
+                #endregion
+                var tempRecord = JsonConvert.DeserializeObject<List<RootObject>>(responseString);
+                foreach (RootObject rt in tempRecord)
                 {
-                   // objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
-                    if(null!=Request.Form["fcheck[]"])
-						{
-							path = Request.Form["fcheck[]"].ToString().Trim();
-						}
-                    if (path.Trim().Length > 0)
+                    int promotionid = 0;
+                    #region :: check duplicate promotion ::
+                    if (rt.menu.items.Count > 0)
                     {
-                        objsignup.ImageIDS = path.Trim();
-                        bool flag = objsignup.DeleteImage();
-                        idserver_image.Value = "0";
-                        ltsignupimages.Text = LoadAllImages();
-                        CommonLib.JavaScriptHandler.RegisterScriptForSM("ShowLoading('N');", true);
+                        str.Append("<ul id='ul_image'>");
+                        for (int i = 0; i < rt.menu.items.Count; i++)
+                        {
+                            str.Append("<li data-name='" + dr["imagetitle"].ToString() + "' data-url='" + imageurl + "' data-bigurl='" + bigimageurl + "' id='" + dr["imageid"].ToString() + "'><img src='" + imageurl + "' border='0' width='200' height='200' /><input type ='checkbox' name = 'fcheck[]' value ='" + dr["imageid"].ToString() + "'></li>");
+                        }
+                        str.Append("</ul>");
                     }
+                    //rt.menu.items[1].
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gettyclasses signup uploadimageintemplate deleteimage", ex);
+                //Response.Write("<span style=' font-size: 3.2em; color: Red;'>" + ex.Message.ToString() + "</span>");
             }
+            return _gettyimages;
         }
+       
         public string LoadAllImages()
         {
             string allimages = string.Empty;
@@ -240,6 +299,77 @@ namespace gettywebclasses
             }
             allimages = str.ToString();
             return allimages;
+        }
+        public string LoadGettyImages()
+        {
+            string allimages = string.Empty;
+            DataSet ds = new DataSet();
+            StringBuilder str = new StringBuilder();
+            string imageurl = string.Empty;
+            string bigimageurl = string.Empty;
+            int r = 1;
+            try
+            {               
+                str.Append("<ul id='ul_image'>");
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    DateTime dt = new DateTime();
+                    dt = Convert.ToDateTime(dr["addedon"].ToString());
+                    string date = dt.ToString("MMMM d, yyyy");
+                    imageurl = ConfigurationSettings.AppSettings["baseurl"] + sitefldname + "/" + dr["imagedate"].ToString() + dr["imagename"].ToString();
+                    bigimageurl = ConfigurationSettings.AppSettings["baseurl"] + sitefldname + "/" + dr["imagedate"].ToString() + "TN_" + dr["imagename"].ToString();
+                    if (r == 1)
+                    {
+                        str.Append("<li class='li_selected' data-date='" + date + "' data-alt='" + dr["ImageAlttext"].ToString() + "' data-name='" + dr["imagetitle"].ToString() + "' data-url='" + imageurl + "' data-bigurl='" + bigimageurl + "' id='" + dr["imageid"].ToString() + "'><img src='" + imageurl + "' border='0' width='200' height='200' /><input type ='checkbox' name = 'fcheck[]' value ='" + dr["imageid"].ToString() + "'></li>");
+
+                        id_image.Value = dr["imageid"].ToString();
+                        idserver_image.Value = dr["imageid"].ToString();
+                        id_imagesrc.Value = imageurl;
+                        id_imagesrcbig.Value = bigimageurl;
+
+                        txtdateuploaded.Text = date;
+                        txttitle.Text = dr["imagetitle"].ToString();
+                        txtalttext.Text = dr["ImageAlttext"].ToString();
+                    }
+                    else
+                        str.Append("<li data-date='" + date + "' data-alt='" + dr["ImageAlttext"].ToString() + "' data-name='" + dr["imagetitle"].ToString() + "' data-url='" + imageurl + "' data-bigurl='" + bigimageurl + "' id='" + dr["imageid"].ToString() + "'><img src='" + imageurl + "' border='0' width='200' height='200' /><input type ='checkbox' name = 'fcheck[]' value ='" + dr["imageid"].ToString() + "'></li>");
+                    r++;
+                }
+                str.Append("</ul>");              
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gettyclasses signup uploadimageintemplate LoadGettyImages", ex);
+            }
+            allimages = str.ToString();
+            return allimages;
+        }
+        protected void DeleteImage(object sender, EventArgs e)
+        {
+            string path = string.Empty;
+            try
+            {
+                using (Signup objsignup = new Signup())
+                {
+                    // objsignup.ImageID = Convert.ToInt32(idserver_image.Value);
+                    if (null != Request.Form["fcheck[]"])
+                    {
+                        path = Request.Form["fcheck[]"].ToString().Trim();
+                    }
+                    if (path.Trim().Length > 0)
+                    {
+                        objsignup.ImageIDS = path.Trim();
+                        bool flag = objsignup.DeleteImage();
+                        idserver_image.Value = "0";
+                        ltsignupimages.Text = LoadAllImages();
+                        CommonLib.JavaScriptHandler.RegisterScriptForSM("ShowLoading('N');", true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonLib.ExceptionHandler.WriteLog(CommonLib.Sections.Client, "gettyclasses signup uploadimageintemplate deleteimage", ex);
+            }
         }
         
         public static bool ValidateSiteFolder(string sitefolder)

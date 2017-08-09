@@ -103,6 +103,60 @@ namespace gettywebclasses {
         protected global::System.Web.UI.WebControls.Literal ltsignupimages;
         
         /// <summary>
+        /// txtgettysearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtgettysearch;
+        
+        /// <summary>
+        /// btngetty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btngetty;
+        
+        /// <summary>
+        /// rdlandscape control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdlandscape;
+        
+        /// <summary>
+        /// rdportrait control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdportrait;
+        
+        /// <summary>
+        /// rdboth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdboth;
+        
+        /// <summary>
+        /// ltgettyimages control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltgettyimages;
+        
+        /// <summary>
         /// txttitle control.
         /// </summary>
         /// <remarks>

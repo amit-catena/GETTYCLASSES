@@ -23,14 +23,24 @@
     <input type="hidden" id="idserver_image" runat="server" value="0" />
     <input type="hidden" id="idserver_templateid" runat="server" />
         <div class="upload-image">  
-            <div class="page-header"> Select or Upload an Image</div>
+            <div class="page-header"><a href="javascript:void(0);" onclick="ShowImageOptions('U');">Select or Upload an Image</a><a href="javascript:void(0);" onclick="ShowImageOptions('G');">Search getty images</a></div>
             
-            <div class="left-side-menu">
-            <div class="select-image"><asp:FileUpload runat="server" ID="FileUpload1" onchange="UploadFile()"  /></div>
-            <div style="float:right;"><input type="checkbox" name="chkall" id="chkall" onchange="toggle(this)" />Toggle All</div>
-            <div style="height:30px;"></div>
-            <div class='imagediv'>            
-            <asp:Literal runat="server" ID="ltsignupimages"></asp:Literal></div></div>
+            <div class="left-side-menu" id="divuploadimg">
+                <div class="select-image"><asp:FileUpload runat="server" ID="FileUpload1" onchange="UploadFile()"  /></div>
+                <div style="float:right;"><input type="checkbox" name="chkall" id="chkall" onchange="toggle(this)" />Toggle All</div>
+                <div style="height:30px;"></div>
+                <div class='imagediv'>            
+                <asp:Literal runat="server" ID="ltsignupimages"></asp:Literal></div>
+            </div>
+            <div class="left-side-menu" id="divgettyimg" style="display:none;">
+                <div class="select-image"><asp:TextBox runat="server" ID="txtgettysearch" placeholder='Search'></asp:TextBox><asp:Button runat="server" ID="btngetty" Text="Search" OnClientClick="ShowLoading('Y');" /></div>       
+                <div><asp:RadioButton runat="server" ID="rdlandscape" Text="Landscape" Checked="true"  />
+                <asp:RadioButton runat="server" ID="rdportrait" Text="Portrait"  />
+                <asp:RadioButton runat="server" ID="rdboth" Text="Both"  /></div>         
+                <div style="height:30px;"></div>
+                <div class='imagediv'>            
+                <asp:Literal runat="server" ID="ltgettyimages"></asp:Literal></div>
+            </div>
             <div class="right-side-menu">
             <div><span class="right-side-menu-left">Title: <asp:TextBox runat="server" ID="txttitle" class="right-side-menu-right"></asp:TextBox></span></div>                <div style="clear:both;"></div>   
             <div><span class="right-side-menu-left">Alt Text: <asp:TextBox runat="server" ID="txtalttext" class="right-side-menu-right"></asp:TextBox></span></div><div style="clear:both;"></div>
@@ -130,6 +140,16 @@
                 document.getElementById('json-overlay').style.display = 'block';
             else
                 document.getElementById('json-overlay').style.display = 'none';
+        }
+        function ShowImageOptions(showdiv) {            
+            if (showdiv == 'G') {
+                document.getElementById('divgettyimg').style.display = 'block';
+                document.getElementById('divuploadimg').style.display = 'none';   
+            }
+            else {
+                document.getElementById('divuploadimg').style.display = 'block';
+                document.getElementById('divgettyimg').style.display = 'none';
+            }
         }
     </script>
 </body>
