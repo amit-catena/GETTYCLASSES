@@ -1,0 +1,789 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4DC87492-C5A5-4481-B01E-F15EC5A76A67}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>gettywebclasses</RootNamespace>
+    <AssemblyName>gettywebclasses</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonLib, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\CommonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Gettyclasses, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Gettyclasses.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json.Net20, Version=4.0.2.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Gettyclasses\bin\Debug\Newtonsoft.Json.Net20.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="About.aspx" />
+    <Content Include="Account\ChangePassword.aspx" />
+    <Content Include="Account\ChangePasswordSuccess.aspx" />
+    <Content Include="Account\Login.aspx" />
+    <Content Include="Account\Register.aspx" />
+    <Content Include="addapkdetails.aspx" />
+    <Content Include="addappscreenshots.aspx" />
+    <Content Include="addmultipleimages.aspx" />
+    <Content Include="addnewsimage.aspx" />
+    <Content Include="addnewsliveupdate.aspx" />
+    <Content Include="adminimages.aspx" />
+    <Content Include="ajaxpost.aspx" />
+    <Content Include="ajax_post.aspx" />
+    <Content Include="alleventImages.aspx" />
+    <Content Include="categorytemplate.aspx" />
+    <Content Include="getsingleimages.aspx" />
+    <Content Include="editor\editor1.inc" />
+    <Content Include="editor\editor10.inc" />
+    <Content Include="editor\editor11.inc" />
+    <Content Include="editor\editor12.inc" />
+    <Content Include="editor\editor13.inc" />
+    <Content Include="editor\editor14.inc" />
+    <Content Include="editor\editor15.inc" />
+    <Content Include="editor\editor16.inc" />
+    <Content Include="editor\editor17.inc" />
+    <Content Include="editor\editor18.inc" />
+    <Content Include="editor\editor19.inc" />
+    <Content Include="editor\editor2.inc" />
+    <Content Include="editor\editor20.inc" />
+    <Content Include="editor\editor3.inc" />
+    <Content Include="editor\editor3N.inc" />
+    <Content Include="editor\editor4.inc" />
+    <Content Include="editor\editor5.inc" />
+    <Content Include="editor\editor6.inc" />
+    <Content Include="editor\editor7.inc" />
+    <Content Include="editor\editor8.inc" />
+    <Content Include="editor\editor9.inc" />
+    <Content Include="editor\gettyeditor.inc" />
+    <Content Include="eventdetails.aspx" />
+    <Content Include="geteventimages.aspx" />
+    <Content Include="images\cart-basket.png" />
+    <Content Include="images\cart-icon.png" />
+    <Content Include="images\dotted-line.gif" />
+    <Content Include="images\fb-load.gif" />
+    <Content Include="images\hand.png" />
+    <Content Include="images\load.gif" />
+    <Content Include="images\nophoto.gif" />
+    <Content Include="images\spacer.gif" />
+    <Content Include="index.aspx" />
+    <Content Include="insertscript.aspx" />
+    <Content Include="js\app.js" />
+    <Content Include="js\deepPop-min.js" />
+    <Content Include="js\jquery-1.4.4.min.js" />
+    <Content Include="js\jquery.lazyload.js" />
+    <Content Include="js\jquery.lazyload.min.js" />
+    <Content Include="js\lib\darkroom.min.css" />
+    <Content Include="js\lib\icons\accept.svg" />
+    <Content Include="js\lib\icons\back.svg" />
+    <Content Include="js\lib\icons\brightness.svg" />
+    <Content Include="js\lib\icons\cancel.svg" />
+    <Content Include="js\lib\icons\crop.svg" />
+    <Content Include="js\lib\icons\forward.svg" />
+    <Content Include="js\lib\icons\rotate-left.svg" />
+    <Content Include="js\lib\icons\rotate-right.svg" />
+    <Content Include="js\lib\icons\save.svg" />
+    <Content Include="js\lib\icons\undo.svg" />
+    <Content Include="js\lib\js\darkroom.js" />
+    <Content Include="js\lib\js\darkroom.min.js" />
+    <Content Include="js\lib\js\plugins\darkroom.crop.js" />
+    <Content Include="js\lib\js\plugins\darkroom.history.js" />
+    <Content Include="js\lib\js\plugins\darkroom.rotate.js" />
+    <Content Include="js\lib\js\plugins\darkroom.save.js" />
+    <Content Include="js\vendor\fabric.js" />
+    <Content Include="manualimage.aspx" />
+    <Content Include="modelframe.aspx" />
+    <Content Include="modelframelink8.aspx" />
+    <Content Include="modelframepromolink.aspx" />
+    <Content Include="newscropimage.aspx" />
+    <Content Include="newsingleimage.aspx" />
+    <Content Include="newsletterdata.aspx" />
+    <Content Include="newsletterimages.aspx" />
+    <Content Include="NoDepositeBannerImage.aspx" />
+    <Content Include="offerimage.aspx" />
+    <Content Include="pollimages.aspx" />
+    <Content Include="postmultipleimages.aspx" />
+    <Content Include="responseimagecount.aspx" />
+    <Content Include="SaveBinaryImage.aspx" />
+    <Content Include="Scripts\toolbarfuncs8.js" />
+    <Content Include="searchevents.aspx" />
+    <Content Include="searchgettyimage.aspx" />
+    <Content Include="Showeventlist.aspx" />
+    <Content Include="singleimage.aspx" />
+    <Content Include="singleimagecrop.aspx" />
+    <Content Include="Styles\Site.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.4.1.js" />
+    <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="supereventajax.aspx" />
+    <Content Include="superevent\app\app.css" />
+    <Content Include="superevent\app\bower_components\angular-darkroom\dist\js\angular-darkroom.min.js" />
+    <Content Include="superevent\app\bower_components\angular-loader\angular-loader.js" />
+    <Content Include="superevent\app\bower_components\angular-loader\angular-loader.min.js" />
+    <Content Include="superevent\app\bower_components\angular-mocks\angular-mocks.js" />
+    <Content Include="superevent\app\bower_components\angular-mocks\ngAnimateMock.js" />
+    <Content Include="superevent\app\bower_components\angular-mocks\ngMock.js" />
+    <Content Include="superevent\app\bower_components\angular-mocks\ngMockE2E.js" />
+    <Content Include="superevent\app\bower_components\angular-route\angular-route.js" />
+    <Content Include="superevent\app\bower_components\angular-route\angular-route.min.js" />
+    <Content Include="superevent\app\bower_components\angular-route\index.js" />
+    <Content Include="superevent\app\bower_components\angular\angular-csp.css" />
+    <Content Include="superevent\app\bower_components\angular\angular.js" />
+    <Content Include="superevent\app\bower_components\angular\angular.min.js" />
+    <Content Include="superevent\app\bower_components\angular\index.js" />
+    <Content Include="superevent\app\bower_components\darkroomjs\build\darkroom.css" />
+    <Content Include="superevent\app\bower_components\darkroomjs\build\darkroom.js" />
+    <Content Include="superevent\app\bower_components\fabric\dist\all.js" />
+    <Content Include="superevent\app\bower_components\fabric\dist\all.min.js" />
+    <Content Include="superevent\app\bower_components\fabric\dist\all.require.js" />
+    <Content Include="superevent\app\bower_components\flow.js\dist\flow.js" />
+    <Content Include="superevent\app\bower_components\flow.js\dist\flow.min.js" />
+    <Content Include="superevent\app\bower_components\flow.js\dist\ng-flow.js" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\404.html" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\apple-touch-icon.png" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\browserconfig.xml" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\crossdomain.xml" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\css\main.css" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\css\normalize.css" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\favicon.ico" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\humans.txt" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\index.html" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\js\main.js" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\js\plugins.js" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\js\vendor\jquery-1.11.3.min.js" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\js\vendor\modernizr-2.8.3.min.js" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\LICENSE.txt" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\robots.txt" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\tile-wide.png" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\dist\tile.png" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\gulpfile.js" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\LICENSE.txt" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\404.html" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\apple-touch-icon.png" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\browserconfig.xml" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\crossdomain.xml" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\css\main.css" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\favicon.ico" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\humans.txt" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\index.html" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\js\main.js" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\js\plugins.js" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\js\vendor\modernizr-2.8.3.min.js" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\robots.txt" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\tile-wide.png" />
+    <Content Include="superevent\app\bower_components\html5-boilerplate\src\tile.png" />
+    <Content Include="superevent\app\bower_components\ng-flow\dist\ng-flow-standalone.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\dist\ng-flow-standalone.min.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\dist\ng-flow.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\dist\ng-flow.min.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\src\angular-flow.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\src\directives\btn.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\src\directives\drag-events.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\src\directives\drop.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\src\directives\events.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\src\directives\img.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\src\directives\init.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\src\directives\transfers.js" />
+    <Content Include="superevent\app\bower_components\ng-flow\src\provider.js" />
+    <Content Include="superevent\app\checked.svg" />
+    <Content Include="superevent\app\close_24px.svg" />
+    <Content Include="superevent\app\index.html" />
+    <Content Include="superevent\app\js\angular-material.js" />
+    <Content Include="superevent\app\js\angular-material.min.css" />
+    <Content Include="superevent\app\js\app-single.js" />
+    <Content Include="superevent\app\js\app.js" />
+    <Content Include="superevent\app\js\controllers.js" />
+    <Content Include="superevent\app\refresh.svg" />
+    <Content Include="superevent\app\template\crop.html" />
+    <Content Include="superevent\app\template\home-single.html" />
+    <Content Include="superevent\app\template\home.html" />
+    <Content Include="superevent\app\template\search-single.html" />
+    <Content Include="superevent\app\template\search.html" />
+    <Content Include="superevent\categoryimages.aspx" />
+    <Content Include="superevent\checked.svg" />
+    <Content Include="superevent\eventimage.aspx" />
+    <Content Include="superevent\refresh.svg" />
+    <Content Include="superevent\slotposterimage.aspx" />
+    <Content Include="superevent\slotscreenshotimage.aspx" />
+    <Content Include="themeimage.aspx" />
+    <Content Include="twitterimages.aspx" />
+    <Content Include="UploadFilterValueImage.aspx" />
+    <Content Include="UploadImageInTemlpate.aspx" />
+    <Content Include="UploadReviewImage.aspx" />
+    <Content Include="UploadReviewImageNew.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ChangePasswordSuccess.aspx.cs">
+      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ChangePasswordSuccess.aspx.designer.cs">
+      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="addapkdetails.aspx.cs">
+      <DependentUpon>addapkdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="addapkdetails.aspx.designer.cs">
+      <DependentUpon>addapkdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="addappscreenshots.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>addappscreenshots.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="addappscreenshots.aspx.designer.cs">
+      <DependentUpon>addappscreenshots.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="addmultipleimages.aspx.cs">
+      <DependentUpon>addmultipleimages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="addmultipleimages.aspx.designer.cs">
+      <DependentUpon>addmultipleimages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="addnewsimage.aspx.cs">
+      <DependentUpon>addnewsimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="addnewsimage.aspx.designer.cs">
+      <DependentUpon>addnewsimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="addnewsliveupdate.aspx.cs">
+      <DependentUpon>addnewsliveupdate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="addnewsliveupdate.aspx.designer.cs">
+      <DependentUpon>addnewsliveupdate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="adminimages.aspx.cs">
+      <DependentUpon>adminimages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminimages.aspx.designer.cs">
+      <DependentUpon>adminimages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ajaxpost.aspx.cs">
+      <DependentUpon>ajaxpost.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ajaxpost.aspx.designer.cs">
+      <DependentUpon>ajaxpost.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ajax_post.aspx.cs">
+      <DependentUpon>ajax_post.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ajax_post.aspx.designer.cs">
+      <DependentUpon>ajax_post.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="alleventImages.aspx.cs">
+      <DependentUpon>alleventImages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="alleventImages.aspx.designer.cs">
+      <DependentUpon>alleventImages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="categorytemplate.aspx.cs">
+      <DependentUpon>categorytemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="categorytemplate.aspx.designer.cs">
+      <DependentUpon>categorytemplate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="getsingleimages.aspx.cs">
+      <DependentUpon>getsingleimages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="getsingleimages.aspx.designer.cs">
+      <DependentUpon>getsingleimages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eventdetails.aspx.cs">
+      <DependentUpon>eventdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eventdetails.aspx.designer.cs">
+      <DependentUpon>eventdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="geteventimages.aspx.cs">
+      <DependentUpon>geteventimages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="geteventimages.aspx.designer.cs">
+      <DependentUpon>geteventimages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="insertscript.aspx.cs">
+      <DependentUpon>insertscript.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="insertscript.aspx.designer.cs">
+      <DependentUpon>insertscript.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="list.Master.cs">
+      <DependentUpon>list.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="list.Master.designer.cs">
+      <DependentUpon>list.Master</DependentUpon>
+    </Compile>
+    <Compile Include="manualimage.aspx.cs">
+      <DependentUpon>manualimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="manualimage.aspx.designer.cs">
+      <DependentUpon>manualimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="modelframe.aspx.cs">
+      <DependentUpon>modelframe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="modelframe.aspx.designer.cs">
+      <DependentUpon>modelframe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="modelframelink8.aspx.cs">
+      <DependentUpon>modelframelink8.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="modelframelink8.aspx.designer.cs">
+      <DependentUpon>modelframelink8.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="modelframepromolink.aspx.cs">
+      <DependentUpon>modelframepromolink.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="modelframepromolink.aspx.designer.cs">
+      <DependentUpon>modelframepromolink.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newimage.ashx.cs">
+      <DependentUpon>newimage.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="newscropimage.aspx.cs">
+      <DependentUpon>newscropimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newsingleimage.aspx.cs">
+      <DependentUpon>newsingleimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newsingleimage.aspx.designer.cs">
+      <DependentUpon>newsingleimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newsletterdata.aspx.cs">
+      <DependentUpon>newsletterdata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newsletterdata.aspx.designer.cs">
+      <DependentUpon>newsletterdata.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="newsletterimages.aspx.cs">
+      <DependentUpon>newsletterimages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="newsletterimages.aspx.designer.cs">
+      <DependentUpon>newsletterimages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="NoDepositeBannerImage.aspx.cs">
+      <DependentUpon>NoDepositeBannerImage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NoDepositeBannerImage.aspx.designer.cs">
+      <DependentUpon>NoDepositeBannerImage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="offerimage.aspx.cs">
+      <DependentUpon>offerimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="offerimage.aspx.designer.cs">
+      <DependentUpon>offerimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pollimages.aspx.cs">
+      <DependentUpon>pollimages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pollimages.aspx.designer.cs">
+      <DependentUpon>pollimages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="postmultipleimages.aspx.cs">
+      <DependentUpon>postmultipleimages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="postmultipleimages.aspx.designer.cs">
+      <DependentUpon>postmultipleimages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="responseimagecount.aspx.cs">
+      <DependentUpon>responseimagecount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="responseimagecount.aspx.designer.cs">
+      <DependentUpon>responseimagecount.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SaveBinaryImage.aspx.cs">
+      <DependentUpon>SaveBinaryImage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SaveBinaryImage.aspx.designer.cs">
+      <DependentUpon>SaveBinaryImage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="searchevents.aspx.cs">
+      <DependentUpon>searchevents.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="searchevents.aspx.designer.cs">
+      <DependentUpon>searchevents.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="searchgettyimage.aspx.cs">
+      <DependentUpon>searchgettyimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="searchgettyimage.aspx.designer.cs">
+      <DependentUpon>searchgettyimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Showeventlist.aspx.cs">
+      <DependentUpon>Showeventlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Showeventlist.aspx.designer.cs">
+      <DependentUpon>Showeventlist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="singleimage.aspx.cs">
+      <DependentUpon>singleimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="singleimage.aspx.designer.cs">
+      <DependentUpon>singleimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="singleimagecrop.aspx.cs">
+      <DependentUpon>singleimagecrop.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="singleimagecrop.aspx.designer.cs">
+      <DependentUpon>singleimagecrop.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="supereventajax.aspx.cs">
+      <DependentUpon>supereventajax.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="supereventajax.aspx.designer.cs">
+      <DependentUpon>supereventajax.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superevent\categoryimages.aspx.cs">
+      <DependentUpon>categoryimages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superevent\categoryimages.aspx.designer.cs">
+      <DependentUpon>categoryimages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superevent\eventimage.aspx.cs">
+      <DependentUpon>eventimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superevent\eventimage.aspx.designer.cs">
+      <DependentUpon>eventimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superevent\slotposterimage.aspx.cs">
+      <DependentUpon>slotposterimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superevent\slotposterimage.aspx.designer.cs">
+      <DependentUpon>slotposterimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superevent\slotscreenshotimage.aspx.cs">
+      <DependentUpon>slotscreenshotimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superevent\slotscreenshotimage.aspx.designer.cs">
+      <DependentUpon>slotscreenshotimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="themeimage.aspx.cs">
+      <DependentUpon>themeimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="themeimage.aspx.designer.cs">
+      <DependentUpon>themeimage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="twitterimages.aspx.cs">
+      <DependentUpon>twitterimages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="twitterimages.aspx.designer.cs">
+      <DependentUpon>twitterimages.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadFilterValueImage.aspx.cs">
+      <DependentUpon>UploadFilterValueImage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadFilterValueImage.aspx.designer.cs">
+      <DependentUpon>UploadFilterValueImage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadImageInTemlpate.aspx.cs">
+      <DependentUpon>UploadImageInTemlpate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadImageInTemlpate.aspx.designer.cs">
+      <DependentUpon>UploadImageInTemlpate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadReviewImage.aspx.cs">
+      <DependentUpon>UploadReviewImage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadReviewImage.aspx.designer.cs">
+      <DependentUpon>UploadReviewImage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadReviewImageNew.aspx.cs">
+      <DependentUpon>UploadReviewImageNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadReviewImageNew.aspx.designer.cs">
+      <DependentUpon>UploadReviewImageNew.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="banner\" />
+    <Folder Include="downloadimages\" />
+    <Folder Include="images\newsimages\" />
+    <Folder Include="superevent\app\bower_components\flow.js\src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Account\Web.config" />
+    <Content Include="Site.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="list.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="newimage.ashx" />
+    <None Include="editor\vssver.scc" />
+    <None Include="js\lib\css\darkroom.scss" />
+    <None Include="js\lib\css\vssver.scc" />
+    <None Include="js\lib\css\_buttons.scss" />
+    <None Include="js\lib\css\_layout.scss" />
+    <None Include="js\lib\css\_toolbar.scss" />
+    <None Include="js\lib\darkroom.min.css.map" />
+    <None Include="js\lib\icons\vssver.scc" />
+    <None Include="js\lib\js\darkroom.min.js.map" />
+    <None Include="js\lib\js\plugins\vssver.scc" />
+    <None Include="js\lib\js\vssver.scc" />
+    <None Include="js\lib\vssver.scc" />
+    <None Include="js\vendor\vssver.scc" />
+    <None Include="js\vssver.scc" />
+    <None Include="superevent\app\bower_components\angular-darkroom\dist\js\angular-darkroom.min.js.map" />
+    <None Include="superevent\app\bower_components\angular-loader\.bower.json" />
+    <None Include="superevent\app\bower_components\angular-loader\angular-loader.min.js.map" />
+    <None Include="superevent\app\bower_components\angular-loader\bower.json" />
+    <None Include="superevent\app\bower_components\angular-loader\package.json" />
+    <None Include="superevent\app\bower_components\angular-loader\README.md" />
+    <None Include="superevent\app\bower_components\angular-mocks\.bower.json" />
+    <None Include="superevent\app\bower_components\angular-mocks\bower.json" />
+    <None Include="superevent\app\bower_components\angular-mocks\package.json" />
+    <None Include="superevent\app\bower_components\angular-mocks\README.md" />
+    <None Include="superevent\app\bower_components\angular-route\.bower.json" />
+    <None Include="superevent\app\bower_components\angular-route\angular-route.min.js.map" />
+    <None Include="superevent\app\bower_components\angular-route\bower.json" />
+    <None Include="superevent\app\bower_components\angular-route\package.json" />
+    <None Include="superevent\app\bower_components\angular-route\README.md" />
+    <None Include="superevent\app\bower_components\angular\.bower.json" />
+    <None Include="superevent\app\bower_components\angular\angular.min.js.gzip" />
+    <None Include="superevent\app\bower_components\angular\angular.min.js.map" />
+    <None Include="superevent\app\bower_components\angular\bower.json" />
+    <None Include="superevent\app\bower_components\angular\package.json" />
+    <None Include="superevent\app\bower_components\angular\README.md" />
+    <None Include="superevent\app\bower_components\fabric\dist\all.min.js.gz" />
+    <None Include="superevent\app\bower_components\flow.js\.bower.json" />
+    <None Include="superevent\app\bower_components\flow.js\bower.json" />
+    <None Include="superevent\app\bower_components\flow.js\LICENSE" />
+    <None Include="superevent\app\bower_components\flow.js\README.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\.bower.json" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\.editorconfig" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\.gitattributes" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\.gitignore" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\.jscsrc" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\.jshintrc" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\.travis.yml" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\CHANGELOG.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\CONTRIBUTING.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\.editorconfig" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\.gitattributes" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\.gitignore" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\.htaccess" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\doc\css.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\doc\extend.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\doc\faq.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\doc\html.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\doc\js.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\doc\misc.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\doc\TOC.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\doc\usage.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\dist\img\.gitignore" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\package.json" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\README.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\.editorconfig" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\.gitattributes" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\.gitignore" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\doc\css.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\doc\extend.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\doc\faq.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\doc\html.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\doc\js.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\doc\misc.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\doc\TOC.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\doc\usage.md" />
+    <None Include="superevent\app\bower_components\html5-boilerplate\src\img\.gitignore" />
+    <None Include="superevent\app\bower_components\ng-flow\.bower.json" />
+    <None Include="superevent\app\bower_components\ng-flow\bower.json" />
+    <None Include="superevent\app\js\vssver.scc" />
+    <None Include="superevent\app\vssver.scc" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>53198</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://192.168.10.41/Gettywebclasses/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

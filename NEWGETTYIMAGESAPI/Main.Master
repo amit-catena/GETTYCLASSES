@@ -1,0 +1,27 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="newgettyimagesAPI.Main" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+    <title>Search Getty images</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+        <link  href="<%=NewGettyAPIclasses.ConstantAPI.siteURL%>css/layout.css" rel="stylesheet"  type="text/css"  />
+        <script src="<%=NewGettyAPIclasses.ConstantAPI.siteURL%>js/jquery.js" ></script> 
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <asp:ContentPlaceHolder ID="mainmastercontent" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+
+ <script> $(".inrimg").mouseover(function(){var pos = $(this).offset();var midwrap = $(".midwrp").width()/2; var setposition = pos.left; if(setposition < midwrap){$(".box").css({"left":"0","right":"auto"});}else{$(".box").css({"left":"auto","right":"0"});}
+});
+           
+ </script>
+</body>
+</html>

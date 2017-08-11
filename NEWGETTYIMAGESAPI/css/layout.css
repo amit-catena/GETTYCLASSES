@@ -1,0 +1,217 @@
+﻿*{margin: 0; padding: 0; box-sizing: border-box;}
+body{margin:0;padding:0;  font: 18px/24px arial;background: url(../images/main-bg-overlay.png) repeat-x left top, url(../images/main-bg.jpg) repeat left top;}
+
+    .midwrp .innersec>li {display: inline-block;width: 20%;box-sizing: border-box;padding: 10px;vertical-align: top;margin: 0; position:relative;cursor:pointer;}
+
+.midwrp .innersec li .inrimg {display: block;vertical-align: top;margin: auto;text-align: center;     height: 150px;    overflow: hidden; margin-bottom: 10px;}
+.midwrp{ margin: auto; padding: 20px 0; }
+.midwrp .innersec{margin: 0; padding: 0;list-style: none;}
+.midwrp .innersec>li{padding: 5px;}
+
+
+
+
+.midwrp .innersec>li .mainlidiv {border: 1px solid #ccc;padding: 10px; border-radius: 5px;}
+.midwrp .innersec li .inrimg img{ margin-right: 15px; max-width:100%; }
+.midwrp .innersec li .downdetail{ width: 100%;display: table-cell;vertical-align: top; }
+.midwrp .innersec li .downdetail .dow-date,.midwrp .innersec>li .downdetail>ul{ display: block; }
+.downdetail .dow-date em{ display: block;font-style: normal; font-size: 13px; }
+.downdetail .dow-date{padding-bottom: 15px; border-bottom: 1px solid #bfbfbf; position: relative;}
+.downdetail .dow-date span{ font-size: 18px;}
+.downdetail .dow-date span:nth-child(3){position: absolute; right: 0;}
+.downdetail ul {margin-top:8px; padding: 0; list-style: none;}
+.downdetail ul li span{ display: inline-block; font-size: 8px;vertical-align: top; }
+.downdetail ul li:nth-child(2) span:nth-child(2) {height: 50px;width:calc(100% - 58px);overflow: hidden;text-overflow: ellipsis;}
+.downdetail ul li span a{ text-decoration: none; color: #03A9F4; }
+.downdetail ul li { margin-bottom: 8px; height: 20px;
+    overflow: hidden;}
+.downdetail ul li:nth-child(3) span{ max-height: 100px; overflow: hidden;width: 100% !important; color: #000 !important;line-height: 1.4;}
+.downdetail ul li:nth-child(2) span:nth-child(2) input{display:inline-block; width:18px; height:18px; vertical-align:middle; margin-right:5px; }
+
+.serchtxt {width: 800px; margin: auto;}
+.serchtxt span:nth-child(1){text-transform: uppercase;font-size: 14px;}
+.serchtxt span input[type=text], select {padding: 9px 20px;margin: 8px 0;display: inline-block;border: 1px solid #ccc;border-radius: 2px;box-sizing: border-box;
+                                         margin-left: 10px;width: 400px;}
+.serchtxt span input[type=button] {background-color: #284da1;color: white;padding: 10px 20px;margin: 8px 0;border: none;border-radius: 2px;cursor: pointer;}
+.serchtxt span input[type=button]:hover {background-color: #325dbf;}
+.loader{display:none;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
+.midwrp span input[type=button] {    background-color: #284da1;    color: white;    padding: 10px 20px;    margin: 8px 0;    border: none;    border-radius: 2px;    cursor: pointer;
+}
+.sernew {margin-top:20px;
+}
+
+.serchtxt span input[type=button][id^='btndownload']{display:none;}
+
+.loadermore{display:none;position: fixed;bottom:0;left: 50%;transform: translateX(-50%);}
+.box {
+     display:none;
+     position: absolute;
+    background: #FFF;
+    padding: 15px;
+    border: 1px solid #ccc;
+    width: 768px;
+    z-index: 999;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    box-shadow: #303030 3px 1px 6px;
+        top: 130px;
+}
+
+a:hover + .box {display:block;}
+.inrimg:hover .box{ display:block; }
+span.innerinrimg {float: left; max-width: 400px; margin-right: 10px;}
+.innerpopup { vertical-align: top; padding: 5px; box-sizing: border-box;  text-align: left;}
+.innerpopup span:first-child{overflow: hidden;display:block; font-weight:bold; font-size:15px; padding-bottom:5px;margin-bottom:5px; border-bottom:1px solid #ccc;  }
+.imgdiv img{width:500px;height:400px;padding:20px;}
+.midwrp:after {
+    content: "";
+    display: block;
+    position: fixed;
+    bottom: -10px;
+    left: 0;
+    height: 75px;
+    text-align: center;
+    width: 100%;
+    background: rgba(204, 204, 204, 0);
+    background: -webkit-linear-gradient(rgba(204, 204, 204, 0), #fff);
+    background: -o-linear-gradient(rgba(204, 204, 204, 0), #fff);
+    background: -moz-linear-gradient(rgba(204, 204, 204, 0), #fff);
+    background: linear-gradient(rgba(204, 204, 204, 0) 16%, #ffffff 80%);
+    z-index: 99;
+}
+
+.serchtxt.sernew {position: fixed;z-index: 99;width: 100%;background: #fff;text-align: center;top: 0;
+    margin-top: 0;padding: 10px; padding-bottom: 0;}
+.mainwrap {margin-top: 40px; padding-left: 5px;}    
+.overlay {position: fixed; display: none;   z-index: 9999; top: 50%;  transform:translateY(-50%); width:100%; text-align:center; font-family:Arial; font-size:16px; font-weight:bold; color:#000;}
+
+
+/*----------------------Sport Events ---------------------------*/
+    .midwrp>h1 {font-size: 32px; padding: 10px; text-transform: uppercase; font-size: 28px; color: #3c3c3c; border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;}
+    .eventdiv{font-family: arial;padding:10px; border: 1px solid #ccc; border-radius: 10px;}
+    .eventdiv .spimg{width: 100%;height: 150px; display: block; overflow: hidden; }
+    .eventdiv .spimg img{width: 100%;}
+    .eventdiv .spdate{display: block; font-size: 13px; color:#8C94A5; }
+    .eventdiv .spinfo{display: block; font-size: 14px; margin: 5px 0 15px; height: 50px; overflow: hidden; box-sizing: border-box;}
+    .eventdiv span:last-child a{display: block; text-align: center; padding: 10px 0 0; margin-top:30px; border-top:1px solid #ccc; font-size: 14px; color:#20B8F0; text-decoration: none;}
+
+
+/*----------------------Sport Events end ---------------------------*/
+
+
+
+#UpdateProgress1 {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    height: 100vh;
+    display: block;
+    z-index: 100;
+    bottom:0px;
+}
+
+
+
+#UpdateProgress1 span.loader {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: transform 0.3s;
+    pointer-events: none;
+    display: none;
+    top: 35%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-35%);
+    -moz-transform: translateX(-50%) translateY(-35%);
+    -ms-transform: translateX(-50%) translateY(-35%);
+    transform: translateX(-50%) translateY(-35%);
+}
+
+#UpdateProgress1 span.loader {
+    display: block;
+}
+
+#UpdateProgress1 span.loader::before, #UpdateProgress1 span.loader::after {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    display: block;
+    border: 5px solid rgba(0,0,0,0.1);
+    border-radius: 50%;
+    content: '';
+}
+
+#UpdateProgress1 span.loader::before {
+    margin-left: -40px;
+    width: 40px;
+    height: 40px;
+    border-right-color: rgba(22,145,190,0.8);
+    border-left-color: rgba(22,145,190,0.8);
+    -webkit-animation: rotation 3s linear infinite;
+    animation: rotation 3s linear infinite;
+}
+
+#UpdateProgress1 span.loader::after {
+    bottom: 40px;
+    margin-left: -30px;
+    width: 20px;
+    height: 20px;
+    border-top-color: rgba(22,145,190,0.8);
+    border-bottom-color: rgba(22,145,190,0.8);
+    -webkit-animation: rotation 1s linear infinite;
+    animation: rotation 1s linear infinite;
+}
+
+
+@-webkit-keyframes rotation{0%{-webkit-transform:rotate(0deg);}50%{-webkit-transform:rotate(180deg);}100%{-webkit-transform:rotate(360deg);}}
+@keyframes rotation{0%{transform:rotate(0deg);}50%{transform:rotate(180deg);}100%{transform:rotate(360deg);}}
+
+.downdetail ul li:nth-child(2) {
+    margin-bottom: 8px;
+    height: 50px;
+    overflow: hidden;
+    display:none;
+}
+
+.downdetail ul li span input {
+    height: 15px;
+    width: 16px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+
+
+
+ .mainwrap{display: table; width: 100%;}
+.dvfilter {display:none; width: 250px; background: #333; padding: 0 15px; color:#fff; padding-top: 30px; }  
+.dvfilter.show{display: block; text-align: left}
+.mainwrap .midwrp {display: table-cell;}
+.dvfilter ul li{list-style: none; border-bottom: 1px solid rgba(255, 255, 255, 0.47);}
+.dvfilter ul li:last-child{border: none;}
+
+.dvfilter ul li .listhead{list-style: none; font-size: 12px; display: block;margin: 10px 0;}
+
+.dvfilter ul li select{width: 100%; margin: 0; padding: 5px; border: 1px solid #666666;background-color: #333333; color: #cccccc;margin-bottom: 10px;}
+ .refinement-checkbox input[type="checkbox"] {display: none;}
+ .refinement-checkbox label {color: white;font-size: 12px; font-family:Arial, sans-serif;text-indent: -22px; white-space: normal; padding-left: 22px; margin-bottom: 0.5rem; display: block; cursor: pointer;}
+ .refinement-checkbox label:before {content: ""; color: transparent; font-size: 12px; padding: 2px; margin-right: 12px;  border: 1px solid #666666; display: inline-block;
+    width:10px; height: 10px; vertical-align: middle; }
+ .refinement-checkbox input[type="checkbox"]:checked+label:before { color: #333333; background-color: #fff;}
+
+
+ .refinement-radiobutton input[type="radio"] {display: none;}
+ .refinement-radiobutton label {color: white;font-size: 12px; font-family:Arial, sans-serif;text-indent: -22px; white-space: normal; padding-left: 22px; margin-bottom: 0.5rem; display: block; cursor: pointer;}
+ .refinement-radiobutton label:before {content: ""; color: transparent; font-size: 12px; padding: 2px; margin-right: 12px;  border: 1px solid #666666; display: inline-block;
+    width:10px; height: 10px; vertical-align: middle; border-radius: 50%;margin-top: -2px;}
+ .refinement-radiobutton input[type="radio"]:checked+label:before { color: #333333; background-color: #fff;}
+ .serchtxt.sernew span.leftmenu { background: #333; color: #fff; float: left; padding: 5px;  width: 250px; text-align: left; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.47);}
+ .serchtxt.sernew span.leftmenu em{display: block; position: absolute; width: 15px; height: 15px; top: 50%; transform: translateY(-50%);right: 15px; margin-top: -5px;}
+ .serchtxt.sernew span.leftmenu em:after{content: "▼"; margin-left: 3px;}
+ .serchtxt.sernew span.leftmenu.show em:after{content: "▲";}
+ .leftmenuwrap{position: fixed; left:10px; top:17px;}

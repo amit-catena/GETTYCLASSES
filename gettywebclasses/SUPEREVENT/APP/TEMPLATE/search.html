@@ -1,0 +1,25 @@
+<div class="searccontainer">
+    <div class="toolbar">
+        <div class="searchHold"> <input placeholder="Search here.." ng-model="val" type="text" ng-enter="serachGetty(this)"><button type="button" ng-click="serachGetty()">Search</button></div>
+    </div>
+    <md-progress-linear class="loader" ng-if="loading" md-mode='indeterminate'></md-progress-linear>
+    <div class="listContainer">
+        <div class="list" ng-if="data"> 
+            <ul>
+                <li ng-repeat="item in items">
+                    <img ng-src="{{item.ImgUrlThumbformat}}">
+                    <div class="controls"><md-checkbox aria-label="Check"  value="'{{item.ImageUrl}}'" ng-checked="cropSelection.indexOf(item.ImageUrl) > -1" ng-click="toggleSelection(item.ImageUrl, $event)"></md-checkbox></div>
+                </li>
+            </ul>
+            <div class="more"> <md-button type="button" class="md-primary md-raised btn" ng-click="loadmore()" >Load More</md-button></div>
+        </div>
+    </div>
+    
+    <div class="footer"> 
+    <a class="back" href="#/home">Back</a>
+        <div class="footerHold">
+            
+            <button type="button" ng-click="goCrop()" ng-disabled="!isImages"><md-tooltip md-autohide="true">Please select at least 1 image. </md-tooltip>Crop Selected {{cropSelection? cropSelection.length:'' }} images</button>
+        </div>
+    </div>
+</div>
